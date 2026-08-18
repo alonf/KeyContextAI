@@ -1,0 +1,302 @@
+{
+  "schema_version": "1.1",
+  "workshop_intake": true,
+  "confirmation_required": true,
+  "agenda_contract": "complete-coverage-v1",
+  "human_turn_contract": "typed-turns-v1",
+  "agenda_status": "confirmed",
+  "selected": [
+    "architecture-core",
+    "component-design",
+    "requirements-nfr",
+    "ui-ux",
+    "data-storage",
+    "security-compliance",
+    "integration-api",
+    "observability-resilience",
+    "devops-operations",
+    "code-implementation"
+  ],
+  "agenda": {
+    "architecture-core": {
+      "depth": "full",
+      "decision": "Process topology (tray app vs app+service), hook isolation strategy, and the threading/pipeline model that keeps the input hook non-blocking"
+    },
+    "component-design": {
+      "depth": "full",
+      "decision": "The component decomposition, responsibilities and flows (capture -> detect -> correct -> feedback), co-designed"
+    },
+    "requirements-nfr": {
+      "depth": "medium",
+      "decision": "Latency budgets (<10ms dictionary, <500ms LLM), accuracy bar and false-positive tolerance, resource footprint"
+    },
+    "ui-ux": {
+      "depth": "medium",
+      "decision": "Overlay bubble behavior, the two-tier sound design, undo/dismiss of a correction, tray interactions"
+    },
+    "data-storage": {
+      "depth": "medium",
+      "decision": "Dictionary format and update model (trie vs SQLite), settings storage, what is never persisted"
+    },
+    "security-compliance": {
+      "depth": "medium",
+      "decision": "Keystroke privacy enforcement, password-field suspension mechanics, DPAPI key storage, threat model for a hook-based tool"
+    },
+    "integration-api": {
+      "depth": "full",
+      "decision": "The MAF/Foundry integration shape, BYOK provider set, local model support, installed-assistant discovery"
+    },
+    "observability-resilience": {
+      "depth": "light",
+      "decision": "Polly retry/circuit-breaker policies, offline fallback behavior, hook health monitoring, acceptable diagnostics"
+    },
+    "devops-operations": {
+      "depth": "light",
+      "decision": "Packaging (MSIX vs installer), the zero-budget signing path, update channel"
+    },
+    "code-implementation": {
+      "depth": "medium",
+      "decision": "Coding rules and style source, dependency policy, reviewer setup (auto-on for code features; runs last)"
+    }
+  },
+  "skipped": {},
+  "agenda_confirmation": "human-confirmed",
+  "agenda_confirmation_scope": "lens-selection",
+  "agenda_turn_receipt": "127ca5e6be31b644c4fd0b4cd0b97c8d7fd374e7369f6a0f794fd8ed6be945f7",
+  "agenda_digest": "e04b19af03db2ea61504e80e97687c617f43868cd09252a3210b6518414592e6",
+  "workshop": {
+    "architecture-core": {
+      "agenda": [
+        "Which design method / decomposition vocabulary governs the structure?",
+        "Which process topology: single tray-app process, two-process split, or app + service?",
+        "Which hook isolation strategy: managed P/Invoke, native C++ DLL, or managed-first swap-ready?",
+        "Which threading/pipeline model keeps the input hook non-blocking?",
+        "Which volatilities are isolated, where does state live, and what is out of scope this iteration?"
+      ],
+      "decision": "Strict IDesign (role call-rules as binding law, enforced by CI architecture test): accessors call no system component and publish outward; engines own algorithms, call no engines/managers, return via callback; managers own flow, call engines and accessors only. Single tray-app process. Managed WH_KEYBOARD_LL hook on a dedicated thread, native-swap-ready behind the keystroke accessor contract (swap triggers: callback-latency violations or field AV false-positives). .NET Channel<T> pipeline with a single serialized correction executor owning the race-safety journal and self-injection suppression. LLM detection is an accessor (external world), dictionary detection an engine. State: WordAssemblyEngine holds the current word; TranscriptEngine owns the rolling multi-word journal (suspect-span widening, trailing remap applied twice, correction transactions, epoch after layout switch); manager holds only flow state and commands the privacy wipe. Out of scope: Windows Service, IME languages, dictionary cloud sync, installed-assistant discovery, pairs beyond He<->En.",
+      "depth": "full",
+      "moved_on": true,
+      "confirmation": "human-confirmed",
+      "confirmation_scope": "lens-question",
+      "human_turn_receipt": "c319ba6fa4d26ed72dd2d1cd9ef36ff40d9b3069cf76ac7a999846ed8828fc54",
+      "diagram": "specs/001-layout-autocorrect/workshop/architecture-core.md — console-ASCII process topology + pipeline keeper diagram",
+      "bindings": {
+        "design-method": "idesign-strict",
+        "process-topology": "single-tray-process",
+        "hook-isolation": "managed-first-native-swap-ready",
+        "pipeline-model": "dotnet-channels",
+        "correction-executor": "serialized-journal",
+        "llm-detection-role": "accessor",
+        "state-ownership": "engines"
+      }
+    },
+    "component-design": {
+      "agenda": [
+        "Which components exist, on which IDesign layer, with what one-line responsibility?",
+        "May engines call accessors, or stay pure with data handed in by managers?",
+        "What are the extension mechanisms for language pairs, detection tiers, and AI providers?",
+        "Does the seamless-correction flow (including the race case) hold across the map?"
+      ],
+      "decision": "Agreed 16-component strict-IDesign map: Clients TrayClient + OverlayClient; Managers CorrectionManager (typing flow, correction transaction, privacy lifecycle) + SettingsManager (configuration, BYOK, exclusions); Engines WordAssemblyEngine, TranscriptEngine, MappingEngine, DetectionEngine (callback-only, hold the state); Accessors Keystroke, Focus, InputInjection, Layout, Dictionary, Llm, Audio, Settings. Engines are pure — no accessor calls, managers hand data in (stricter than classic IDesign, agreed deliberately; zero-mock unit tests). Extension: new language pair is data only (key map + dictionary); new tiers/providers are DI registrations. The seamless-correction flow including the trailing-remap race case was walked and agreed.",
+      "depth": "full",
+      "moved_on": true,
+      "confirmation": "human-confirmed",
+      "confirmation_scope": "lens-question",
+      "human_turn_receipt": "c6f821b943cf383ade13a6a96792a9467936d55c526815d3f5f237c1252030b7",
+      "diagram": "specs/001-layout-autocorrect/workshop/component-design.md — console-ASCII layered component map + agreed correction flow",
+      "bindings": {
+        "design-method": "idesign-strict",
+        "engine-purity": "no-accessor-calls",
+        "language-pair-extension": "data-only",
+        "provider-extension": "di-registration",
+        "composition": "ioc-interfaces-singleton-lifetimes"
+      }
+    },
+    "requirements-nfr": {
+      "agenda": [
+        "Which quality attributes are design drivers, in what priority order?",
+        "What are the measurable thresholds for correction safety, latency, reliability, footprint, compatibility?",
+        "What must the system refuse to do?"
+      ],
+      "decision": "Agreed priority order: 1 correction safety (false-correction <1/1000, undo rate <2%, missed corrections are lesser defects), 2 felt latency (hook callback <1ms p99 allocation-free; dictionary verdict <10ms; dictionary correction transaction <50ms p95; LLM 500ms target with 2s hard timeout degrading to detection-only sound), 3 privacy (owned by security lens), 4 reliability (hook auto-recovery within 2s; crash never loses typed text or half-applies a correction), 5 resource footprint (idle ~0% CPU event-driven, <1ms passthrough, <150MB working set), 6 compatibility (mainstream edit surfaces; per-app exclusion as the valve). Refusals: no correction in password fields or excluded apps, no keystroke persistence, max one sentence to cloud LLM, no correction below the user-chosen conservatism level. False-correction numbers assumed until dogfood; slow-app acceptance case required. Amendment carried to component-design: IoC container composition, per-component interfaces, singleton lifetimes, mock-based tests.",
+      "depth": "medium",
+      "moved_on": true,
+      "confirmation": "human-confirmed",
+      "confirmation_scope": "lens-question",
+      "human_turn_receipt": "b5c2230e9229264d9c4d4239f32462b51edf8e64e8c6f0753d856fc736b81a39",
+      "diagram": "specs/001-layout-autocorrect/workshop/requirements-nfr.md — quality-attribute priority/threshold table",
+      "bindings": {
+        "correction-priority": "conservative-false-corrections-worst",
+        "llm-timeout": "500ms-target-2s-hard",
+        "composition": "ioc-interfaces-singleton-lifetimes"
+      }
+    },
+    "ui-ux": {
+      "agenda": [
+        "How does the correction bubble behave and where is it positioned?",
+        "What is the sound design across correction / notify-only / AI-tier?",
+        "What is the undo mechanism, and does it conflict with the host app's Ctrl+Z?",
+        "What does the settings surface contain and where does it live?",
+        "Which accessibility, RTL and theming constraints are binding?"
+      ],
+      "decision": "Agreed the Crew-proposed visual design (no Figma/sketch exists; human explicitly delegated the visuals and confirmed the rendered layouts). Click-through caret-anchored bubble showing typed->corrected text plus the new layout, auto-fading ~1.2s, suppressible. Tray menu with status dot, pause, Correct/Notify-only mode, one-click exclusion of the foreground app, settings, quit. Three distinct sounds (correction / notify-only detection / AI-tier), individually mutable. Undo resolved after the human raised the Ctrl+Z conflict: Ctrl+Z rejected (swallowing breaks host-app undo; not swallowing gives unreliable host-granularity undo). Agreed a FLIP hotkey instead - double-tap Ctrl by default, Ctrl+Alt+Z configurable alternative, user-changeable; armed ~5s after a correction while it is still the most recent edit; flipping back marks the word do-not-correct for the session; corrections injected as a single burst so host Ctrl+Z remains a decent fallback. Settings window opened from tray (not resident). RTL correctness, light/dark themes, reduce-motion honored, sound as a non-visual parallel channel.",
+      "depth": "medium",
+      "moved_on": true,
+      "confirmation": "human-confirmed",
+      "confirmation_scope": "lens-question",
+      "human_turn_receipt": "256035b742236e23842c53f3a88fc7ba2e861fba91da40bc52e0e4f9cd7d057e",
+      "diagram": "specs/001-layout-autocorrect/workshop/ui-ux.md — console-ASCII correction bubble + tray menu layouts",
+      "bindings": {
+        "flip-hotkey": "double-tap-ctrl-default-ctrl-alt-z-alt",
+        "bubble-behavior": "click-through-caret-anchored-autofade",
+        "feedback-channels": "sound-plus-bubble-independently-mutable"
+      }
+    },
+    "data-storage": {
+      "agenda": [
+        "What must persist, what is memory-only, and what is never written at all?",
+        "Which storage technology: files with an in-memory trie, or SQLite?",
+        "Which component owns each data type?",
+        "How do schema changes and app updates avoid clobbering user data?",
+        "How are learned/never-correct words made inspectable?"
+      ],
+      "decision": "Agreed three-tier data model. ON DISK per-user under %LOCALAPPDATA%\\KeyContextAI: KeyMap files per layout pair (shipped, read-only, scancode -> char_a/char_b), Dictionary files per language (shipped plus user-extended: words with frequency, user_added, never_correct), and a single JSON Settings file (active pairs, mode, conservatism, sounds, bubble, excluded apps, hotkey, ai_provider) whose ai_credentials field is a DPAPI-encrypted blob. IN MEMORY ONLY: the transcript journal (keystrokes/words, layout provenance, correction status, epochs) and the session never-correct set, wiped on focus change, password field, pause and exit. NEVER WRITTEN: raw keystroke logs, per-correction history, window titles, password-field content, LLM request/response bodies. Storage technology is plain files plus an in-memory trie; SQLite rejected deliberately (dependency, schema and migrations for non-relational data) with the recorded flip trigger being dictionaries too large for memory. Ownership: DictionaryAccessor owns key maps and dictionaries, SettingsAccessor owns settings and credentials, TranscriptEngine owns in-memory typing state, no cross-reading. Every file carries schema_version and unknown versions are rejected loudly; user-added words live in a separate file from the shipped dictionary so updates never clobber them (and the deferred cloud sync becomes one-file sync). Flipped-back words land in the user's plain-text never_correct list, inspectable and editable as a trust feature.",
+      "depth": "medium",
+      "moved_on": true,
+      "confirmation": "human-confirmed",
+      "confirmation_scope": "lens-question",
+      "human_turn_receipt": "7bb1073f9a2c11ee0b61504e8f7720ce0c42bdaee5e49fdde0c49c8f7ec0b0d3",
+      "diagram": "specs/001-layout-autocorrect/workshop/data-storage.md — console-ASCII data ownership and lifetime map (on-disk / in-memory / never-written)",
+      "bindings": {
+        "dictionary-store": "files-plus-in-memory-trie",
+        "settings-format": "json-with-dpapi-blob",
+        "keystroke-persistence": "never",
+        "user-data-separation": "user-words-separate-file"
+      }
+    },
+    "security-compliance": {
+      "agenda": [
+        "Where are the trust boundaries and what is the attack surface?",
+        "How is the password-field gate enforced when detection is uncertain?",
+        "What prevents injected text landing in the wrong window?",
+        "How are BYOK credentials protected at rest?",
+        "What leaves the machine for the AI tier, and what counts as opt-in?",
+        "How is the supply chain and the malware-resemblance problem handled?"
+      ],
+      "decision": "Agreed three trust boundaries with controls. Boundary 1 capture: password gate is fail-closed (uncertain detection suspends capture), the process runs unelevated so elevated windows are invisible by design, and the transcript wipes on every focus change so text never crosses apps. Boundary 1 injection: correction is injected only into the window that produced the keystrokes; if focus changed between detection and injection the correction is abandoned, treated as a security control. Boundary 2 disk: DPAPI CurrentUser scope for API keys so another local account cannot decrypt them; no keystrokes, correction history or window titles on disk ever. Boundary 3 network: AI tier opt-in and off by default, one sentence of context with no user identifier, app name or window title, TLS only, local models close the boundary entirely. Human-sharpened opt-in rule: the opt-in is either the user configuring a provider/key OR the user answering yes when we detect an installed Claude/Copilot CLI or desktop app and ASK — detection alone never activates anything, and silent reuse of an unpointed credential is forbidden; a one-time confirmation before the first cloud call states exactly what is sent. Supply chain: minimal pinned dependencies, reproducible builds from public CI so the published binary matches public source, SECURITY.md plus a plain-language what-this-can-and-cannot-see README section.",
+      "depth": "medium",
+      "moved_on": true,
+      "confirmation": "human-confirmed",
+      "confirmation_scope": "lens-question",
+      "human_turn_receipt": "b951d28cc972a8510384778851068bda56dff1a4877da315d06e48f2b65098c8",
+      "diagram": "specs/001-layout-autocorrect/workshop/security-compliance.md — console-ASCII trust-boundary and attack-surface diagram",
+      "bindings": {
+        "password-gate": "fail-closed",
+        "focus-change-during-correction": "abandon",
+        "credential-storage": "dpapi-currentuser",
+        "ai-tier-activation": "explicit-opt-in-including-discovered-assistants",
+        "process-elevation": "never-elevated"
+      }
+    },
+    "integration-api": {
+      "agenda": [
+        "What is the integration style and who owns the contract?",
+        "What request/response shape does the LLM tier use?",
+        "Which providers ship in MVP?",
+        "Can an installed Copilot/Claude CLI be used without an API key, and in .NET?",
+        "What are the timeout, retry and circuit-breaker semantics?",
+        "How are late/superseded responses handled?",
+        "How is provider compatibility tested?"
+      ],
+      "decision": "Researched and agreed after the human challenged the first draft. Verified: MAF 1.0 GA 2026-04-03 with first-party connectors (Foundry, Azure OpenAI, OpenAI, Anthropic Claude, Bedrock, Gemini, Ollama); the GitHub Copilot agent type IS .NET-available (Microsoft.Agents.AI.GitHub.Copilot, CopilotClient.AsAIAgent) running on an authenticated Copilot CLI with NO API key; the Claude Agent SDK agent type (ClaudeAgent, prerequisite installed Claude Code CLI, no API key) exists but is Python-only and prerelease, while the Anthropic model provider (API key) is .NET-available. Decisions: direct in-process MAF call behind our ILlmAccessor contract, no self-hosted HTTP; structured request (typed text, one-sentence context, both layouts, dictionary candidate) and structured response (verdict correct|leave, text, confidence, tier, elapsed_ms) with no prose parsing; MVP providers are Azure OpenAI/Foundry, OpenAI, Anthropic Claude by key, and a local Ollama/OpenAI-compatible endpoint; MVP ships the Copilot-CLI zero-key discovery path (detect, ask, use) while the Claude Code CLI route is a recorded watch item that becomes configuration behind the same contract once it reaches .NET; 2s hard timeout returning verdict leave, Polly retry only on transient/429 with jitter under the budget, circuit breaker degrading to dictionary-only with an amber tray icon; every request carries a correction-transaction id and superseded late responses are discarded rather than applied; a fake plus one recorded-response integration test per provider guards MAF/provider drift. Flags recorded: hold one long-lived CLI-harness client (per-correction startup blows the 500ms budget) and supply no permission handler so the deny-all default keeps the agent away from shell/file/URL tools.",
+      "depth": "full",
+      "moved_on": true,
+      "confirmation": "human-confirmed",
+      "confirmation_scope": "lens-question",
+      "human_turn_receipt": "3ea7db451f4129d3c9e7fd9d70f891a04c07f5e2115648ae312965e5c51ee521",
+      "diagram": "specs/001-layout-autocorrect/workshop/integration-api.md — console-ASCII LlmAccessor contract sequence + provider/.NET availability matrix",
+      "bindings": {
+        "ai-orchestration": "microsoft-agent-framework-1.0",
+        "llm-contract": "structured-verdict-response",
+        "llm-timeout": "500ms-target-2s-hard",
+        "zero-key-path": "copilot-cli-mvp-claude-cli-watch",
+        "late-response-policy": "discard-superseded-transaction",
+        "ai-tier-activation": "explicit-opt-in-including-discovered-assistants"
+      }
+    },
+    "observability-resilience": {
+      "agenda": [
+        "What does the user see for each failure mode?",
+        "What may a local diagnostic log contain, and may a verbose mode include text?",
+        "Is there any telemetry, and if so what is the payload, transport and consent model?",
+        "What recovery patterns apply to the hook, the AI tier and correction transactions?"
+      ],
+      "decision": "Tray icon (green/amber/red with hover reason) is the primary observability surface. Local diagnostic log off by default, built as an in-memory ring buffer flushed only during quiet periods (~2s without a keystroke) so file I/O never competes with the correction hot path - the human's design; losing a log tail on crash is the accepted sacrifice. Standard log mode records events and outcomes with no text; a human-approved verbose bug-report mode is explicitly opt-in, session-scoped and self-deleting and MAY include text. The log doubles as the maintainer's research instrument for performance, correctness, memory, LLM invocation rate, double-correction count and correction quality as a function of typing speed. Session counters visible in settings validate the false-correction target during dogfood. Telemetry: the Crew's no-telemetry-ever proposal was replaced by the human with two separately-toggleable opt-in channels, both off by default - a session ping (random resettable install_id, version, os, active pairs, ai_tier; never username, machine name, app names or text) and an aggregate diagnostics channel (p50/p95 latency, LLM timeout rate, injection-abandon rate, hook restarts). Transport is a single HTTPS POST to an Azure Function with Application Insights behind it; IoT Hub and MQTT/Event Grid were considered and rejected as device-fleet machinery that would add a device-registration concept to a privacy-sensitive tool. Binding privacy rules: the endpoint must not log or retain IP addresses, and consent is a first-run explicit ask showing the exact JSON payload. The telemetry backend is post-MVP; v1 ships the client plumbing and consent UI with the switches present and off. Recovery: 2s hook watchdog with re-registration, Polly circuit breaker with half-open recovery for the AI tier, atomic correction transactions so mid-flight failure leaves text unchanged.",
+      "depth": "light",
+      "moved_on": true,
+      "confirmation": "human-confirmed",
+      "confirmation_scope": "lens-question",
+      "human_turn_receipt": "2d6a5948c1cc6890e22700281e0db446cdd691ba930a518b0cd273eb50442cc8",
+      "diagram": "specs/001-layout-autocorrect/workshop/observability-resilience.md — console-ASCII failure-mode map with user-visible outcomes",
+      "bindings": {
+        "telemetry": "opt-in-two-channels-off-by-default",
+        "telemetry-transport": "https-azure-function-appinsights",
+        "telemetry-backend-scope": "post-mvp",
+        "local-log": "in-memory-ring-buffer-quiet-flush",
+        "verbose-log-text": "opt-in-session-scoped-self-deleting",
+        "ip-retention": "forbidden"
+      }
+    },
+    "devops-operations": {
+      "agenda": [
+        "What is the hosting and packaging model for an OSS Windows desktop tool?",
+        "Which zero-budget code-signing path is actually available, and can Azure credits fund it?",
+        "Which CI lane belongs to this project's forge, and what runs in it?",
+        "What is the update model?",
+        "What repository governance and review gate apply?"
+      ],
+      "decision": "Local desktop tool, nothing server-side in MVP. Packaging: self-contained win-x64 and win-arm64, MSIX installer plus portable zip, winget manifest as the headline install path. Signing researched during the lens: primary path is Azure Artifact Signing (formerly Trusted Signing) at about $9.99/month Basic, payable from the human's Azure MVP credits, giving real Public Trust Authenticode with auto-renewing HSM-backed certs and a native GitHub Actions task - with the eligibility catch that individual developers must be US/Canada while organizations in Israel ARE supported, so validation runs under the human's named Israeli company entity ZioNet; fallbacks are the SignPath OSS program, Microsoft Store submission, and an unsigned zip with published SHA-256. CI is GitHub Actions matching the project's own forge: PR lane runs build, unit tests, the IDesign architecture test, markdownlint and Specrew governance validation; the tag release lane builds both architectures, packages MSIX and zip, signs, hashes and publishes a GitHub Release with reproducible-build flags honoring the security lens's binary-to-source promise. Update model (human decision): MSIX updates are produced by the CI release script when a new release is cut, never on a background timer. Governance: protect main (no direct commits, PR plus green required status checks, no force-push or deletion), required human approvals 0 for the solo maintainer but required status checks on, and Copilot automated PR review ENABLED as an advisory reviewer since the human has the subscription. The stale release_model local-only in .specrew/repository-governance.yml is corrected to a GitHub-based published-artifact model. Applying branch protection is an action pending the human's explicit go-ahead, not an open design question.",
+      "depth": "light",
+      "moved_on": true,
+      "confirmation": "human-confirmed",
+      "confirmation_scope": "lens-question",
+      "human_turn_receipt": "431a212160cb04c889edfe17851372387668f7991e75358b3e4d09b458853249",
+      "diagram": "specs/001-layout-autocorrect/workshop/devops-operations.md — console-ASCII delivery topology from developer machine through GitHub CI to end-user install paths",
+      "bindings": {
+        "packaging": "msix-plus-zip-winget",
+        "signing": "azure-artifact-signing-zionet-org",
+        "ci-forge": "github-actions",
+        "update-model": "ci-release-triggered",
+        "branch-protection": "main-protected-checks-required-zero-approvals",
+        "automated-review": "copilot-enabled"
+      }
+    },
+    "code-implementation": {
+      "agenda": [
+        "Is there an existing coding guideline or example project to emulate?",
+        "Which baseline craft defaults should be off?",
+        "Concurrency posture, error-handling style, and testing posture?",
+        "Which .NET/C# version posture and polymorphism mechanism?",
+        "Is the correction engine a reusable package or app-internal?",
+        "Which dependencies are earned, and which UI framework?",
+        "Which continuous co-review host reviews the implementation?"
+      ],
+      "decision": "No existing coding guideline or example project, so Specrew defaults apply (read from the human's agree-with-the-default reply and surfaced back to them as a filled gap). All baseline craft rules on with no exceptions requested. Forks agreed as presented: Channels pipeline with the correction executor as a single consumer loop serialized by construction rather than explicit locking; exceptions only for exceptional cases with Result-style returns for expected failures (LLM unavailable, injection refused, detection inconclusive); test-first for the pure engines, test-after for the Win32 accessors, plus a mandatory CI architecture test enforcing the IDesign call rules; .NET 10 LTS with LangVersion latest, nullable on, warnings-as-errors, file-scoped namespaces and records for messages; interfaces plus DI with the Strategy pattern for detection tiers instead of conditional chains. Engine packaging recorded as app-internal library with clean seams and NuGet extraction deferred - a Crew-proposed default for the one fork with no stated lean, surfaced to the human. Dependency stance is earned-dependencies-only with MAF 1.0, Microsoft.Agents.AI.GitHub.Copilot, Polly 8, Microsoft.Extensions.DependencyInjection plus Hosting, and WPF chosen over WinUI 3 for the tray-plus-overlay shape. Reviewer: the host list was run and presented verbatim (codex marked default at rank 85, then copilot 80, cursor-agent 70, antigravity 65, plus claude as the non-independent code-writer); the human selected COPILOT, explicitly overriding the default because their codex tokens are exhausted, and the choice was persisted with specrew review --host copilot --authorization-ref workshop-001-layout-autocorrect.",
+      "depth": "medium",
+      "moved_on": true,
+      "confirmation": "human-confirmed",
+      "confirmation_scope": "lens-question",
+      "human_turn_receipt": "edf0bd4c6fff15d9af31a6c218e8629c5ee6270ba37197a711da35ccde52d223",
+      "diagram": "specs/001-layout-autocorrect/workshop/code-implementation.md — console-ASCII design-time to implement-time rule flow",
+      "bindings": {
+        "stack": "dotnet-10-lts-csharp",
+        "ui-framework": "wpf",
+        "composition": "ioc-interfaces-singleton-lifetimes",
+        "error-handling": "result-for-expected-exceptions-for-exceptional",
+        "testing-posture": "test-first-engines-architecture-test-required",
+        "engine-packaging": "app-internal-nuget-deferred",
+        "reviewer-host": "copilot"
+      }
+    }
+  }
+}

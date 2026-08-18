@@ -2,6 +2,8 @@
 
 A Windows background tool that detects when you type in the wrong keyboard layout (e.g., English text while the Hebrew layout is active), automatically corrects the text in place, switches the keyboard layout to the intended language, and gives you subtle audio-visual feedback.
 
+KeyContext AI's context-aware correction tier is built on the **Microsoft Agent Framework** and **Azure AI Foundry**, with bring-your-own-key support for cloud providers and local models.
+
 ## The problem
 
 Multilingual typists constantly type a word or a whole sentence before noticing the keyboard was on the wrong layout — producing gibberish like `akuo` instead of `שלום`. Fixing it means selecting the text, deleting it, switching layouts, and retyping. KeyContext AI removes that friction entirely.
@@ -16,7 +18,7 @@ Multilingual typists constantly type a word or a whole sentence before noticing 
 
 - .NET / C# targeting Windows, WinUI 3 or WPF for the tray and overlay UI
 - Win32 interop: `SetWindowsHookEx` (WH_KEYBOARD_LL), `SendInput`, keyboard-layout APIs
-- Microsoft Semantic Kernel as the LLM abstraction (Azure OpenAI, Anthropic Claude, OpenAI, or local models via Ollama/ONNX)
+- Microsoft Agent Framework with Azure AI Foundry as the AI orchestration layer (Azure OpenAI, Anthropic Claude, OpenAI, or local models via Ollama/ONNX)
 - Local dictionary via in-memory trie or SQLite for sub-10 ms lookups
 - Polly for retry/circuit-breaker resiliency on cloud LLM calls
 

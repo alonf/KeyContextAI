@@ -1,0 +1,195 @@
+schema_version: "1.0"
+context_scope: "feature_standalone"
+resolved_stack: "csharp-dotnet"
+selections:
+  - id: "code-rule.intent-revealing-names"
+    checked: true
+  - id: "code-rule.short-functions"
+    checked: true
+  - id: "code-rule.avoid-deep-nesting"
+    checked: true
+  - id: "code-rule.dependency-injection"
+    checked: true
+    decision: "IoC container composes every component behind its own interface; singleton lifetimes for long-lived managers, engines and accessors."
+    enforcement: [review, tests]
+  - id: "code-rule.dtos-between-services"
+    checked: true
+  - id: "code-rule.avoid-common-utility-libs"
+    checked: true
+  - id: "code-rule.immutability-intent"
+    checked: true
+    decision: "Records for pipeline messages and DTOs; immutable messages across the Channel boundary."
+    enforcement: [compiler, review]
+  - id: "code-rule.comments-wisely"
+    checked: true
+  - id: "code-rule.no-magic-numbers"
+    checked: true
+  - id: "code-rule.optimize-apis-for-call-site"
+    checked: true
+  - id: "code-rule.stronger-domain-types"
+    checked: true
+  - id: "code-rule.object-invariants"
+    checked: true
+  - id: "code-rule.no-leaky-mutable-internals"
+    checked: true
+  - id: "code-rule.normalize-state"
+    checked: true
+  - id: "code-rule.simple-trustworthy-tests"
+    checked: true
+  - id: "code-rule.derived-guard-scope"
+    checked: true
+  - id: "code-rule.language-native-constructs"
+    checked: true
+  - id: "code-rule.secure-coding-defaults"
+    checked: true
+    decision: "Fail-closed password gate, abandon-on-focus-change injection, DPAPI CurrentUser credential storage, no keystroke persistence."
+    enforcement: [review, tests]
+  - id: "code-rule.solid-baseline"
+    checked: true
+  - id: "code-rule.strategy-state-over-repeated-conditionals"
+    checked: true
+    decision: "Strategy pattern for detection tiers (dictionary, LLM) rather than conditional chains."
+    enforcement: [review]
+  - id: "code-rule.polymorphism-mechanism"
+    checked: true
+    decision: "Interfaces plus DI throughout; no inheritance hierarchies for behavior variation."
+    enforcement: [review]
+  - id: "code-rule.concurrency-over-locks"
+    checked: true
+    decision: "System.Threading.Channels pipeline; the correction executor is a single consumer loop, serialized by construction rather than by explicit locking."
+    enforcement: [review, tests]
+  - id: "code-rule.declarative-collections"
+    checked: true
+  - id: "code-rule.idiomatic-error-handling"
+    checked: true
+    decision: "Exceptions for exceptional cases only; Result-style returns for expected failures (LLM unavailable, injection refused, detection inconclusive) so the hot path neither pays for nor misreports normal outcomes."
+    enforcement: [review, tests]
+  - id: "code-rule.careful-retries"
+    checked: true
+    decision: "Polly retry only on transient network and HTTP 429, exponential backoff with jitter capped under the 2s LLM timeout budget; circuit breaker degrades to dictionary-only."
+    enforcement: [review, tests]
+  - id: "code-rule.logging-traceability"
+    checked: true
+    decision: "In-memory ring buffer flushed to file only during quiet periods; standard mode records events and outcomes with no text; verbose bug-report mode is opt-in, session-scoped and self-deleting."
+    enforcement: [review]
+  - id: "code-rule.robustness-state-boundaries"
+    checked: true
+    decision: "Correction transactions are atomic: a mid-flight failure leaves the user's text unchanged rather than half-corrected."
+    enforcement: [tests, review]
+  - id: "code-rule.testing-posture"
+    checked: true
+    decision: "Test-first for the pure engines (Mapping, Detection, Transcript, WordAssembly) where correctness is the product and no mocks are needed; test-after for accessors (Win32 wrappers verified by integration and manual smoke); a mandatory architecture test enforces the IDesign call rules in CI."
+    enforcement: [tests]
+  - id: "code-rule.evidence-driven-performance"
+    checked: true
+    decision: "Latency targets from the NFR lens are measured by the diagnostic log rather than asserted; allocation-free hook callback verified by benchmark."
+    enforcement: [tests, review]
+  - id: "code-rule.copy-semantics"
+    checked: true
+  - id: "code-rule.extension-points"
+    checked: true
+    decision: "Language pairs extend by data (key map plus dictionary files); detection tiers and AI providers extend by DI registration behind existing contracts."
+    enforcement: [review]
+  - id: "code-rule.api-service-design"
+    checked: true
+  - id: "code-rule.authz-security-context"
+    checked: true
+  - id: "code-rule.validation-boundaries"
+    checked: true
+    decision: "Data files carry schema_version; unknown versions are rejected loudly rather than silently misread."
+    enforcement: [tests, review]
+  - id: "code-rule.lts-version-check"
+    checked: true
+    decision: ".NET 10 LTS with LangVersion latest, nullable reference types on, warnings-as-errors, file-scoped namespaces."
+    enforcement: [compiler]
+  - id: "code-rule.csharp.langversion-posture"
+    checked: true
+    decision: "Latest C# language version on .NET 10 LTS; records for messages/DTOs; nullable enabled; analyzers on with warnings-as-errors."
+    enforcement: [compiler, analyzer]
+  - id: "code-rule.vendor-neutral-observability"
+    checked: true
+    decision: "No telemetry by default; two opt-in channels via a plain HTTPS POST to an Azure Function, no vendor SDK embedded in the client binary."
+    enforcement: [review]
+  - id: "code-rule.ui-controls-prevent-invalid-input"
+    checked: true
+  - id: "code-rule.shared-code-packaging"
+    checked: true
+    decision: "App-internal library with clean seams; NuGet extraction of the correction engine deferred, since a public API surface is cheap to add later and expensive to retract. Crew-proposed default, surfaced to the human as a filled gap."
+    enforcement: [review]
+  - id: "code-rule.public-api-reusable-design"
+    checked: false
+custom_rules: []
+dependency_policy:
+  stance: "earned-dependencies-only"
+  selected:
+    - name: "Microsoft.Agents.AI (Microsoft Agent Framework)"
+      version: "1.0.x"
+      license: "MIT"
+      source_org: "Microsoft"
+      url: "https://github.com/microsoft/agent-framework"
+      maintenance: "GA 2026-04-03, LTS commitment"
+      security_status: "no known advisories at selection time"
+      compatibility: ".NET 10"
+      cost: "none (BYOK; user pays their own provider)"
+      coupling: "isolated behind ILlmAccessor"
+      replaceability: "high - the accessor contract is ours"
+      test_impact: "fake accessor for unit tests; one recorded-response integration test per provider"
+    - name: "Microsoft.Agents.AI.GitHub.Copilot"
+      version: "1.0.x"
+      license: "MIT"
+      source_org: "Microsoft"
+      url: "https://learn.microsoft.com/en-us/agent-framework/user-guide/agents/agent-types/github-copilot-agent"
+      maintenance: "ships with MAF 1.0"
+      security_status: "no known advisories at selection time"
+      compatibility: ".NET 10; requires an authenticated Copilot CLI on the user machine"
+      cost: "none to the project; uses the user's own Copilot subscription"
+      coupling: "isolated behind ILlmAccessor"
+      replaceability: "high"
+      test_impact: "integration test gated on CLI presence"
+    - name: "Polly"
+      version: "8.x"
+      license: "BSD-3-Clause"
+      source_org: "App vNext / .NET Foundation"
+      url: "https://github.com/App-vNext/Polly"
+      maintenance: "active, widely adopted"
+      security_status: "no known advisories at selection time"
+      compatibility: ".NET 10"
+      cost: "none"
+      coupling: "confined to the LLM accessor's resilience pipeline"
+      replaceability: "medium"
+      test_impact: "timeout and circuit-breaker behavior covered by tests"
+    - name: "Microsoft.Extensions.DependencyInjection + Hosting"
+      version: "10.x"
+      license: "MIT"
+      source_org: "Microsoft"
+      url: "https://learn.microsoft.com/dotnet/core/extensions/dependency-injection"
+      maintenance: "platform component"
+      security_status: "no known advisories at selection time"
+      compatibility: ".NET 10"
+      cost: "none"
+      coupling: "composition root only"
+      replaceability: "low need"
+      test_impact: "enables interface-based mocking across managers"
+    - name: "WPF (Windows Desktop workload)"
+      version: ".NET 10 Windows Desktop"
+      license: "MIT"
+      source_org: "Microsoft"
+      url: "https://learn.microsoft.com/dotnet/desktop/wpf/"
+      maintenance: "platform component"
+      security_status: "no known advisories at selection time"
+      compatibility: "Windows 10/11, x64 and arm64"
+      cost: "none"
+      coupling: "clients only (TrayClient, OverlayClient)"
+      replaceability: "medium - WinUI 3 considered and deferred as heavier for a tray-plus-overlay shape"
+      test_impact: "UI verified by manual smoke, not unit tests"
+reviewer_preference:
+  mode: "human-selected"
+  host: "copilot"
+  model: null
+  effort: null
+  source: "code-implementation-workshop"
+  authorization_ref: "workshop-001-layout-autocorrect"
+  rationale: "Human selected Copilot over the marked default codex because their codex tokens are exhausted; Copilot is still independent of the Claude code-writer."
+provenance:
+  confirmation: "human-confirmed"
+  confirmation_scope: "lens-question"

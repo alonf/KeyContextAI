@@ -1,5 +1,5 @@
 # >>> specrew-managed release-model >>>
-release_model: local-only
-release_model_provenance: inferred
-publish_target: null
+release_model: github-release
+release_model_provenance: workshop-confirmed
+publish_target: https://github.com/alonf/KeyContextAI
 # <<< specrew-managed release-model <<<
