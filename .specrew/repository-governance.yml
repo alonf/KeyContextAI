@@ -1,5 +1,5 @@
 # >>> specrew-managed release-model >>>
-release_model: github-release
-release_model_provenance: workshop-confirmed
+release_model: pr-flow
+release_model_provenance: recorded
 publish_target: https://github.com/alonf/KeyContextAI
 # <<< specrew-managed release-model <<<
