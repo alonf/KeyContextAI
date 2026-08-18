@@ -1,85 +1,116 @@
-schema_version: "1"
-lens: product-domain
-feature_ref: 001-layout-autocorrect
-product_id: keycontextai
-product_context_ref: null
-context_scope: feature_standalone
-depth: standard
+schema_version: "1.0"
+depth: "standard"
 depth_reason: >-
-  First feature of a new product (rules out Light); single-maintainer OSS utility,
-  not regulated/multi-team/commercial (rules out Deep). Crew-proposed; human was
-  offered Light/Deep adjustment repeatedly and answered all Standard-depth areas
-  without adjusting.
-confirmation: human-confirmed
-confirmation_scope: lens-question
-human_turn_receipt: f6c37e53c8910474337d3b3918b0a93f9ac81503bb268bd749e25293900a325d
-conducted: "2026-08-19"
-pacing: one-area-at-a-time
+  First feature of a new product (rules out Light); single-maintainer OSS utility, not regulated,
+  multi-team or commercial (rules out Deep). Crew-proposed; the human was offered Light/Deep
+  adjustment repeatedly and answered all eight Standard-depth areas without adjusting.
+context_scope: "feature_standalone"
+product_id: "keycontextai"
+product_context_ref: null
 areas:
-  users_stakeholders:
-    evidence: known
-    statements:
-      - Open-source tool for any language-pair combination; not restricted to the Hebrew community.
-      - Hebrew<->English is the first shipped, proven pair; maintainer is the first user.
-      - Community users including non-developers matter; installer and docs polish count.
-      - IME/composition languages (zh/ja/ko) may be deferred if they complicate the core.
-  pain_workaround:
-    evidence: known
-    statements:
-      - Wrong-layout bursts noticed late; manual delete-switch-retype is the only workaround today.
-      - Cost of doing nothing is constant micro-friction, dozens of times a day.
-      - Bar to beat is the manual fix, without ever making things worse.
-  existing_context:
-    evidence: known
-    statements:
-      - New standalone product; integrates only with Windows input stack/layout APIs and the user's LLM provider.
-  constraints:
-    evidence: known
-    statements:
-      - Windows-only (fixed).
-      - .NET / C# ecosystem (externally fixed by maintainer expertise).
-      - BYOK economics; project never bears inference costs.
-      - Privacy hard rule; keystrokes in-memory only; a single context sentence may go to a cloud LLM, never retained; dictionary is persistable and syncable across the same user's machines via OneDrive/Google Drive.
-      - MIT license.
-      - Solo developer plus AI agents.
-      - Antivirus/SmartScreen tolerance is binding; zero-budget signing (no paid Authenticode; free legitimate path if one exists).
-    research_needed:
-      - item: Installed-assistant reuse (Copilot/Codex/Claude CLI or desktop; MAF agent backed by Copilot/Claude SDK; no or browser-based login)
-        load_bearing: false
-        owner: integration-api
-      - item: Free OSS code-signing path (SignPath OSS / Azure Trusted Signing / Microsoft Store MSIX)
-        load_bearing: false
-        owner: devops-operations
-  outcomes_metrics:
-    evidence: known
-    statements:
-      - False correction is worse than a missed correction; the tool is conservative.
-      - Distinct sounds for detection-only vs seamless correction; likely dictionary vs LLM tier disambiguation too.
-      - Race-safe correction; keystrokes typed during the correction window are remapped too (mapping may apply twice; continued input after layout switch remapped).
-      - Dictionary tier feels instantaneous (<10ms lookup); LLM tier useful at <500ms round-trip.
-      - Personal bar - maintainer stops noticing layout mistakes; community bar - real adoption (stars, downloads, survives antivirus).
-  mvp_nongoals_vision:
-    evidence: known
-    statements:
-      - "MVP: language-pair-agnostic dictionary tier (He<->En first pair); seamless race-safe correction; detection-only mode; tray app with per-app exclusions; password-field suspension; in-memory-only rule."
-      - "MVP includes the LLM tier built on the Microsoft Agent Framework - the product edge; Azure AI Foundry positioning; README states MAF+Foundry foundation."
-      - "Deferred: IME languages; Windows Service; dictionary cloud sync; installed-assistant discovery; more dictionary packs."
-      - "v1 failure conditions: mangling correct text; AV/SmartScreen blocking ordinary users."
-  alternatives_differentiation:
-    evidence: known
-    statements:
-      - Competition matters only as a learning source (capabilities, gaps, adoption-failure causes), not as rivalry.
-      - "Differentiators: MAF/Foundry context-aware AI tier; any language pair by design; trust by construction (OSS, memory-only, BYOK)."
-      - Winning dimension is accuracy/trust.
-    research_needed:
-      - item: Competitive lessons scan (Punto Switcher, AutoHotkey scripts, Windows text intelligence)
-        load_bearing: false
-        owner: pre-spec-research
-  adoption_rollout:
-    evidence: known
-    statements:
-      - Dogfood -> public GitHub release -> possibly winget/Microsoft Store later.
-      - "Risks: AV trust; AI-tier key friction (mitigated by installed-assistant discovery); keystroke-tool skepticism (mitigated by OSS + memory-only rule)."
-      - Out-of-box - dictionary tier zero-config; AI tier opt-in.
-      - No migration or training; docs are README plus short setup guide; support via GitHub issues.
-skipped_areas: []
+  users_stakeholders: "Open-source tool for any language-pair combination, not restricted to the Hebrew community. Hebrew<->English is the first shipped, proven pair. The maintainer is the first user; community users including non-developers matter, so installer and docs polish count. IME/composition languages may be deferred."
+  pain_workaround: "Wrong-layout bursts noticed late; manual delete-switch-retype is the only workaround today. Cost of doing nothing is constant micro-friction dozens of times a day. The bar to beat is the manual fix, without ever making things worse."
+  existing_context: "New standalone product; integrates only with the Windows input stack and layout APIs plus the user's chosen LLM provider."
+  constraints: "Windows-only; .NET/C# ecosystem externally fixed; BYOK economics with the project never bearing inference costs; privacy hard rule (keystrokes in-memory only, one context sentence may reach a cloud LLM and is never retained, the dictionary is persistable and syncable across the user's own machines); MIT license; solo developer plus AI agents; antivirus/SmartScreen tolerance binding with a zero-budget signing qualifier."
+  outcomes_metrics: "False corrections are worse than missed ones, so the tool is conservative. Distinct sounds separate detection-only from seamless correction and dictionary from AI tier. Race-safe correction remaps keystrokes typed during the correction window (mapping may apply twice; input after the layout switch is remapped). Dictionary tier feels instantaneous (<10ms lookup) and the LLM tier is useful under 500ms. Personal bar: the maintainer stops noticing layout mistakes. Community bar: real adoption that survives antivirus."
+  mvp_nongoals_vision: "MVP is the language-pair-agnostic dictionary tier (He<->En first), seamless race-safe correction, detection-only mode, tray app with per-app exclusions, password-field suspension, in-memory-only rule, AND the LLM tier built on the Microsoft Agent Framework, which is the product edge and the Foundry positioning. Deferred: IME languages, Windows Service, dictionary cloud sync, installed-assistant discovery, further dictionary packs. v1 fails if it mangles correct text or if antivirus/SmartScreen blocks ordinary users."
+  alternatives_differentiation: "Competition matters only as a learning source (capabilities, gaps, adoption-failure causes), never as rivalry. Differentiators: MAF/Foundry context-aware AI tier, any language pair by design, trust by construction (OSS, memory-only, BYOK). Winning dimension is accuracy and trust."
+  adoption_rollout: "Dogfood, then public GitHub release, then possibly winget or the Microsoft Store. Risks: antivirus trust, AI-tier key friction mitigated by installed-assistant discovery, and keystroke-tool skepticism mitigated by OSS transparency plus the memory-only rule. Dictionary tier is zero-config out of the box; the AI tier is opt-in. No migration or training; docs are the README plus a short setup guide; support via GitHub issues."
+statements:
+  - text: "The tool is open source and serves any language-pair combination, not only the Hebrew-speaking community."
+    area: "users_stakeholders"
+    evidence: "known"
+  - text: "Hebrew<->English is the first shipped, proven language pair."
+    area: "users_stakeholders"
+    evidence: "known"
+  - text: "Community users including non-developers matter, so installer and documentation polish are in scope."
+    area: "users_stakeholders"
+    evidence: "known"
+  - text: "IME/composition languages (Chinese, Japanese, Korean) may be deferred if they complicate the core."
+    area: "users_stakeholders"
+    evidence: "known"
+  - text: "Users have no workaround today; they manually delete, switch layout and retype every time."
+    area: "pain_workaround"
+    evidence: "known"
+  - text: "The cost of doing nothing is constant micro-friction dozens of times a day."
+    area: "pain_workaround"
+    evidence: "known"
+  - text: "This is a new standalone product that extends, replaces and migrates nothing."
+    area: "existing_context"
+    evidence: "known"
+  - text: "Windows-only, with no cross-platform ambition for now."
+    area: "constraints"
+    evidence: "known"
+  - text: "The .NET/C# ecosystem is externally fixed by maintainer expertise; specific frameworks stay open for their technical lenses."
+    area: "constraints"
+    evidence: "known"
+  - text: "BYOK economics: users bring their own AI keys or local models and the project never bears inference costs."
+    area: "constraints"
+    evidence: "known"
+  - text: "An already-installed Copilot/Codex/Claude CLI or desktop app may be reusable with no login or a simple browser login, since the Microsoft Agent Framework supports agents backed by those SDKs rather than a raw API."
+    area: "constraints"
+    evidence: "research-needed"
+    load_bearing: false
+  - text: "Privacy hard rule: keystrokes live only in a short in-memory window and are never persisted; capture suspends on password fields. A single sentence of context may go to a cloud LLM but nothing is retained there. The dictionary may be persisted and synced between the same user's machines."
+    area: "constraints"
+    evidence: "known"
+  - text: "The project is MIT licensed."
+    area: "constraints"
+    evidence: "known"
+  - text: "The team is a single developer plus AI agents, with no external schedule or budget pressure."
+    area: "constraints"
+    evidence: "known"
+  - text: "A global hook plus text injection plus network egress pattern-matches malware, so distribution must not trigger quarantine or unknown-publisher warnings; no paid Authenticode certificate is available, so a free or legitimate low-cost signing path must be found."
+    area: "constraints"
+    evidence: "research-needed"
+    load_bearing: false
+  - text: "A false correction that mangles correct text is worse than a missed correction, so the tool is deliberately conservative."
+    area: "outcomes_metrics"
+    evidence: "known"
+  - text: "Distinct sounds distinguish detection-only from seamless correction, and dictionary-tier from AI-tier corrections."
+    area: "outcomes_metrics"
+    evidence: "known"
+  - text: "Correction must be race-safe: keystrokes typed between detection and replacement are remapped too, so the mapping may apply twice and input after the layout switch is handled."
+    area: "outcomes_metrics"
+    evidence: "known"
+  - text: "Dictionary-tier corrections must feel instantaneous (<10ms lookup) and LLM-tier corrections useful within about 500ms."
+    area: "outcomes_metrics"
+    evidence: "known"
+  - text: "Success for the maintainer is no longer noticing layout mistakes; success for the community is strangers installing it, keeping it running, and it surviving their antivirus."
+    area: "outcomes_metrics"
+    evidence: "known"
+  - text: "The LLM tier is in the MVP, built on the Microsoft Agent Framework, because it is the product edge and carries the Azure AI Foundry positioning."
+    area: "mvp_nongoals_vision"
+    evidence: "known"
+  - text: "Deferred beyond v1: IME languages, a Windows Service component, dictionary cloud sync, installed-assistant discovery, and dictionary packs beyond the first pairs."
+    area: "mvp_nongoals_vision"
+    evidence: "known"
+  - text: "v1 fails, even if it works, if it mangles correct text or if antivirus/SmartScreen blocks ordinary users."
+    area: "mvp_nongoals_vision"
+    evidence: "known"
+  - text: "Competitors matter only as a learning source - what they can do, what they cannot, and why their adoption is poor - not as rivals."
+    area: "alternatives_differentiation"
+    evidence: "known"
+  - text: "A short scan of Punto Switcher, AutoHotkey community scripts and Windows text intelligence will extract capability gaps and adoption-failure causes before the spec."
+    area: "alternatives_differentiation"
+    evidence: "research-needed"
+    load_bearing: false
+  - text: "Differentiation rests on the MAF/Foundry context-aware AI tier, any-language-pair design, and trust by construction; the winning dimension is accuracy and trust rather than feature count."
+    area: "alternatives_differentiation"
+    evidence: "known"
+  - text: "Rollout is dogfood, then public GitHub release, then possibly winget or the Microsoft Store."
+    area: "adoption_rollout"
+    evidence: "known"
+  - text: "Adoption risks are antivirus trust, AI-tier key friction, and skepticism toward a keystroke-reading tool."
+    area: "adoption_rollout"
+    evidence: "known"
+  - text: "Out of the box the dictionary tier works with zero configuration and the AI tier is opt-in enrichment."
+    area: "adoption_rollout"
+    evidence: "known"
+skipped: []
+follow_up_research:
+  - "Installed-assistant reuse (Copilot/Codex/Claude CLI via MAF) - owner lens integration-api"
+  - "Free or credit-funded OSS code-signing path (SignPath OSS, Azure Artifact Signing, Microsoft Store) - owner lens devops-operations"
+  - "Competitive lessons scan (capabilities and adoption failures) - pre-spec research"
+confirmation: "human-confirmed"
+confirmation_scope: "lens-question"
