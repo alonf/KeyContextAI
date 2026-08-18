@@ -157,8 +157,9 @@ kind; inspect all files the tool writes and confirm no typed text is present.
   stale response is discarded, never applied.
 - The user types extremely fast, so more words accumulate during a correction than after a slow typist's
   — the correction accounts for everything typed in the window regardless of speed.
-- The user has more than two layouts installed — correction targets the pair the detection resolved,
-  not merely "the other" layout.
+- The user has more than two layouts installed — the intended layout is resolved by comparing every
+  candidate translation, not by assuming "the other" layout, and ambiguity between two plausible
+  candidates leaves the text untouched.
 
 ## Requirements *(mandatory)*
 
@@ -177,8 +178,12 @@ kind; inspect all files the tool writes and confirm no typed text is present.
 
 **Detection**
 
-- **FR-005**: The system MUST evaluate a completed word against the active language pair by translating
-  the keystrokes to the other layout and comparing both candidates against dictionary data.
+- **FR-005**: The system MUST evaluate a completed word by translating the keystrokes to each candidate
+  layout and comparing every candidate, including the text as typed, against dictionary data.
+- **FR-005a**: When the user has exactly two layouts installed, the intended layout MUST be taken as the
+  one not currently active. When more than two are installed, the system MUST determine which layout the
+  text was intended for by comparing all candidate translations, and MUST leave the text unchanged when
+  no single candidate is a clear winner.
 - **FR-006**: The system MUST apply a correction only when confidence exceeds the threshold implied by
   the user's chosen caution level, and MUST leave text unchanged when uncertain.
 - **FR-007**: The system MUST widen detection from a single word to the full run of consecutive
@@ -285,11 +290,31 @@ kind; inspect all files the tool writes and confirm no typed text is present.
   application restarts, without user intervention.
 - **SC-011**: Adding a new language pair requires only new data, verified by adding one without changing
   correction behavior.
+- **SC-012**: With three or more layouts installed, corrections target the right language as reliably as
+  with two, and ambiguous cases leave text untouched rather than guessing.
+
+## Clarifications
+
+### Session 2026-08-19 (specify boundary)
+
+- **Q: Does v1 ship only the Hebrew↔English pair's data, or several pairs the user can choose from?**
+  A: Ship support for multiple languages. The number of installed layouts decides the work: with exactly
+  two, the intended layout is known by elimination; with more than two, the system must determine which
+  language the gibberish was intended for. Captured as FR-005, FR-005a, SC-012 and the revised
+  multi-layout edge case.
+- **Q: Is the AI tier really in the MVP given its requirement count?** A: Yes — it stays in v1. It is the
+  product's edge and carries the Azure AI Foundry positioning. No spec change; FR-016 through FR-021
+  remain in scope.
+- **Q: Should branch protection be applied to the repository now?** A: Yes. Applied to `main` on
+  2026-08-19: direct pushes blocked, pull request required, zero required approvals, force-push and
+  branch deletion disabled, conversation resolution required, admins included. Required status checks
+  remain empty until the CI lane exists. Not a spec change; recorded in the devops workshop record.
 
 ## Assumptions
 
 - The user has at least two keyboard layouts installed and switches between them; Hebrew and English is
-  the first pair shipped and proven, with the design remaining pair-agnostic.
+  the first pair shipped and proven, with the design remaining pair-agnostic and multiple pairs
+  supported from v1.
 - Languages requiring composition-based input methods are out of scope for this release.
 - The false-correction and reversal targets in SC-001 and SC-002 are design targets to be validated by
   the maintainer's daily use before release, not measurements of an existing system.

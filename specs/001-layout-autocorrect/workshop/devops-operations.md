@@ -68,7 +68,19 @@ model)
 7. **Release model correction** — `.specrew/repository-governance.yml` updated from `local-only` to a
    GitHub-based release model with published artifacts.
 
-## Open action (not a design question)
+## Applied (2026-08-19, human authorized at the specify boundary discussion)
 
-Applying branch protection mutates repository security settings and needs the human's explicit
-go-ahead before it is executed. The design above is agreed; the application is pending.
+The human answered "do it", and branch protection was applied to `main` on GitHub:
+
+- direct pushes blocked; pull request required
+- required approving reviews: 0 (solo maintainer)
+- force-pushes disabled; branch deletions disabled
+- conversation resolution required
+- `enforce_admins: true` — the maintainer is not exempt, so it guards against accident
+- required status checks: **empty for now**, because no CI workflow exists yet; the check names are
+  wired in when the CI lane lands
+
+Also corrected during the same action: the repository's default branch had become
+`001-layout-autocorrect` (the first branch that pushed successfully). The local trunk `master` was
+renamed to **`main`**, pushed, and set as the GitHub default, matching the release-truth branch name
+this lens agreed on.
