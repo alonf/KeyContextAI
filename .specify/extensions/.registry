@@ -1,0 +1,86 @@
+{
+  "schema_version": "1.0",
+  "extensions": {
+    "specrew-speckit": {
+      "version": "0.40.0",
+      "source": "local",
+      "manifest_hash": "sha256:fe2b1dbe72942e715ff6d2c17eb591370501c595da2c73210ab669de7be08fdb",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "agy": [
+          "speckit.specrew-speckit.before-specify",
+          "speckit.specrew-speckit.before-plan",
+          "speckit.specrew-speckit.after-tasks",
+          "speckit.specrew-speckit.before-implement",
+          "speckit.specrew-speckit.sync-specify",
+          "speckit.specrew-speckit.sync-clarify",
+          "speckit.specrew-speckit.sync-plan",
+          "speckit.specrew-speckit.sync-tasks",
+          "speckit.specrew-speckit.sync-review-signoff",
+          "speckit.specrew-speckit.sync-retro",
+          "speckit.specrew-speckit.sync-iteration-closeout",
+          "speckit.specrew-speckit.sync-feature-closeout"
+        ],
+        "claude": [
+          "speckit.specrew-speckit.before-specify",
+          "speckit.specrew-speckit.before-plan",
+          "speckit.specrew-speckit.after-tasks",
+          "speckit.specrew-speckit.before-implement",
+          "speckit.specrew-speckit.sync-specify",
+          "speckit.specrew-speckit.sync-clarify",
+          "speckit.specrew-speckit.sync-plan",
+          "speckit.specrew-speckit.sync-tasks",
+          "speckit.specrew-speckit.sync-review-signoff",
+          "speckit.specrew-speckit.sync-retro",
+          "speckit.specrew-speckit.sync-iteration-closeout",
+          "speckit.specrew-speckit.sync-feature-closeout"
+        ],
+        "codex": [
+          "speckit.specrew-speckit.before-specify",
+          "speckit.specrew-speckit.before-plan",
+          "speckit.specrew-speckit.after-tasks",
+          "speckit.specrew-speckit.before-implement",
+          "speckit.specrew-speckit.sync-specify",
+          "speckit.specrew-speckit.sync-clarify",
+          "speckit.specrew-speckit.sync-plan",
+          "speckit.specrew-speckit.sync-tasks",
+          "speckit.specrew-speckit.sync-review-signoff",
+          "speckit.specrew-speckit.sync-retro",
+          "speckit.specrew-speckit.sync-iteration-closeout",
+          "speckit.specrew-speckit.sync-feature-closeout"
+        ],
+        "copilot": [
+          "speckit.specrew-speckit.before-specify",
+          "speckit.specrew-speckit.before-plan",
+          "speckit.specrew-speckit.after-tasks",
+          "speckit.specrew-speckit.before-implement",
+          "speckit.specrew-speckit.sync-specify",
+          "speckit.specrew-speckit.sync-clarify",
+          "speckit.specrew-speckit.sync-plan",
+          "speckit.specrew-speckit.sync-tasks",
+          "speckit.specrew-speckit.sync-review-signoff",
+          "speckit.specrew-speckit.sync-retro",
+          "speckit.specrew-speckit.sync-iteration-closeout",
+          "speckit.specrew-speckit.sync-feature-closeout"
+        ],
+        "zed": [
+          "speckit.specrew-speckit.before-specify",
+          "speckit.specrew-speckit.before-plan",
+          "speckit.specrew-speckit.after-tasks",
+          "speckit.specrew-speckit.before-implement",
+          "speckit.specrew-speckit.sync-specify",
+          "speckit.specrew-speckit.sync-clarify",
+          "speckit.specrew-speckit.sync-plan",
+          "speckit.specrew-speckit.sync-tasks",
+          "speckit.specrew-speckit.sync-review-signoff",
+          "speckit.specrew-speckit.sync-retro",
+          "speckit.specrew-speckit.sync-iteration-closeout",
+          "speckit.specrew-speckit.sync-feature-closeout"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-08-18T19:18:41.436470+00:00"
+    }
+  }
+}

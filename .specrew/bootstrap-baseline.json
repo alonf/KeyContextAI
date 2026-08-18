@@ -1,0 +1,7 @@
+{
+  "schema_version": "1.0",
+  "mode": "greenfield",
+  "decision": "automatic",
+  "commit_message": "chore(specrew): bootstrap scaffold",
+  "recorded_at": "2026-08-18T19:18:44.5316255Z"
+}

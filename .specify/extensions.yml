@@ -1,0 +1,41 @@
+installed:
+- specrew-speckit
+settings:
+  auto_execute_hooks: true
+hooks:
+  before_specify:
+  - extension: specrew-speckit
+    command: speckit.specrew-speckit.before-specify
+    enabled: true
+    optional: false
+    priority: 10
+    prompt: Execute speckit.specrew-speckit.before-specify?
+    description: Route the specify entry through the Specrew design workshop
+    condition: null
+  before_plan:
+  - extension: specrew-speckit
+    command: speckit.specrew-speckit.before-plan
+    enabled: true
+    optional: false
+    priority: 10
+    prompt: Execute speckit.specrew-speckit.before-plan?
+    description: Validate spec readiness before planning
+    condition: null
+  after_tasks:
+  - extension: specrew-speckit
+    command: speckit.specrew-speckit.after-tasks
+    enabled: true
+    optional: false
+    priority: 10
+    prompt: Execute speckit.specrew-speckit.after-tasks?
+    description: Verify task traceability after task generation
+    condition: null
+  before_implement:
+  - extension: specrew-speckit
+    command: speckit.specrew-speckit.before-implement
+    enabled: true
+    optional: false
+    priority: 10
+    prompt: Execute speckit.specrew-speckit.before-implement?
+    description: Validate execution readiness before implementation
+    condition: null
