@@ -1,5 +1,3 @@
-{"recorded_at":"2026-08-18T19:27:42.1267633Z","action":"no-op","reason":"campaign-cross-session-no-legacy-reap"}
-{"recorded_at":"2026-08-18T19:34:14.4423221Z","action":"no-op","reason":"campaign-not-applicable:no-active-iteration"}
 {"recorded_at":"2026-08-18T21:41:51.4016907Z","action":"no-op","reason":"campaign-not-applicable:no-active-iteration"}
 {"recorded_at":"2026-08-18T21:42:48.3328972Z","action":"no-op","reason":"campaign-not-applicable:no-active-iteration"}
 {"recorded_at":"2026-08-18T21:43:59.0087143Z","action":"no-op","reason":"campaign-not-applicable:no-active-iteration"}
@@ -48,3 +46,5 @@
 {"recorded_at":"2026-08-19T06:09:01.5561881Z","action":"no-op","reason":"campaign-not-applicable:pre-implement-stage (tasks)"}
 {"recorded_at":"2026-08-19T06:15:24.9233606Z","action":"no-op","reason":"no-authoritative-campaign-result"}
 {"recorded_at":"2026-08-19T06:18:20.0784371Z","action":"no-op","reason":"complete-current-clean-result"}
+{"recorded_at":"2026-08-19T09:10:04.7734425Z","action":"no-op","reason":"latest-result-not-current"}
+{"recorded_at":"2026-08-19T09:11:23.4269685Z","action":"no-op","reason":"latest-result-not-current"}

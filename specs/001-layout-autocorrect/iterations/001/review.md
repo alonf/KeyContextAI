@@ -5,6 +5,13 @@
 **Reviewed**: 2026-08-19
 **Commit under review**: `526d0b2`
 **Status**: Draft — awaiting human sign-off
+**Overall Verdict**: accepted
+
+The `accepted` verdict is this reviewer's assessment of the **implementation**: it does what iteration
+001 promised, with evidence. It is not a claim that the review was independent — see the independence
+section below — and it does not pre-empt the automated co-review, whose findings are recorded
+separately when it runs. Two items are carried rather than closed, both disclosed rather than
+discovered.
 
 ## Scope reviewed
 
@@ -33,6 +40,33 @@ What follows is therefore a **self-review by the implementing agent**, which is 
 check than an independent one — the same reasoning that produced the code is reviewing it. It is
 recorded as such so nobody reads a passing review as an independent verdict. Re-running the
 independent review is the first recommended action at sign-off.
+
+## Task Verdicts
+
+| Task | Title | Verdict | Evidence |
+| --- | --- | --- | --- |
+| T001 | Solution skeleton, three projects, .NET 10 posture | pass | Builds clean in Debug and Release with warnings-as-errors |
+| T002 | Test projects and corpus folder | pass | Three test projects, 57 tests running |
+| T003 | Directory.Build.props with analyzers | pass | Analyzers on; one src finding honoured, two test-only exceptions recorded |
+| T004 | GitHub Actions PR workflow | pass | `.github/workflows/ci.yml` runs build, architecture, unit and corpus tests |
+| T005 | All component interfaces | pass | Contracts for the three engines and the dictionary accessor, each documented |
+| T006 | Domain records per data model | pass | Records match `data-model.md`; `LayoutId` is a value type per the domain-types rule |
+| T007 | Architecture test for IDesign call rules | pass | 7 tests; fails the build on a call-rule violation; no new dependency taken |
+| T008 | IoC composition root | pass | Singleton lifetimes; engines constructed from loaded data, never loading it themselves |
+| T009 | Key-map format and en-US↔he-IL map | pass | 30 keys with schema version; drives every translation test |
+| T010 | Dictionary packs and golden corpus | pass | Format, manifest and provenance enforcement complete; packs are starters — DRIFT-001 |
+| T011 | MappingEngine tests | pass | 8 tests including unmappable codes, unknown layouts, determinism, data-only new pair |
+| T012 | DetectionEngine tests | pass | 16 tests; every ambiguity path asserts `Ignore` |
+| T013 | WordAssemblyEngine tests | pass | 13 tests including the explicit mid-word negative test |
+| T014 | MappingEngine | pass | Translates from scan codes, never from rendered characters |
+| T015 | DetectionEngine | pass | Conservative by construction; a pre-written test caught the scoring gap in F-03 |
+| T016 | WordAssemblyEngine | pass | Completion only on separator or committing key |
+| T020 | DictionaryAccessor | pass | Refuses unknown schema versions and packs without source and licence |
+| T025 | Corpus accuracy test | pass | Produces the measurement; runs through the real accessor against shipped data |
+
+No task is `needs-work`. T010 passes because its mechanism is complete and tested; its *data* is not
+production-grade, which is recorded as DRIFT-001 rather than left to be discovered, and is carried as
+the first item of the next iteration rather than hidden behind a passing row.
 
 ## Requirement coverage
 
@@ -117,6 +151,22 @@ The WPF template's window survives because the host needs an entry point while i
 engines. KeyContext AI is tray-resident and has no main window in its finished form. The file says so
 in its own documentation so a reader does not mistake it for intended design. It is removed when the
 tray and overlay clients arrive.
+
+### F-06 — The architecture test's inspection depth is signature-level
+
+**Severity**: informational, recorded so the guarantee is not overstated.
+
+`CallRuleTests` inspects constructor parameters, fields, and method signatures. That catches a
+component *declaring* a collaborator it may not know about, which is how a real violation almost
+always appears. It would not catch a violation constructed inside a method body — a `new
+SomeAccessor()` in a local variable. Widening to IL inspection is possible and is not worth doing
+until a real violation escapes; what matters is that the guarantee is stated at its true strength
+rather than as "the call rules cannot be broken".
+
+## Gap Ledger
+
+- **GAP-01 — fixed-now** — the independent co-review did not execute over the implemented code, so this review is a self-review by the implementing agent; closure is to re-run the co-review before sign-off, or for the human to record `approved for partial review signoff - <reason>` as a deliberate acceptance (dimension: verification independence).
+- **GAP-02 — deferred** — dictionary packs are hand-authored CC0 starters of about 160 English and 110 Hebrew words rather than sourced permissive packs of production size, so T010's mechanism is complete while its data is not; closure is the first item of the next iteration, sourcing and licence-verifying real permissive packs then re-running the corpus measurement, tracked as DRIFT-001 in the iteration drift log with the defer decision recorded in `.squad\decisions.md` at file:///C:/Dev/KeyContextAI/.squad/decisions.md (dimension: implemented).
 
 ## What a reviewer should check most closely
 

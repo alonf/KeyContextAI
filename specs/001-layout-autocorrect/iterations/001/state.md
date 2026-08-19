@@ -1,7 +1,7 @@
 # Iteration State: 001
 
 **Schema**: v2
-**Current Phase**: review
+**Current Phase**: review-signoff
 **Iteration Status**: reviewing
 **Last Completed Task**: T025 (corpus accuracy measurement)
 **Tasks Remaining**: (none — all 18 iteration-001 tasks are done)
