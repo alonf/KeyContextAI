@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.1",
+  "scope": "iteration",
+  "feature_ref": "001-layout-autocorrect",
+  "iteration_number": "001",
+  "co_design": true,
+  "workshop_intake": true,
+  "confirmation_required": true,
+  "agenda_status": "confirmed",
+  "inherited_from": "specs/001-layout-autocorrect/lens-applicability.json",
+  "selected": [
+    "architecture-core",
+    "component-design",
+    "requirements-nfr",
+    "ui-ux",
+    "data-storage",
+    "security-compliance",
+    "integration-api",
+    "observability-resilience",
+    "devops-operations",
+    "code-implementation"
+  ],
+  "note": "All ten technical lenses were worked and human-confirmed at feature intake; their bindings are carried into the design analysis rather than re-decided. The design-analysis stop co-designed the committing-key handling and the iteration slicing on top of those bindings.",
+  "design_analysis": {
+    "artifact": "specs/001-layout-autocorrect/iterations/001/design-analysis.md",
+    "decision_points": [
+      "Committing-key handling under FR-005b without blocking the hook callback",
+      "Where the evaluated-but-uncommitted verdict state lives",
+      "Iteration slicing across the 41 requirements",
+      "Whether the AI tier can ever arm a key suppression"
+    ],
+    "human_agreed": true,
+    "human_agreed_evidence": "Typed replies 'B' (committing-key design, after the component map and Option B flow were rendered in full) and '2' (two-iteration slicing) on 2026-08-19; no changes requested to the map.",
+    "co_design_record": "specs/001-layout-autocorrect/iterations/001/design-analysis.md#co-design-record"
+  }
+}
