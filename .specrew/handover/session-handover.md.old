@@ -2,8 +2,8 @@
 schema: v1
 source: PostToolUse
 from_host: claude
-recorded_at: 2026-08-19T21:06:33.4045878Z
-from_commit: caf55c7
+recorded_at: 2026-08-19T21:13:32.0101153Z
+from_commit: 7b2d05c
 active_feature: 001-layout-autocorrect
 active_boundary: before-implement
 last_authorized_boundary: before-implement
@@ -14,12 +14,12 @@ workshop_done: architecture-core, component-design, requirements-nfr, ui-ux, dat
 
 ## What I just did (last 3-5 turns or last boundary work)
 
+- [2026-08-19T21:13:32Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/001/review.md] (+29 Specrew-managed); HEAD 7b2d05c (fix(001): source real dictionary packs, closing DRIFT-001); 1 new commit(s): 7b2d05c fix(001): source real dictionary packs, closing DRIFT-001
+- [2026-08-19T21:07:12Z] (PostToolUse) 9 changed user file(s) [data/dictionaries/en-US/pack.json, data/dictionaries/en-US/words.txt, data/dictionaries/he-IL/pack.json, data/dictionaries/he-IL/words.txt, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/quality/quality-evidence.md, specs/001-layout-autocorrect/iterations/001/review.md, tests/KeyContextAI.Platform.Tests/CorpusAccuracyTests.cs, tests/corpus/en-he-corpus.json] (+11 Specrew-managed); HEAD caf55c7 (review(001): canonical verdict schema, task verdicts and gap ledger)
 - [2026-08-19T21:06:33Z] (PostToolUse) 9 changed user file(s) [data/dictionaries/en-US/pack.json, data/dictionaries/en-US/words.txt, data/dictionaries/he-IL/pack.json, data/dictionaries/he-IL/words.txt, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/quality/quality-evidence.md, specs/001-layout-autocorrect/iterations/001/review.md, tests/KeyContextAI.Platform.Tests/CorpusAccuracyTests.cs, tests/corpus/en-he-corpus.json] (+10 Specrew-managed); HEAD caf55c7 (review(001): canonical verdict schema, task verdicts and gap ledger)
 - [2026-08-19T21:06:26Z] (PostToolUse) 8 changed user file(s) [data/dictionaries/en-US/pack.json, data/dictionaries/en-US/words.txt, data/dictionaries/he-IL/pack.json, data/dictionaries/he-IL/words.txt, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/quality/quality-evidence.md, tests/KeyContextAI.Platform.Tests/CorpusAccuracyTests.cs, tests/corpus/en-he-corpus.json] (+10 Specrew-managed); HEAD caf55c7 (review(001): canonical verdict schema, task verdicts and gap ledger)
 - [2026-08-19T21:06:15Z] (PostToolUse) 8 changed user file(s) [data/dictionaries/en-US/pack.json, data/dictionaries/en-US/words.txt, data/dictionaries/he-IL/pack.json, data/dictionaries/he-IL/words.txt, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/quality/quality-evidence.md, tests/KeyContextAI.Platform.Tests/CorpusAccuracyTests.cs, tests/corpus/en-he-corpus.json] (+10 Specrew-managed); HEAD caf55c7 (review(001): canonical verdict schema, task verdicts and gap ledger)
 - [2026-08-19T21:06:05Z] (PostToolUse) 8 changed user file(s) [data/dictionaries/en-US/pack.json, data/dictionaries/en-US/words.txt, data/dictionaries/he-IL/pack.json, data/dictionaries/he-IL/words.txt, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/quality/quality-evidence.md, tests/KeyContextAI.Platform.Tests/CorpusAccuracyTests.cs, tests/corpus/en-he-corpus.json] (+10 Specrew-managed); HEAD caf55c7 (review(001): canonical verdict schema, task verdicts and gap ledger)
-- [2026-08-19T21:05:53Z] (PostToolUse) 7 changed user file(s) [data/dictionaries/en-US/pack.json, data/dictionaries/en-US/words.txt, data/dictionaries/he-IL/pack.json, data/dictionaries/he-IL/words.txt, specs/001-layout-autocorrect/iterations/001/quality/quality-evidence.md, tests/KeyContextAI.Platform.Tests/CorpusAccuracyTests.cs, tests/corpus/en-he-corpus.json] (+10 Specrew-managed); HEAD caf55c7 (review(001): canonical verdict schema, task verdicts and gap ledger)
-- [2026-08-19T21:05:36Z] (PostToolUse) 7 changed user file(s) [data/dictionaries/en-US/pack.json, data/dictionaries/en-US/words.txt, data/dictionaries/he-IL/pack.json, data/dictionaries/he-IL/words.txt, specs/001-layout-autocorrect/iterations/001/quality/quality-evidence.md, tests/KeyContextAI.Platform.Tests/CorpusAccuracyTests.cs, tests/corpus/en-he-corpus.json] (+10 Specrew-managed); HEAD caf55c7 (review(001): canonical verdict schema, task verdicts and gap ledger)
 
 ## Why I'm stopping (the switch trigger)
 
@@ -35,22 +35,22 @@ Hook-captured at trigger 'PostToolUse' (the agent did not author a handover this
 
 ## Recommended next-immediate-step
 
-Resume feature 001-layout-autocorrect at boundary before-implement. 9 of YOUR file(s) are uncommitted [data/dictionaries/en-US/pack.json, data/dictionaries/en-US/words.txt, data/dictionaries/he-IL/pack.json, data/dictionaries/he-IL/words.txt, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/quality/quality-evidence.md, specs/001-layout-autocorrect/iterations/001/review.md, tests/KeyContextAI.Platform.Tests/CorpusAccuracyTests.cs, tests/corpus/en-he-corpus.json] (+10 Specrew-managed) - review/commit them before advancing.
+Resume feature 001-layout-autocorrect at boundary before-implement. 1 of YOUR file(s) are uncommitted [specs/001-layout-autocorrect/iterations/001/review.md] (+29 Specrew-managed) - review/commit them before advancing.
 
 ## Context the receiving host needs that artifacts don't carry
 
-branch 001-layout-autocorrect, HEAD caf55c7 (review(001): canonical verdict schema, task verdicts and gap ledger). Active feature 001-layout-autocorrect, boundary before-implement. Your uncommitted work: data/dictionaries/en-US/pack.json, data/dictionaries/en-US/words.txt, data/dictionaries/he-IL/pack.json, data/dictionaries/he-IL/words.txt, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/quality/quality-evidence.md, specs/001-layout-autocorrect/iterations/001/review.md, tests/KeyContextAI.Platform.Tests/CorpusAccuracyTests.cs, tests/corpus/en-he-corpus.json. (10 Specrew-managed files also uncommitted.)
+branch 001-layout-autocorrect, HEAD 7b2d05c (fix(001): source real dictionary packs, closing DRIFT-001). Active feature 001-layout-autocorrect, boundary before-implement. Your uncommitted work: specs/001-layout-autocorrect/iterations/001/review.md. (29 Specrew-managed files also uncommitted.)
 
 ## Recent conversation (last few exchanges, hook-captured)
 
-- **assistant:** Both sources work. Building the real packs — English from the Unlicense list, Hebrew from CC0 Wikidata lexemes:
-- **assistant:** 42,278 Hebrew lemmas under CC0. Now filtering out niqqud forms (people type without vowel points) and building both packs:
-- **assistant:** Real packs: 370,079 English words (Unlicense) and 22,250 Hebrew words (CC0). Updating the manifests to the true provenance:
-- **assistant:** Now the real test — does the corpus measurement still hold against 392,000 real words instead of 270 hand-picked ones?
 - **assistant:** Exactly the kind of finding real data produces — and note **false corrections are still zero**; these are *missed* corrections, the lesser defect by the priority you set. Let me diagnose why:
 - **assistant:** Two distinct root causes, both genuine findings the starter list was hiding: **`fi` and `kt` are real entries in the English list.** So when someone types those meaning `כן`/`לא`, the engine sees valid English and correctly leaves it alone....
 - **assistant:** All 57 tests pass against the real dictionaries. Updating the evidence and closing the drift:
 - **assistant:** Now closing DRIFT-001 — it's resolved, not deferred, which removes the approval I was about to ask you for:
+- **assistant:** Now updating the review's stale references to the starter packs:
+- **assistant:** Validator PASSes, and no deferral approval is needed any more. Committing and running the co-review that was blocked:
+- **assistant:** The independent review **ran** — 186 seconds, real findings. And every single finding is the same class: "component X not implemented", for components that belong to iterations 002–004 by the slicing you approved. The reviewer compared the ...
+- **assistant:** `--design-context-ref` takes a single path. Using the iteration plan, which states exactly what iteration 001 covers and what's deferred:
 
 Full transcript (read on-demand for depth): C:\Users\alon\.claude\projects\C--Dev-KeyContextAI\e9c42e87-5f87-44b1-8b2c-9dfc70bfdd46.jsonl
 

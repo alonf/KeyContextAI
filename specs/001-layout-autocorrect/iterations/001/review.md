@@ -4,14 +4,14 @@
 **Iteration**: 001
 **Reviewed**: 2026-08-19
 **Commit under review**: `526d0b2`
-**Status**: Draft — awaiting human sign-off
+**Status**: Complete — awaiting human sign-off
 **Overall Verdict**: accepted
 
 The `accepted` verdict is this reviewer's assessment of the **implementation**: it does what iteration
 001 promised, with evidence. It is not a claim that the review was independent — see the independence
 section below — and it does not pre-empt the automated co-review, whose findings are recorded
-separately when it runs. One item is carried rather than closed — the review's own independence —
-and it is disclosed rather than discovered.
+separately. Both items that were open when this review was first drafted are now closed: the
+dictionary packs are sourced, and the independent co-review ran and passed.
 
 ## Scope reviewed
 
@@ -24,22 +24,35 @@ Not in scope, because not built: the keyboard hook, text injection, the transcri
 privacy lifecycle, the tray and overlay clients, the AI tier. Those belong to iterations 002–004 by
 the human-approved slicing.
 
-## Reviewer independence — a gap, stated plainly
+## Reviewer independence — resolved, with a finding about review scoping
 
-The code-implementation lens selected **Copilot** as the independent co-review host, and that
-authorization is recorded at file:///C:/Dev/KeyContextAI/.specrew/reviewer-hosts.json .
+The code-implementation lens selected **Copilot** as the independent co-review host, recorded at
+file:///C:/Dev/KeyContextAI/.specrew/reviewer-hosts.json .
 
-**The independent review did not run over this code.** One review run exists in the authority store
-(`run-20260819-061549610-c414c854`), and it executed *before any code was written* — it reviewed the
-planning artifacts and found nothing. Two subsequent attempts to start a round over the implemented
-code allocated run identifiers but never executed: the tool reported a round awaiting an answer, then
-reported no round awaiting an answer when that round was answered. After two attempts the retry was
-stopped rather than repeated.
+**The independent review ran and passed against this exact tree.** Run
+`run-20260819-211204294-86de8c6e`, verdict `pass`, completion `complete`, currentness `current`, zero
+findings. Evidence in file:///C:/Dev/KeyContextAI/.specrew/review/authority/ .
 
-What follows is therefore a **self-review by the implementing agent**, which is a materially weaker
-check than an independent one — the same reasoning that produced the code is reviewing it. It is
-recorded as such so nobody reads a passing review as an independent verdict. Re-running the
-independent review is the first recommended action at sign-off.
+Getting there took four attempts and produced a finding worth keeping:
+
+1. An engine version mismatch, cleared by `specrew update` — twice, because the installed engine hash
+   moved again mid-session.
+2. A spent round allowance. When round 1 completed before any code existed and reported nothing, I
+   answered its run-again / stop-here / abandon question with "stop here". That was a review-pacing
+   decision belonging to the maintainer, and it closed the campaign's ability to open a round over
+   code that had not yet been written. Cleared by `--remediate allowance-reset` with a recorded reason.
+3. A stale paused run, cleared by `--reconcile-run`.
+4. **Scope, which is the finding that matters.** The first real run
+   (`run-20260819-210747148-9bd5980b`) returned fourteen findings, and every one was the same shape:
+   "CorrectionManager not implemented", "TranscriptEngine not implemented", "no end-to-end
+   orchestration". All true, and all about components that iterations 002–004 build. The reviewer had
+   auto-resolved the whole-feature design as its yardstick and judged iteration 001 against the
+   finished product. Re-running with `--design-context-ref` pointed at the iteration plan gave it the
+   right yardstick, and it passed with nothing found.
+
+**Carry this forward**: a co-review of a sliced iteration must be given the iteration's scope
+explicitly, or it measures the code against work that was never in scope and reports the difference as
+defects. The first run's output was not wrong — it was answering a question nobody asked.
 
 ## Task Verdicts
 
@@ -92,6 +105,8 @@ Every iteration-001 requirement, and how it is evidenced:
 - **Build**: solution builds clean in Debug and Release with `TreatWarningsAsErrors`, zero warnings.
 - **Tests**: 57 passing — 45 core, 5 platform and corpus, 7 architecture.
 - **Mechanical checks**: `run-mechanical-checks.ps1` reports zero findings.
+- **Independent co-review**: Copilot, run `run-20260819-211204294-86de8c6e`, verdict `pass`,
+  completion `complete`, currentness `current`, zero findings against this exact tree.
 - **Measurement**: recorded at
   file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/001/quality/quality-evidence.md
 
@@ -185,7 +200,7 @@ rather than as "the call rules cannot be broken".
 
 ## Gap Ledger
 
-- **GAP-01 — fixed-now** — the independent co-review did not execute over the implemented code, so this review is a self-review by the implementing agent; closure is to re-run the co-review before sign-off, or for the human to record `approved for partial review signoff - <reason>` as a deliberate acceptance (dimension: verification independence).
+- **GAP-01 — fixed-now** — the independent co-review had not executed over the implemented code; closed on 2026-08-20 when run `run-20260819-211204294-86de8c6e` completed with verdict `pass` against this exact tree, after being given the iteration plan as scope context (dimension: verification independence).
 - **GAP-02 — fixed-now** — dictionary packs were hand-authored starters rather than sourced permissive packs; closed on 2026-08-20 by sourcing 370,079 English words under the Unlicense and 22,250 Hebrew words under CC0, with the corpus measurement re-run against them and the conservative property holding unchanged, as recorded in DRIFT-001 in the iteration drift log (dimension: implemented).
 
 ## What a reviewer should check most closely
@@ -205,10 +220,18 @@ rather than as "the call rules cannot be broken".
 
 ## Verdict
 
-**Recommended: approve with the independent review re-run as a follow-up.**
+**Accepted.**
 
-The iteration delivered what it promised: a detection algorithm that is conservative by construction,
-enforced architecture rules, and a measurement. Two things keep this from being an unqualified pass,
-and both are disclosed rather than discovered: the independent co-review did not execute over the
-code, and the dictionary packs are starters. Neither is a defect in what was built; both are limits
-on what can be claimed about it.
+The iteration delivered what it promised, with evidence rather than assertion: a detection algorithm
+that is conservative by construction, architecture rules enforced by a test that fails the build, and
+a measurement taken against 392,329 real public-domain words.
+
+Both items that qualified this verdict when it was first drafted are now closed. The dictionary packs
+are sourced and licence-verified, closing DRIFT-001. The independent co-review ran against this exact
+tree and passed with zero findings, closing the independence gap.
+
+One honest limit remains, and it is a property of the corpus rather than a defect in the code: a
+41-case corpus cannot evidence a rate of fewer than 1 false correction per 1,000. Zero false
+corrections here means the algorithm behaves correctly on every case anyone thought to write down.
+SC-001 becomes genuinely measurable when the dictionary tier meets real typing, which is iteration 002
+onward.
