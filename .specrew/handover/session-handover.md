@@ -2,8 +2,8 @@
 schema: v1
 source: PostToolUse
 from_host: claude
-recorded_at: 2026-08-19T20:30:17.6416394Z
-from_commit: f154c26
+recorded_at: 2026-08-19T21:07:12.8992749Z
+from_commit: caf55c7
 active_feature: 001-layout-autocorrect
 active_boundary: before-implement
 last_authorized_boundary: before-implement
@@ -14,12 +14,12 @@ workshop_done: architecture-core, component-design, requirements-nfr, ui-ux, dat
 
 ## What I just did (last 3-5 turns or last boundary work)
 
-- [2026-08-19T20:30:17Z] (PostToolUse) 4 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md] (+24 Specrew-managed); HEAD f154c26 (chore(lint): auto-fix markdownlint violations in handover)
-- [2026-08-19T20:29:53Z] (PostToolUse) 4 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md] (+24 Specrew-managed); HEAD f154c26 (chore(lint): auto-fix markdownlint violations in handover)
-- [2026-08-19T20:29:24Z] (PostToolUse) 4 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md] (+24 Specrew-managed); HEAD f154c26 (chore(lint): auto-fix markdownlint violations in handover)
-- [2026-08-19T20:28:44Z] (PostToolUse) 4 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md] (+24 Specrew-managed); HEAD f154c26 (chore(lint): auto-fix markdownlint violations in handover)
-- [2026-08-19T20:28:20Z] (PostToolUse) 4 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md] (+24 Specrew-managed); HEAD f154c26 (chore(lint): auto-fix markdownlint violations in handover)
-- [2026-08-19T20:28:08Z] (PostToolUse) 4 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md] (+24 Specrew-managed); HEAD f154c26 (chore(lint): auto-fix markdownlint violations in handover)
+- [2026-08-19T21:07:12Z] (PostToolUse) 9 changed user file(s) [data/dictionaries/en-US/pack.json, data/dictionaries/en-US/words.txt, data/dictionaries/he-IL/pack.json, data/dictionaries/he-IL/words.txt, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/quality/quality-evidence.md, specs/001-layout-autocorrect/iterations/001/review.md, tests/KeyContextAI.Platform.Tests/CorpusAccuracyTests.cs, tests/corpus/en-he-corpus.json] (+11 Specrew-managed); HEAD caf55c7 (review(001): canonical verdict schema, task verdicts and gap ledger)
+- [2026-08-19T21:06:33Z] (PostToolUse) 9 changed user file(s) [data/dictionaries/en-US/pack.json, data/dictionaries/en-US/words.txt, data/dictionaries/he-IL/pack.json, data/dictionaries/he-IL/words.txt, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/quality/quality-evidence.md, specs/001-layout-autocorrect/iterations/001/review.md, tests/KeyContextAI.Platform.Tests/CorpusAccuracyTests.cs, tests/corpus/en-he-corpus.json] (+10 Specrew-managed); HEAD caf55c7 (review(001): canonical verdict schema, task verdicts and gap ledger)
+- [2026-08-19T21:06:26Z] (PostToolUse) 8 changed user file(s) [data/dictionaries/en-US/pack.json, data/dictionaries/en-US/words.txt, data/dictionaries/he-IL/pack.json, data/dictionaries/he-IL/words.txt, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/quality/quality-evidence.md, tests/KeyContextAI.Platform.Tests/CorpusAccuracyTests.cs, tests/corpus/en-he-corpus.json] (+10 Specrew-managed); HEAD caf55c7 (review(001): canonical verdict schema, task verdicts and gap ledger)
+- [2026-08-19T21:06:15Z] (PostToolUse) 8 changed user file(s) [data/dictionaries/en-US/pack.json, data/dictionaries/en-US/words.txt, data/dictionaries/he-IL/pack.json, data/dictionaries/he-IL/words.txt, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/quality/quality-evidence.md, tests/KeyContextAI.Platform.Tests/CorpusAccuracyTests.cs, tests/corpus/en-he-corpus.json] (+10 Specrew-managed); HEAD caf55c7 (review(001): canonical verdict schema, task verdicts and gap ledger)
+- [2026-08-19T21:06:05Z] (PostToolUse) 8 changed user file(s) [data/dictionaries/en-US/pack.json, data/dictionaries/en-US/words.txt, data/dictionaries/he-IL/pack.json, data/dictionaries/he-IL/words.txt, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/quality/quality-evidence.md, tests/KeyContextAI.Platform.Tests/CorpusAccuracyTests.cs, tests/corpus/en-he-corpus.json] (+10 Specrew-managed); HEAD caf55c7 (review(001): canonical verdict schema, task verdicts and gap ledger)
+- [2026-08-19T21:05:53Z] (PostToolUse) 7 changed user file(s) [data/dictionaries/en-US/pack.json, data/dictionaries/en-US/words.txt, data/dictionaries/he-IL/pack.json, data/dictionaries/he-IL/words.txt, specs/001-layout-autocorrect/iterations/001/quality/quality-evidence.md, tests/KeyContextAI.Platform.Tests/CorpusAccuracyTests.cs, tests/corpus/en-he-corpus.json] (+10 Specrew-managed); HEAD caf55c7 (review(001): canonical verdict schema, task verdicts and gap ledger)
 
 ## Why I'm stopping (the switch trigger)
 
@@ -35,22 +35,22 @@ Hook-captured at trigger 'PostToolUse' (the agent did not author a handover this
 
 ## Recommended next-immediate-step
 
-Resume feature 001-layout-autocorrect at boundary before-implement. 4 of YOUR file(s) are uncommitted [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md] (+24 Specrew-managed) - review/commit them before advancing.
+Resume feature 001-layout-autocorrect at boundary before-implement. 9 of YOUR file(s) are uncommitted [data/dictionaries/en-US/pack.json, data/dictionaries/en-US/words.txt, data/dictionaries/he-IL/pack.json, data/dictionaries/he-IL/words.txt, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/quality/quality-evidence.md, specs/001-layout-autocorrect/iterations/001/review.md, tests/KeyContextAI.Platform.Tests/CorpusAccuracyTests.cs, tests/corpus/en-he-corpus.json] (+11 Specrew-managed) - review/commit them before advancing.
 
 ## Context the receiving host needs that artifacts don't carry
 
-branch 001-layout-autocorrect, HEAD f154c26 (chore(lint): auto-fix markdownlint violations in handover). Active feature 001-layout-autocorrect, boundary before-implement. Your uncommitted work: scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md. (24 Specrew-managed files also uncommitted.)
+branch 001-layout-autocorrect, HEAD caf55c7 (review(001): canonical verdict schema, task verdicts and gap ledger). Active feature 001-layout-autocorrect, boundary before-implement. Your uncommitted work: data/dictionaries/en-US/pack.json, data/dictionaries/en-US/words.txt, data/dictionaries/he-IL/pack.json, data/dictionaries/he-IL/words.txt, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/quality/quality-evidence.md, specs/001-layout-autocorrect/iterations/001/review.md, tests/KeyContextAI.Platform.Tests/CorpusAccuracyTests.cs, tests/corpus/en-he-corpus.json. (11 Specrew-managed files also uncommitted.)
 
 ## Recent conversation (last few exchanges, hook-captured)
 
-- **assistant:** Allowance reset. Running the review over the actual code:
-- **assistant:** Progress — the round starts now, but its pre-review verification failed on the governance validator. No round was consumed. Let me see what the validator objects to:
-- **assistant:** I wrote a non-canonical phase name in `state.md`. The canonical value is `review-signoff`:
-- **assistant:** I overwrote the scaffolded review's required schema. Restoring the canonical verdict fields while keeping the substance:
-- **assistant:** The validator is also demanding a human-approved defer entry for each deferred gap — correctly, since deferring a known gap is the human's call. Let me first fix my own classification error: two of those four aren't spec-versus-implementati...
-- **assistant:** F-06 landed inside the Gap Ledger section rather than in Findings — the validator is reading its prose as ledger rows. Moving it:
-- **assistant:** The validator wants every line in that section to carry a classification, so a table won't satisfy it. Rewriting as classified entries:
-- **assistant:** Every line in that section must carry a classification — no prose allowed. Stripping it to just the classified entries:
+- **assistant:** 42,278 Hebrew lemmas under CC0. Now filtering out niqqud forms (people type without vowel points) and building both packs:
+- **assistant:** Real packs: 370,079 English words (Unlicense) and 22,250 Hebrew words (CC0). Updating the manifests to the true provenance:
+- **assistant:** Now the real test — does the corpus measurement still hold against 392,000 real words instead of 270 hand-picked ones?
+- **assistant:** Exactly the kind of finding real data produces — and note **false corrections are still zero**; these are *missed* corrections, the lesser defect by the priority you set. Let me diagnose why:
+- **assistant:** Two distinct root causes, both genuine findings the starter list was hiding: **`fi` and `kt` are real entries in the English list.** So when someone types those meaning `כן`/`לא`, the engine sees valid English and correctly leaves it alone....
+- **assistant:** All 57 tests pass against the real dictionaries. Updating the evidence and closing the drift:
+- **assistant:** Now closing DRIFT-001 — it's resolved, not deferred, which removes the approval I was about to ask you for:
+- **assistant:** Now updating the review's stale references to the starter packs:
 
 Full transcript (read on-demand for depth): C:\Users\alon\.claude\projects\C--Dev-KeyContextAI\e9c42e87-5f87-44b1-8b2c-9dfc70bfdd46.jsonl
 

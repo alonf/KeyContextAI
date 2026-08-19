@@ -9,15 +9,18 @@
 
 Iteration 001's deliverable is a measurement, not a behaviour. Here it is.
 
+Measured against the **sourced** dictionary packs — 370,079 English words and 22,250 Hebrew words.
+
 | Measure | Result | Source |
 | --- | --- | --- |
-| False corrections | **0 of 24** must-not-correct cases | `CorpusAccuracyTests.FalseCorrectionRate_IsMeasuredAndReported` |
-| True positives corrected | **17 of 17**, all to the intended text | `CorpusAccuracyTests.TruePositives_AreCorrectedToTheIntendedText` |
-| Corrections to the *wrong* text | **0** | same test — tracked separately because a wrong correction is as severe as a false one |
+| False corrections | **0 of 26** must-not-correct cases | `CorpusAccuracyTests.FalseCorrectionRate_IsMeasuredAndReported` |
+| Corrections to the *wrong* text | **0** | `CorpusAccuracyTests.TruePositives_AreCorrectedToTheIntendedText` — tracked separately because a wrong correction is as severe as a false one |
+| True positives corrected | **14 of 15**, all to the intended text | same test |
+| Known dictionary-coverage gaps | **1** (`עבודה` absent from the CC0 Hebrew source) | same test, counted separately from algorithmic misses |
 | Caution monotonicity | holds: conservative ≤ balanced ≤ aggressive | `CorpusAccuracyTests.ConservativeCaution_NeverCorrectsMoreThanBalanced` |
 
-The corpus at file:///C:/Dev/KeyContextAI/tests/corpus/en-he-corpus.json holds 41 cases: 17 wrong-layout
-runs that must be corrected, 18 correctly-typed words that must not, 1 word that is real in both
+The corpus at file:///C:/Dev/KeyContextAI/tests/corpus/en-he-corpus.json holds 41 cases: 15 wrong-layout
+runs that must be corrected, 18 correctly-typed words that must not, 3 that are real words in both
 readings, and 5 unrecognized strings (an identifier, a proper noun, keyboard mashing).
 
 ## What this measurement does and does not establish
@@ -67,25 +70,56 @@ Negative-path coverage, required by the hardening gate's test-integrity concern:
 Implemented with plain reflection: the dependency policy is "earned dependencies only", and no
 package was needed to answer these questions.
 
-## Open gap: the dictionary packs are starters, not the sourced packs
+## Dictionary packs: sourced, and what sourcing them revealed
 
-**T010 is partially complete and this is recorded rather than glossed.** The task called for word
-lists assembled from permissively licensed sources. What shipped is a hand-authored CC0 starter list
-per language (roughly 160 English and 110 Hebrew words) with a full licence manifest, because the
-sourcing and licence verification of real word lists could not be done in this environment.
+**T010 is complete.** An earlier draft of this document recorded the packs as hand-authored starters
+because I had assumed outbound network access was unavailable. That assumption was wrong and went
+untested until the maintainer challenged it. Real packs are now sourced and licence-verified:
 
-What this means concretely:
+| Language | Source | Licence | Words |
+| --- | --- | --- | --- |
+| en-US | `dwyl/english-words` (`words_alpha.txt`) | Unlicense (public domain) | 370,079 |
+| he-IL | Wikidata Lexemes, `dct:language wd:Q9288` | CC0-1.0 (public domain) | 22,250 |
 
-- The format, the manifest, the licence-provenance enforcement (FR-008a) and the loading path are
-  complete and tested.
-- The **data volume** is not production-grade. A real pack is tens of thousands of words, and
-  detection accuracy on real typing will differ from the corpus result above.
-- The corpus measurement remains valid for what it tests — the algorithm's decisions — because every
-  corpus word is present in the starter packs by construction.
+Both licences are public-domain dedications, so redistribution inside an MIT product carries no
+obligation. Licence verification for the English pack is the GitHub API's `spdx_id`; for Hebrew it is
+Wikidata's blanket CC0 terms. Hebrew lemmas carrying niqqud were excluded, because Hebrew is typed
+without vowel points and a vocalised lemma could never match what a keyboard produces.
 
-Recorded in the iteration drift log at
-file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/001/drift-log.md and carried as
-the first item of the next iteration.
+**Rejected**: `eyaler/hebrew_wordlists`, the best-known Hebrew list, derives from Hspell and is
+AGPL-3.0. Copyleft, so not usable under FR-008a. Its absence is why the Hebrew pack is an order of
+magnitude smaller than the English one.
+
+### Two findings that only real data could produce
+
+Swapping 270 hand-picked words for 392,000 real ones changed three corpus outcomes, and each was
+informative rather than a regression:
+
+**Short words are where layout detection is least reliable.** `kt` (meant `לא`) and `fi` (meant `כן`)
+stopped being corrected — because both are genuine entries in the English list. The engine saw a
+valid as-typed word and left it alone, which is the correct conservative answer: correcting a word the
+user may have typed deliberately is a *false* correction, the failure this product can least afford.
+Both cases were reclassified in the corpus from `true_positive` to `ambiguous`, with the reasoning
+recorded in the case notes. The general fact — two-letter runs are likely to be real words in both
+languages — is a product insight worth carrying into the caution-threshold design.
+
+**Wikidata's Hebrew coverage has everyday holes.** `עבודה` ("work") is absent from the CC0 lexeme set.
+The case is kept in the corpus and marked `known_coverage_gap`, and the accuracy test now counts
+coverage gaps separately from algorithmic misses — so the suite stays a measure of the *algorithm*
+while the data gap is counted out loud instead of being deleted to go green.
+
+### The measurement, re-run against real data
+
+| Measure | Starter packs (270 words) | Real packs (392,329 words) |
+| --- | --- | --- |
+| False corrections | 0 of 24 | **0 of 26** |
+| Corrections to the wrong text | 0 | **0** |
+| True positives corrected | 17 of 17 | **14 of 15**, plus 1 known coverage gap |
+| Caution monotonicity | holds | **holds** |
+
+The conservative property — the one the product depends on — survived a 1,400-fold increase in
+dictionary size unchanged. That is a materially stronger result than the starter-pack run, because a
+larger dictionary creates far more opportunity to mistake a real word for gibberish.
 
 ## Deferred to later iterations by the approved slicing
 

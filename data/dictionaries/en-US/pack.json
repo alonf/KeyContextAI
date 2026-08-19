@@ -1,18 +1,17 @@
 {
   "schema_version": 1,
   "language": "en-US",
-  "name": "English (US) — starter pack",
-  "source": "Hand-authored starter list for iteration 001",
-  "licence": "CC0-1.0",
+  "name": "English (US)",
+  "source": "dwyl/english-words — words_alpha.txt (https://github.com/dwyl/english-words)",
+  "licence": "Unlicense",
   "licence_verified": true,
+  "licence_evidence": "GitHub API reports spdx_id 'Unlicense' for dwyl/english-words, verified 2026-08-20. The Unlicense is a public-domain dedication and imposes no obligation on a redistributing MIT-licensed product.",
   "words_file": "words.txt",
-  "status": "starter",
-  "comment": [
-    "This is a deliberately small hand-authored list, authored for this repository and released",
-    "under CC0, so iteration 001 can measure detection behaviour without shipping a third-party",
-    "word list whose licence has not been verified.",
-    "The full permissively licensed pack is still to be sourced — see the iteration 001 drift log.",
-    "FR-008a requires that every shipped pack declares its source and licence, and that a pack",
-    "whose provenance cannot be established does not ship. This pack's provenance is this file."
+  "word_count": 370079,
+  "status": "sourced",
+  "processing": [
+    "Downloaded words_alpha.txt from the repository's master branch.",
+    "Kept entries matching ^[a-z]{2,}$ after trimming and lowercasing.",
+    "Sorted and de-duplicated."
   ]
 }

@@ -10,8 +10,8 @@
 The `accepted` verdict is this reviewer's assessment of the **implementation**: it does what iteration
 001 promised, with evidence. It is not a claim that the review was independent — see the independence
 section below — and it does not pre-empt the automated co-review, whose findings are recorded
-separately when it runs. Two items are carried rather than closed, both disclosed rather than
-discovered.
+separately when it runs. One item is carried rather than closed — the review's own independence —
+and it is disclosed rather than discovered.
 
 ## Scope reviewed
 
@@ -54,7 +54,7 @@ independent review is the first recommended action at sign-off.
 | T007 | Architecture test for IDesign call rules | pass | 7 tests; fails the build on a call-rule violation; no new dependency taken |
 | T008 | IoC composition root | pass | Singleton lifetimes; engines constructed from loaded data, never loading it themselves |
 | T009 | Key-map format and en-US↔he-IL map | pass | 30 keys with schema version; drives every translation test |
-| T010 | Dictionary packs and golden corpus | pass | Format, manifest and provenance enforcement complete; packs are starters — DRIFT-001 |
+| T010 | Dictionary packs and golden corpus | pass | 370,079 English words (Unlicense) and 22,250 Hebrew words (CC0), licence-verified; corpus re-measured against them — DRIFT-001 resolved |
 | T011 | MappingEngine tests | pass | 8 tests including unmappable codes, unknown layouts, determinism, data-only new pair |
 | T012 | DetectionEngine tests | pass | 16 tests; every ambiguity path asserts `Ignore` |
 | T013 | WordAssemblyEngine tests | pass | 13 tests including the explicit mid-word negative test |
@@ -64,9 +64,9 @@ independent review is the first recommended action at sign-off.
 | T020 | DictionaryAccessor | pass | Refuses unknown schema versions and packs without source and licence |
 | T025 | Corpus accuracy test | pass | Produces the measurement; runs through the real accessor against shipped data |
 
-No task is `needs-work`. T010 passes because its mechanism is complete and tested; its *data* is not
-production-grade, which is recorded as DRIFT-001 rather than left to be discovered, and is carried as
-the first item of the next iteration rather than hidden behind a passing row.
+No task is `needs-work`. T010 initially shipped hand-authored starter word lists and was recorded as
+DRIFT-001; that drift was closed on 2026-08-20 by sourcing and licence-verifying real public-domain
+packs, and the measurement was re-run against them.
 
 ## Requirement coverage
 
@@ -79,11 +79,11 @@ Every iteration-001 requirement, and how it is evidenced:
 | FR-005b (completion on separator or committing key, never mid-word) | `WordAssemblyEngineTests` — including the explicit mid-word negative test | met |
 | FR-006 (caution level sets the bar) | `CautionLevelTests` proves the levels change behaviour, not just state | met |
 | FR-008 (a pair is data, not code) | `MappingEngineTests.Translate_ANewPairIsDataOnly` adds a third layout as data | met |
-| FR-008a (licence provenance) | `DictionaryAccessor` refuses a pack without source and licence; `ShippedPacks_DeclareSourceAndLicence` | met in mechanism, see DRIFT-001 for data |
+| FR-008a (licence provenance) | `DictionaryAccessor` refuses a pack without source and licence; both shipped packs are public-domain dedications with verification recorded in their manifests | met |
 | FR-009 (never re-correct an affirmed word) | `DetectionEngineTests.Evaluate_AffirmedWord_IsNeverCorrected` | met |
 | FR-013 (self-injected keys never re-enter) | `WordAssemblyEngineTests.Append_SelfInjectedKey_IsIgnored` | met at this layer |
 | FR-029 (refuse unknown schema versions) | `DictionaryAccessor.RequireSupportedSchema` throws `DataPackRejectedException` | met |
-| SC-001 (false-correction rate) | measured: 0 of 24 must-not-correct cases | **precondition met, criterion not yet evidenced** |
+| SC-001 (false-correction rate) | measured against 392,329 real words: 0 of 26 must-not-correct cases | **precondition met, criterion not yet evidenced** |
 | SC-011 (a new pair is data only) | same as FR-008 | met |
 | SC-012 (three or more layouts) | `DetectionEngineTests` clear-winner and ambiguous cases | met |
 
@@ -108,12 +108,32 @@ to infer, which is the correct handling — but it means iteration 001's headlin
 weaker than "SC-001 measured". The honest headline is: **the algorithm behaves correctly on every
 case we thought to write down**.
 
-### F-02 — DRIFT-001: the dictionary packs are starters
+### F-02 — DRIFT-001, resolved: an untested assumption nearly became a deferred gap
 
-**Severity**: carried, deferred with a record.
+**Severity**: resolved; the process lesson is the durable part.
 
-T010 shipped hand-authored CC0 starter lists (roughly 160 English, 110 Hebrew words) rather than
-sourced permissive packs, because licence verification of third-party lists was not possible in this
+T010 first shipped hand-authored starter lists rather than sourced permissive packs, on my stated
+belief that the environment had no outbound network access. I never tested that belief. When the
+maintainer asked why an OSS dictionary could not simply be downloaded, one command disproved it.
+
+Sourced and licence-verified the same day: 370,079 English words from `dwyl/english-words` under the
+**Unlicense**, and 22,250 Hebrew words from **Wikidata Lexemes** under **CC0** — both public-domain
+dedications, so redistribution inside an MIT product carries no obligation. `eyaler/hebrew_wordlists`,
+the best-known Hebrew list, was rejected as AGPL-3.0 via Hspell, which is why the Hebrew pack is an
+order of magnitude smaller than the English one.
+
+Re-measuring against real data produced two findings the starter packs had hidden. Short words are
+where layout detection is least reliable: `kt` and `fi` are genuine English entries, so the engine
+correctly stopped correcting them, and both corpus cases were reclassified from true positives to
+ambiguous. And Wikidata's Hebrew coverage has everyday holes: `עבודה` is absent, so that case is kept
+and marked as a coverage gap, counted separately from algorithmic misses rather than deleted to make
+the suite green. The conservative property survived a 1,400-fold increase in dictionary size unchanged.
+
+The lesson worth carrying to the retro: an untested environment assumption came within one exchange of
+becoming a deferred gap needing the maintainer's approval. The check that would have prevented it was
+a single command. Superseded text follows for the record.
+
+The original finding read: licence verification of third-party lists was not possible in this
 environment. Shipping an unverified list would have violated FR-008a, the very requirement the task
 serves. Recorded at
 file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/001/drift-log.md with class
@@ -166,7 +186,7 @@ rather than as "the call rules cannot be broken".
 ## Gap Ledger
 
 - **GAP-01 — fixed-now** — the independent co-review did not execute over the implemented code, so this review is a self-review by the implementing agent; closure is to re-run the co-review before sign-off, or for the human to record `approved for partial review signoff - <reason>` as a deliberate acceptance (dimension: verification independence).
-- **GAP-02 — deferred** — dictionary packs are hand-authored CC0 starters of about 160 English and 110 Hebrew words rather than sourced permissive packs of production size, so T010's mechanism is complete while its data is not; closure is the first item of the next iteration, sourcing and licence-verifying real permissive packs then re-running the corpus measurement, tracked as DRIFT-001 in the iteration drift log with the defer decision recorded in `.squad\decisions.md` at file:///C:/Dev/KeyContextAI/.squad/decisions.md (dimension: implemented).
+- **GAP-02 — fixed-now** — dictionary packs were hand-authored starters rather than sourced permissive packs; closed on 2026-08-20 by sourcing 370,079 English words under the Unlicense and 22,250 Hebrew words under CC0, with the corpus measurement re-run against them and the conservative property holding unchanged, as recorded in DRIFT-001 in the iteration drift log (dimension: implemented).
 
 ## What a reviewer should check most closely
 

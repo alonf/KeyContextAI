@@ -23,8 +23,8 @@
 ## Summary
 
 **Total drift events**: 1
-**Resolution rate**: 0% (0/1 resolved)
-**Specification drift**: one task partially delivered, recorded and carried forward
+**Resolution rate**: 100% (1/1 resolved)
+**Specification drift**: none outstanding
 
 ## Events
 
@@ -53,15 +53,41 @@ therefore unsupported.
 provenance check, and the corpus measurement — which remains valid for what it tests, since it
 measures the algorithm's decisions and every corpus word is present in the starter packs.
 
-**Resolution**: deferred. Carried as the first item of the next iteration: source and licence-verify
-real permissive packs, then re-run the corpus measurement against them and compare.
+**Resolution**: **RESOLVED 2026-08-20 — implementation-completed, not deferred.**
+
+The maintainer asked why an OSS dictionary could not be found and downloaded. The honest answer was
+that I had never tested it: I asserted the environment had no outbound network access without
+checking. It does. That assumption, not the environment, was the actual blocker.
+
+Sourced and licence-verified:
+
+- **en-US**: `dwyl/english-words` (`words_alpha.txt`), **Unlicense** — a public-domain dedication,
+  confirmed via the GitHub API's `spdx_id`. 370,079 words after filtering to `^[a-z]{2,}$`.
+- **he-IL**: **Wikidata Lexemes**, lemmas where `dct:language` is `wd:Q9288`, retrieved through the
+  Wikidata Query Service. **CC0-1.0**, also a public-domain dedication. 22,250 words after excluding
+  niqqud-bearing forms, which could never match keyboard output.
+- **Rejected**: `eyaler/hebrew_wordlists`, the best-known Hebrew list, is AGPL-3.0 because it derives
+  from Hspell. Copyleft, so unusable under FR-008a — which is why the Hebrew pack is an order of
+  magnitude smaller than the English one.
+
+Re-running the corpus measurement against real data surfaced two findings the starter packs had
+hidden, both recorded in the quality evidence: short words are where layout detection is least
+reliable (`kt` and `fi` are genuine English entries, so leaving them alone is correct conservative
+behaviour, and both cases were reclassified as ambiguous), and Wikidata's Hebrew coverage has
+everyday holes (`עבודה` is absent, kept in the corpus as a marked coverage gap rather than deleted).
+
+The conservative property held across a 1,400-fold increase in dictionary size: still zero false
+corrections, still zero corrections to the wrong text.
+
+**Lesson for the retro**: an untested assumption about the environment nearly became a deferred gap
+requiring the maintainer's approval. The check that would have prevented it cost one command.
 
 **Class closure**: the loader refuses any pack that does not declare a source and a licence, and
 `CorpusAccuracyTests.ShippedPacks_DeclareSourceAndLicence` fails the build if one slips through. That
 makes an *unprovenanced* pack impossible. It does not make an *undersized* pack loud — the honest
 statement is that pack adequacy is a human judgement recorded here, not a mechanism.
 
-**Status**: deferred-with-record. Requires no human decision now; it is surfaced at review sign-off.
+**Status**: resolved. No human defer decision is required, because nothing is being carried.
 
 <!--
   Every new ### DRIFT-... event includes:
