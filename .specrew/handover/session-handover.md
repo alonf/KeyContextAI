@@ -72,4 +72,3 @@ What would you like to do? Type one of these:
   discuss prompt 1
 
 <!-- SPECREW-VERDICT-BOUNDARY: tasks -> before-implement -->
-
