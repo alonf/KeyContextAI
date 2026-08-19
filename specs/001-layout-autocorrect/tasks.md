@@ -179,6 +179,27 @@ decision before the before-implement gate.
 
 ## Requirement Coverage
 
+### Enabling tasks (traced to what they make possible)
+
+The traceability check flagged that Phase 1 and Phase 2 tasks carry no direct requirement reference.
+They are enabling work, not orphans, and each is traced below to the requirements it makes deliverable.
+A task that could not be traced this way would be scope with no authority and would be cut.
+
+| Task | Enables | Why it is not deletable |
+| --- | --- | --- |
+| T001 | every FR | Without the solution and target framework nothing else compiles. The .NET 10, nullable, warnings-as-errors settings are the bound stack posture. |
+| T002 | SC-001, SC-006, SC-007 | The test projects are where the accuracy, race-safety, and privacy claims become evidence rather than assertions. |
+| T003 | FR-014, and code quality generally | Warnings-as-errors and analyzers are the mechanical half of the bound craft rules. |
+| T004 | SC-001, SC-010 | CI is what keeps the architecture test and the corpus accuracy test running rather than run-once. |
+| T005 | every FR | The interfaces are the contract every requirement's behavior is expressed through, and the seam every test uses. |
+| T006 | FR-002, FR-005, FR-010 | The domain records are the data model those requirements operate on. |
+| T007 | the plan's structure decision | Enforces the strict IDesign call rules the architecture depends on. Traced to the plan rather than to an FR, and named here so that is visible rather than hidden. |
+| T008 | every FR | Composition with correct lifetimes is how the components the requirements name actually exist at runtime. |
+| T009 | FR-008, SC-011 | The key map is the data that makes language pairs a data concern rather than a code concern. |
+| T010 | FR-008a, SC-001 | The dictionary packs with their licence provenance, and the golden corpus that turns SC-001 into a measured number. |
+
+### Requirement-to-task map
+
 | Requirement | Covering tasks |
 | --- | --- |
 | FR-001 | T017, T047 |
@@ -224,9 +245,11 @@ decision before the before-implement gate.
 | SC-012 | T012, T015 |
 | SC-013 | T042, T044 |
 
-Every task traces to at least one requirement, and every iteration-001 requirement and success
+**Traceability verdict**: PASS. All 48 tasks trace to authority — 38 directly to a requirement or
+success criterion, and 10 as enabling tasks traced in the table above, of which only T007 traces to the
+plan's structure decision rather than to a requirement. Every iteration-001 requirement and success
 criterion has at least one covering task. SC-005 (AI latency) and SC-009 (installs without warnings)
-have no tasks here because their requirements are deferred to iteration 002.
+have no tasks here because their requirements are deferred to iteration 002 by the approved slicing.
 
 ## Implementation Strategy
 
