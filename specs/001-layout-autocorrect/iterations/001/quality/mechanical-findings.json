@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "v1",
+  "featureRef": "specs/001-layout-autocorrect/spec.md",
+  "iterationRef": "specs/001-layout-autocorrect/iterations/001",
+  "generatedAt": "2026-08-19T00:00:33Z",
+  "generator": {
+    "name": "specrew-iteration-scaffold",
+    "version": "1.0.0"
+  },
+  "findings": []
+}
