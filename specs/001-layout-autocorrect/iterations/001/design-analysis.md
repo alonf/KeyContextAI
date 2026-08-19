@@ -433,5 +433,4 @@ component-to-responsibility map, the agreed UI layout, and the committing-key fl
   never triggers a correction without a real word boundary.
 - **Design-analysis draft commit**: 0122b5d (options first drafted), refined for gate structure in
   cb129b1
-- **Decision recorded in commit**: this section's commit, recorded below by the boundary commit that
-  contains it
+- **Decision recorded in commit**: 6e2ea85
