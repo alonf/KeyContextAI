@@ -27,3 +27,12 @@ No decisions recorded yet.
 - **Task ID**: (none)
 - **Auth Commit Hash**: 4a496e66a5b83f9705f4e750a88343d60834cc7b
 - **Recorded At**: 2026-08-19T00:01:04Z
+
+## 2026-08-19T00:27:03Z — Boundary sync: plan
+
+- **Boundary Type**: plan
+- **Feature Ref**: 001-layout-autocorrect
+- **Iteration Number**: 001
+- **Task ID**: (none)
+- **Auth Commit Hash**: 49938d6391c7e23c4ea9a2fc9960ff4bccc36da6
+- **Recorded At**: 2026-08-19T00:27:02Z

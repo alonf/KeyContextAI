@@ -37,6 +37,32 @@ for composition; WPF (.NET 10 Windows Desktop) for the tray and overlay clients.
 (MAF 1.0), `Microsoft.Agents.AI.GitHub.Copilot`, and Polly 8.x are recorded in the dependency policy but
 enter in iteration 002 with the AI tier.
 
+**UI framework decision — WPF over WinUI (re-examined at the plan boundary, 2026-08-19).** The human
+asked whether WinUI would be better, noting Microsoft's newer React-style offerings. Research at the
+boundary confirmed that Microsoft recommitted to WinUI as the native production platform at Build 2026
+(dropping the "3", no WinUI 4 planned, development moving to public repos), and that two React-style
+declarative frameworks now exist — Microsoft UI Reactor for C# and Windows Reactor for Rust — both
+launched around June 2026. **WPF is nonetheless retained**, for one architectural reason and one
+practical one:
+
+1. **The click-through overlay.** FR-024 requires the correction bubble never to take focus or block
+   interaction. WinUI renders through composition on Direct3D, so the window has no access to the video
+   memory backing its content and cannot test per-pixel alpha for hit-testing; `WS_EX_TRANSPARENT` does
+   not cooperate with DWM either, so transparent regions still capture mouse events. A genuinely
+   click-through per-pixel-alpha overlay fights WinUI's architecture, while in WPF `AllowsTransparency`
+   plus a layered-window style is a long-established path.
+2. **Preview coupling.** WinUI on .NET 10 requires Windows App SDK 2.0, which is still in preview with
+   breaking changes. Pairing an LTS runtime with a preview SDK for the least differentiated part of the
+   product is a poor trade.
+
+Microsoft UI Reactor was considered and rejected as roughly two months old at the time of this
+decision — too new for a UI consisting of a tray icon, a bubble, and a small settings window.
+
+**Revisit trigger** (recorded, not permanent): if iteration 002's settings window grows substantially,
+or if WinUI gains a supported click-through path, the clients are the most isolated components in the
+map and swapping them touches nothing below. The known cost of going WinUI earlier is two UI stacks in
+one process, since the bubble would still need a Win32 or WPF layered window.
+
 **Storage**: Plain files under `%LOCALAPPDATA%\KeyContextAI\` — key maps and dictionaries loaded into an
 in-memory trie at startup, settings as JSON with credentials as a DPAPI-encrypted blob. SQLite was
 deliberately rejected. No keystroke is ever persisted.
