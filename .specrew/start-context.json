@@ -1,0 +1,96 @@
+{
+  "schema": "v2",
+  "boundary_enforcement": {
+    "enabled": true,
+    "last_authorized_boundary": "before-implement",
+    "pending_next_boundary": null,
+    "pending_crossing": null,
+    "policy_classes": {
+      "specify": "human-judgment-required",
+      "clarify": "human-judgment-required",
+      "plan": "human-judgment-required",
+      "tasks": "human-judgment-required",
+      "before-implement": "human-judgment-required",
+      "review-signoff": "human-judgment-required",
+      "retro": "human-judgment-required",
+      "iteration-closeout": "human-judgment-required",
+      "feature-closeout": "human-judgment-required"
+    },
+    "verdict_history": [
+      {
+        "from_boundary": null,
+        "to_boundary": "specify",
+        "verdict_text": "approved for specify",
+        "authorizing_human": "unattributed",
+        "recorded_at": "2026-08-18T23:51:23Z",
+        "auth_commit_hash": "51f4b4f6c7d818bd3005032695e9cf21b87daab4",
+        "evidence_source": "hook-captured-from-transcript",
+        "kind": "standard",
+        "out_of_band": false,
+        "authorization_id": "auth-f76c7babf00d4c49021c7064a0f3a3c6c5f2f08a3757c34a3a1aaf6494ac6b94"
+      },
+      {
+        "from_boundary": "specify",
+        "to_boundary": "clarify",
+        "verdict_text": "approved for clarify",
+        "authorizing_human": "unattributed",
+        "recorded_at": "2026-08-19T00:05:35Z",
+        "auth_commit_hash": "4a496e66a5b83f9705f4e750a88343d60834cc7b",
+        "evidence_source": "hook-captured-from-transcript",
+        "kind": "standard",
+        "out_of_band": false,
+        "authorization_id": "auth-5ae2a42aeea905ea2a38a19c5da228472c51a5859809f787ad7648facc8e21d4"
+      },
+      {
+        "from_boundary": "clarify",
+        "to_boundary": "plan",
+        "verdict_text": "approved for plan",
+        "authorizing_human": "unattributed",
+        "recorded_at": "2026-08-19T05:43:51Z",
+        "auth_commit_hash": "49938d6391c7e23c4ea9a2fc9960ff4bccc36da6",
+        "evidence_source": "hook-captured-from-transcript",
+        "kind": "standard",
+        "out_of_band": false,
+        "authorization_id": "auth-6cd7533d5eaac6b103114a03264a285ba1082113dece9f8b18ece188c3439414"
+      },
+      {
+        "from_boundary": "plan",
+        "to_boundary": "tasks",
+        "verdict_text": "approved for tasks",
+        "authorizing_human": "unattributed",
+        "recorded_at": "2026-08-19T06:11:56Z",
+        "auth_commit_hash": "c6a1da787dc9ecbc3db7d0a260137f422ba02a3e",
+        "evidence_source": "hook-captured-from-transcript",
+        "kind": "standard",
+        "out_of_band": false,
+        "authorization_id": "auth-0fa1c308b6db510efeba58b2bcca79f0567532d492567a4f042bb6457897ecf1"
+      },
+      {
+        "from_boundary": "tasks",
+        "to_boundary": "before-implement",
+        "verdict_text": "approved for before-implement",
+        "authorizing_human": "unattributed",
+        "recorded_at": "2026-08-19T08:37:12Z",
+        "auth_commit_hash": "f14f72a18392d6c89c87491c4c4e8ee8b99e7891",
+        "evidence_source": "hook-captured-from-transcript",
+        "kind": "standard",
+        "out_of_band": false,
+        "authorization_id": "auth-57c233c996bfea1e1aca798726e2b5df3035da63c4b3b72882d5adcf1fb4bd5b"
+      }
+    ],
+    "correction_history": [],
+    "bypass_history": []
+  },
+  "generated_at_utc": "2026-08-19T06:14:31Z",
+  "feature_path": "C:\\Dev\\KeyContextAI\\specs\\001-layout-autocorrect",
+  "session_state": {
+    "active": true,
+    "boundary_type": "before-implement",
+    "feature_ref": "001-layout-autocorrect",
+    "feature_path": "C:\\Dev\\KeyContextAI\\specs\\001-layout-autocorrect",
+    "iteration_number": "001",
+    "task_id": null,
+    "auth_commit_hash": "f14f72a18392d6c89c87491c4c4e8ee8b99e7891",
+    "recorded_at": "2026-08-19T06:14:31Z"
+  }
+}

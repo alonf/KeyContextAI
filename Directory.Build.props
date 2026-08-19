@@ -1,0 +1,29 @@
+<Project>
+
+  <!--
+    Shared build posture for every project. Bound at the code-implementation design lens:
+    .NET 10 LTS, latest C#, nullable reference types on, warnings as errors, file-scoped
+    namespaces, analyzers on.
+  -->
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <NeutralLanguage>en</NeutralLanguage>
+  </PropertyGroup>
+
+  <!--
+    Reproducible builds: the security lens promised that the published binary can be checked
+    against the public source, which requires deterministic compilation in CI.
+  -->
+  <PropertyGroup Condition="'$(ContinuousIntegrationBuild)' == 'true'">
+    <Deterministic>true</Deterministic>
+    <PathMap>$(MSBuildThisFileDirectory)=/_/</PathMap>
+  </PropertyGroup>
+
+</Project>

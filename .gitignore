@@ -1,32 +1,5 @@
-# Squad: ignore runtime state (logs, inbox, sessions)
-# Note: .squad/casting/* is identity and MUST be committed to main, not ignored
-.squad/orchestration-log/
-.squad/log/
-.squad/decisions/inbox/
-.squad/sessions/
-.squad/.scratch/
-.squad/.cache/
-# Squad: SubSquad activation file (local to this machine)
-.squad-workstream
-
-# Specrew per-session files (F-051 multi-session foundation) - do not commit
-.specrew/last-*
-.specify/feature.json
-.specrew/start-context.json
-.specrew/host-history.json
-.specrew/.cache/
-.specrew/version-check-cache.json
-.specrew/handover/
-.specrew/runtime/
-.specrew/review/authority/
-.specrew/review/inline/
-.specrew/review/pending/
-.specrew/review/runs/
-.specrew/review/signoff-gate/
-.specrew/review/test-evidence/
-.specrew/last-validator-summary.json
-.specrew/active-sessions.yml
-.specrew/workshop-visuals/
-.agents/hooks.json
-.claude/settings.local.json
-testResults.xml
+bin/
+obj/
+*.user
+.vs/
+TestResults/

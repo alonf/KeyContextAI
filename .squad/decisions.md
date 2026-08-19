@@ -45,3 +45,12 @@ No decisions recorded yet.
 - **Task ID**: (none)
 - **Auth Commit Hash**: f5f93c0316c90297dd35c7f586d1570418232fef
 - **Recorded At**: 2026-08-19T05:48:52Z
+
+## 2026-08-19T06:14:32Z — Boundary sync: before-implement
+
+- **Boundary Type**: before-implement
+- **Feature Ref**: 001-layout-autocorrect
+- **Iteration Number**: 001
+- **Task ID**: (none)
+- **Auth Commit Hash**: f14f72a18392d6c89c87491c4c4e8ee8b99e7891
+- **Recorded At**: 2026-08-19T06:14:31Z

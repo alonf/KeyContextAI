@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/KeyContextAI.App/KeyContextAI.App.csproj" />
+    <Project Path="src/KeyContextAI.Core/KeyContextAI.Core.csproj" />
+    <Project Path="src/KeyContextAI.Platform/KeyContextAI.Platform.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/KeyContextAI.Architecture.Tests/KeyContextAI.Architecture.Tests.csproj" />
+    <Project Path="tests/KeyContextAI.Core.Tests/KeyContextAI.Core.Tests.csproj" />
+    <Project Path="tests/KeyContextAI.Platform.Tests/KeyContextAI.Platform.Tests.csproj" />
+  </Folder>
+</Solution>

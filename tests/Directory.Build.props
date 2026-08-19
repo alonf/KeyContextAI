@@ -1,0 +1,22 @@
+<Project>
+
+  <!-- Inherit the repository-wide posture first, then relax only what test code legitimately needs. -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <PropertyGroup>
+    <!-- Test assemblies are not a public API surface, so per-member XML docs are noise here. -->
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!--
+      CA1707 (no underscores in member names) conflicts with the Method_Scenario_Expectation naming
+      that makes a failing test name readable in CI output. CA1859 (prefer concrete types) conflicts
+      with testing through the interface seam, which is exactly what the contract-first design asks
+      tests to do. Both stay enforced in src/.
+    -->
+    <NoWarn>$(NoWarn);CA1707;CA1859</NoWarn>
+  </PropertyGroup>
+
+</Project>

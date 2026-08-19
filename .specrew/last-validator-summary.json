@@ -1,0 +1,12 @@
+{
+  "schema": "v1",
+  "warnings": {
+    "total": 4,
+    "soft": 4,
+    "medium": 0,
+    "hard": 0
+  },
+  "command": "validate-governance",
+  "duration_ms": 1565,
+  "recorded_at": "2026-08-19T06:14:15.3722869Z"
+}
