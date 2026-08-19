@@ -2,7 +2,7 @@
 
 **Schema**: v1
 **Spec**: [../../spec.md](../../spec.md)
-**Status**: planning
+**Status**: reviewing
 **Capacity**: 19.5/20 story_points
 **Started**: 2026-08-19
 **Completed**:
@@ -61,24 +61,24 @@
 
 | Task | Title | Requirement | Story | Effort | Owner | Owner File Globs | Status | Agent | Actual | Verdict |
 | ---- | ----- | ----------- | ----- | ------ | ----- | ---------------- | ------ | ----- | ------ | ------- |
-| T001 | Solution skeleton, three projects, .NET 10 posture | enabling: all FR | US1 | 1 | Implementer | `src/**`, `KeyContextAI.sln` | planned | — | — | — |
-| T002 | Test projects and corpus folder | enabling: SC-001, SC-006, SC-007 | US1 | 0.5 | Implementer | `tests/**` | planned | — | — | — |
-| T003 | Directory.Build.props with analyzers | enabling: FR-014 | US1 | 0.5 | Implementer | `Directory.Build.props` | planned | — | — | — |
-| T004 | GitHub Actions PR workflow | enabling: SC-001, SC-010 | US1 | 1 | Implementer | `.github/workflows/**` | planned | — | — | — |
-| T005 | All component interfaces | enabling: all FR | US1 | 1 | Implementer | `src/KeyContextAI.Core/Contracts/**` | planned | — | — | — |
-| T006 | Domain records per data model | enabling: FR-002, FR-005, FR-010 | US1 | 1 | Implementer | `src/KeyContextAI.Core/Model/**` | planned | — | — | — |
-| T007 | Architecture test for IDesign call rules | enabling: plan structure | US1 | 1 | Implementer | `tests/KeyContextAI.Architecture.Tests/**` | planned | — | — | — |
-| T008 | IoC composition root | enabling: all FR | US1 | 0.5 | Implementer | `src/KeyContextAI.App/Composition/**` | planned | — | — | — |
-| T009 | Key-map format and en-US↔he-IL map | FR-008, SC-011 | US1 | 1 | Implementer | `data/keymaps/**` | planned | — | — | — |
-| T010 | Dictionary packs and golden corpus | FR-008a, SC-001 | US1 | 3 | Implementer | `data/dictionaries/**`, `tests/corpus/**` | planned | — | — | — |
-| T011 | MappingEngine tests | FR-005 | US1 | 0.5 | Implementer | `tests/KeyContextAI.Core.Tests/MappingEngineTests.cs` | planned | — | — | — |
-| T012 | DetectionEngine tests | FR-005a, FR-006, FR-009, SC-012 | US1 | 1 | Implementer | `tests/KeyContextAI.Core.Tests/DetectionEngineTests.cs` | planned | — | — | — |
-| T013 | WordAssemblyEngine tests | FR-005b | US1 | 0.5 | Implementer | `tests/KeyContextAI.Core.Tests/WordAssemblyEngineTests.cs` | planned | — | — | — |
-| T014 | MappingEngine | FR-005, FR-008, SC-011 | US1 | 1 | Implementer | `src/KeyContextAI.Core/Engines/MappingEngine.cs` | planned | — | — | — |
-| T015 | DetectionEngine | FR-005a, FR-006, SC-012 | US1 | 2 | Implementer | `src/KeyContextAI.Core/Engines/DetectionEngine.cs` | planned | — | — | — |
-| T016 | WordAssemblyEngine | FR-005b | US1 | 1 | Implementer | `src/KeyContextAI.Core/Engines/WordAssemblyEngine.cs` | planned | — | — | — |
-| T020 | DictionaryAccessor | FR-008, FR-008a, FR-029 | US1 | 1.5 | Implementer | `src/KeyContextAI.Platform/Storage/DictionaryAccessor.cs` | planned | — | — | — |
-| T025 | Corpus accuracy test | SC-001 | US1 | 1.5 | Implementer | `tests/KeyContextAI.Core.Tests/CorpusAccuracyTests.cs` | planned | — | — | — |
+| T001 | Solution skeleton, three projects, .NET 10 posture | enabling: all FR | US1 | 1 | Implementer | `src/**`, `KeyContextAI.sln` | done | — | — | — |
+| T002 | Test projects and corpus folder | enabling: SC-001, SC-006, SC-007 | US1 | 0.5 | Implementer | `tests/**` | done | — | — | — |
+| T003 | Directory.Build.props with analyzers | enabling: FR-014 | US1 | 0.5 | Implementer | `Directory.Build.props` | done | — | — | — |
+| T004 | GitHub Actions PR workflow | enabling: SC-001, SC-010 | US1 | 1 | Implementer | `.github/workflows/**` | done | — | — | — |
+| T005 | All component interfaces | enabling: all FR | US1 | 1 | Implementer | `src/KeyContextAI.Core/Contracts/**` | done | — | — | — |
+| T006 | Domain records per data model | enabling: FR-002, FR-005, FR-010 | US1 | 1 | Implementer | `src/KeyContextAI.Core/Model/**` | done | — | — | — |
+| T007 | Architecture test for IDesign call rules | enabling: plan structure | US1 | 1 | Implementer | `tests/KeyContextAI.Architecture.Tests/**` | done | — | — | — |
+| T008 | IoC composition root | enabling: all FR | US1 | 0.5 | Implementer | `src/KeyContextAI.App/Composition/**` | done | — | — | — |
+| T009 | Key-map format and en-US↔he-IL map | FR-008, SC-011 | US1 | 1 | Implementer | `data/keymaps/**` | done | — | — | — |
+| T010 | Dictionary packs and golden corpus | FR-008a, SC-001 | US1 | 3 | Implementer | `data/dictionaries/**`, `tests/corpus/**` | done | — | — | — |
+| T011 | MappingEngine tests | FR-005 | US1 | 0.5 | Implementer | `tests/KeyContextAI.Core.Tests/MappingEngineTests.cs` | done | — | — | — |
+| T012 | DetectionEngine tests | FR-005a, FR-006, FR-009, SC-012 | US1 | 1 | Implementer | `tests/KeyContextAI.Core.Tests/DetectionEngineTests.cs` | done | — | — | — |
+| T013 | WordAssemblyEngine tests | FR-005b | US1 | 0.5 | Implementer | `tests/KeyContextAI.Core.Tests/WordAssemblyEngineTests.cs` | done | — | — | — |
+| T014 | MappingEngine | FR-005, FR-008, SC-011 | US1 | 1 | Implementer | `src/KeyContextAI.Core/Engines/MappingEngine.cs` | done | — | — | — |
+| T015 | DetectionEngine | FR-005a, FR-006, SC-012 | US1 | 2 | Implementer | `src/KeyContextAI.Core/Engines/DetectionEngine.cs` | done | — | — | — |
+| T016 | WordAssemblyEngine | FR-005b | US1 | 1 | Implementer | `src/KeyContextAI.Core/Engines/WordAssemblyEngine.cs` | done | — | — | — |
+| T020 | DictionaryAccessor | FR-008, FR-008a, FR-029 | US1 | 1.5 | Implementer | `src/KeyContextAI.Platform/Storage/DictionaryAccessor.cs` | done | — | — | — |
+| T025 | Corpus accuracy test | SC-001 | US1 | 1.5 | Implementer | `tests/KeyContextAI.Platform.Tests/CorpusAccuracyTests.cs` | done | — | — | — |
 
 ## Effort Model
 
