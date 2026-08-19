@@ -7,7 +7,7 @@
 **Requested Review Class**: `strongest-available`
 **Effective Review Class**: `strongest-available`
 **Overall Verdict**: `ready`
-**Approval Ref**: `tasks-boundary-verdict-2026-08-19`
+**Approval Ref**: `—`
 **Reviewed By**: Crew (planning-time hardening analysis)
 **Reviewed At**: 2026-08-19T06:05:00Z
 

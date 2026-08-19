@@ -3,7 +3,7 @@
 **Schema**: v1
 **Spec**: [../../spec.md](../../spec.md)
 **Status**: planning
-**Capacity**: 0/20 story_points
+**Capacity**: 19.5/20 story_points
 **Started**: 2026-08-19
 **Completed**:
 
@@ -61,54 +61,24 @@
 
 | Task | Title | Requirement | Story | Effort | Owner | Owner File Globs | Status | Agent | Actual | Verdict |
 | ---- | ----- | ----------- | ----- | ------ | ----- | ---------------- | ------ | ----- | ------ | ------- |
-| T001 | Solution skeleton, three projects, .NET 10 posture | enabling: all FR | — | 1 | Implementer | `src/**`, `KeyContextAI.sln` | planned | — | — | — |
-| T002 | Test projects and corpus folder | enabling: SC-001, SC-006, SC-007 | — | 0.5 | Implementer | `tests/**` | planned | — | — | — |
-| T003 | Directory.Build.props with analyzers | enabling: FR-014 | — | 0.5 | Implementer | `Directory.Build.props` | planned | — | — | — |
-| T004 | GitHub Actions PR workflow | enabling: SC-001, SC-010 | — | 1 | Implementer | `.github/workflows/**` | planned | — | — | — |
-| T005 | All component interfaces | enabling: all FR | — | 1 | Implementer | `src/KeyContextAI.Core/Contracts/**` | planned | — | — | — |
-| T006 | Domain records per data model | enabling: FR-002, FR-005, FR-010 | — | 1 | Implementer | `src/KeyContextAI.Core/Model/**` | planned | — | — | — |
-| T007 | Architecture test for IDesign call rules | enabling: plan structure | — | 1 | Implementer | `tests/KeyContextAI.Architecture.Tests/**` | planned | — | — | — |
-| T008 | IoC composition root | enabling: all FR | — | 0.5 | Implementer | `src/KeyContextAI.App/Composition/**` | planned | — | — | — |
-| T009 | Key-map format and en-US↔he-IL map | FR-008, SC-011 | — | 1 | Implementer | `data/keymaps/**` | planned | — | — | — |
-| T010 | Dictionary packs and golden corpus | FR-008a, SC-001 | — | 3 | Implementer | `data/dictionaries/**`, `tests/corpus/**` | planned | — | — | — |
+| T001 | Solution skeleton, three projects, .NET 10 posture | enabling: all FR | US1 | 1 | Implementer | `src/**`, `KeyContextAI.sln` | planned | — | — | — |
+| T002 | Test projects and corpus folder | enabling: SC-001, SC-006, SC-007 | US1 | 0.5 | Implementer | `tests/**` | planned | — | — | — |
+| T003 | Directory.Build.props with analyzers | enabling: FR-014 | US1 | 0.5 | Implementer | `Directory.Build.props` | planned | — | — | — |
+| T004 | GitHub Actions PR workflow | enabling: SC-001, SC-010 | US1 | 1 | Implementer | `.github/workflows/**` | planned | — | — | — |
+| T005 | All component interfaces | enabling: all FR | US1 | 1 | Implementer | `src/KeyContextAI.Core/Contracts/**` | planned | — | — | — |
+| T006 | Domain records per data model | enabling: FR-002, FR-005, FR-010 | US1 | 1 | Implementer | `src/KeyContextAI.Core/Model/**` | planned | — | — | — |
+| T007 | Architecture test for IDesign call rules | enabling: plan structure | US1 | 1 | Implementer | `tests/KeyContextAI.Architecture.Tests/**` | planned | — | — | — |
+| T008 | IoC composition root | enabling: all FR | US1 | 0.5 | Implementer | `src/KeyContextAI.App/Composition/**` | planned | — | — | — |
+| T009 | Key-map format and en-US↔he-IL map | FR-008, SC-011 | US1 | 1 | Implementer | `data/keymaps/**` | planned | — | — | — |
+| T010 | Dictionary packs and golden corpus | FR-008a, SC-001 | US1 | 3 | Implementer | `data/dictionaries/**`, `tests/corpus/**` | planned | — | — | — |
 | T011 | MappingEngine tests | FR-005 | US1 | 0.5 | Implementer | `tests/KeyContextAI.Core.Tests/MappingEngineTests.cs` | planned | — | — | — |
 | T012 | DetectionEngine tests | FR-005a, FR-006, FR-009, SC-012 | US1 | 1 | Implementer | `tests/KeyContextAI.Core.Tests/DetectionEngineTests.cs` | planned | — | — | — |
 | T013 | WordAssemblyEngine tests | FR-005b | US1 | 0.5 | Implementer | `tests/KeyContextAI.Core.Tests/WordAssemblyEngineTests.cs` | planned | — | — | — |
 | T014 | MappingEngine | FR-005, FR-008, SC-011 | US1 | 1 | Implementer | `src/KeyContextAI.Core/Engines/MappingEngine.cs` | planned | — | — | — |
 | T015 | DetectionEngine | FR-005a, FR-006, SC-012 | US1 | 2 | Implementer | `src/KeyContextAI.Core/Engines/DetectionEngine.cs` | planned | — | — | — |
 | T016 | WordAssemblyEngine | FR-005b | US1 | 1 | Implementer | `src/KeyContextAI.Core/Engines/WordAssemblyEngine.cs` | planned | — | — | — |
-| T017 | KeystrokeAccessor hook | FR-001, FR-013 | US1 | 2 | Implementer | `src/KeyContextAI.Platform/Input/KeystrokeAccessor.cs` | deferred | — | — | -> iteration 002 |
-| T018 | InputInjectionAccessor | FR-010, FR-013, FR-015 | US1 | 1.5 | Implementer | `src/KeyContextAI.Platform/Input/InputInjectionAccessor.cs` | deferred | — | — | -> iteration 002 |
-| T019 | LayoutAccessor | FR-005a, FR-010 | US1 | 1 | Implementer | `src/KeyContextAI.Platform/System/LayoutAccessor.cs` | deferred | — | — | -> iteration 002 |
 | T020 | DictionaryAccessor | FR-008, FR-008a, FR-029 | US1 | 1.5 | Implementer | `src/KeyContextAI.Platform/Storage/DictionaryAccessor.cs` | planned | — | — | — |
-| T021 | CorrectionManager single-word flow | FR-010, FR-022 | US1 | 2 | Implementer | `src/KeyContextAI.Core/Managers/CorrectionManager.cs` | deferred | — | — | -> iteration 002 |
-| T022 | AudioAccessor with three cues | FR-022, FR-023 | US1 | 0.5 | Implementer | `src/KeyContextAI.Platform/System/AudioAccessor.cs` | deferred | — | — | -> iteration 002 |
-| T023 | OverlayClient click-through bubble | FR-022, FR-024 | US1 | 2.5 | Implementer | `src/KeyContextAI.App/Clients/OverlayClient.cs` | deferred | — | — | -> iteration 002 |
-| T024 | Single-word correction integration test | FR-010, FR-022, SC-003 | US1 | 1.5 | Implementer | `tests/KeyContextAI.Platform.Tests/SingleWordCorrectionTests.cs` | deferred | — | — | -> iteration 002 |
 | T025 | Corpus accuracy test | SC-001 | US1 | 1.5 | Implementer | `tests/KeyContextAI.Core.Tests/CorpusAccuracyTests.cs` | planned | — | — | — |
-| T026 | TranscriptEngine tests | FR-002, FR-007, FR-011 | US2 | 1.5 | Implementer | `tests/KeyContextAI.Core.Tests/TranscriptEngineTests.cs` | deferred | — | — | -> iteration 003 |
-| T027 | TranscriptEngine | FR-002, FR-007, FR-011 | US2 | 3 | Implementer | `src/KeyContextAI.Core/Engines/TranscriptEngine.cs` | deferred | — | — | -> iteration 003 |
-| T028 | Multi-word span correction | FR-007 | US2 | 1.5 | Implementer | `src/KeyContextAI.Core/Managers/CorrectionManager.cs` | deferred | — | — | -> iteration 003 |
-| T029 | Option B armed-flag suppression path | FR-005b | US2 | 2.5 | Implementer | `src/KeyContextAI.Platform/Input/KeystrokeAccessor.cs`, `src/KeyContextAI.Core/Managers/CorrectionManager.cs` | deferred | — | — | -> iteration 003 |
-| T030 | Suppressed-key re-injection and compensation | FR-011, FR-014 | US2 | 1.5 | Implementer | `src/KeyContextAI.Platform/Input/InputInjectionAccessor.cs` | deferred | — | — | -> iteration 003 |
-| T031 | Suppressed-key delivery test | FR-012, FR-014, SC-006 | US2 | 2 | Implementer | `tests/KeyContextAI.Platform.Tests/SuppressedKeyDeliveryTests.cs` | deferred | — | — | -> iteration 003 |
-| T032 | Race-safe correction test | FR-011, SC-006 | US2 | 2 | Implementer | `tests/KeyContextAI.Platform.Tests/RaceSafeCorrectionTests.cs` | deferred | — | — | -> iteration 003 |
-| T033 | FocusAccessor with password detection | FR-003 | US5 | 2 | Implementer | `src/KeyContextAI.Platform/System/FocusAccessor.cs` | deferred | — | — | -> iteration 002 |
-| T034 | Privacy lifecycle in CorrectionManager | FR-003, FR-004 | US5 | 1.5 | Implementer | `src/KeyContextAI.Core/Managers/CorrectionManager.cs` | deferred | — | — | -> iteration 002 |
-| T035 | Focus-change abandon rule | FR-012 | US5 | 1 | Implementer | `src/KeyContextAI.Core/Managers/CorrectionManager.cs` | deferred | — | — | -> iteration 002 |
-| T036 | Fail-closed password gate test | FR-003 | US5 | 1 | Implementer | `tests/KeyContextAI.Platform.Tests/PasswordGateTests.cs` | deferred | — | — | -> iteration 002 |
-| T037 | No-text-persisted filesystem test | FR-004, FR-009b, SC-007 | US5 | 1 | Implementer | `tests/KeyContextAI.Platform.Tests/NoTextPersistedTests.cs` | deferred | — | — | -> iteration 002 |
-| T038 | SettingsAccessor with DPAPI | FR-026, FR-028, FR-029 | US3 | 1.5 | Implementer | `src/KeyContextAI.Platform/Storage/SettingsAccessor.cs` | deferred | — | — | -> iteration 004 |
-| T039 | SettingsManager | FR-006, FR-025 | US3 | 1 | Implementer | `src/KeyContextAI.Core/Managers/SettingsManager.cs` | deferred | — | — | -> iteration 004 |
-| T040 | TrayClient | FR-025, FR-027 | US3 | 2 | Implementer | `src/KeyContextAI.App/Clients/TrayClient.cs` | deferred | — | — | -> iteration 004 |
-| T041 | Flip hotkey | FR-009, FR-015, SC-002 | US3 | 2 | Implementer | `src/KeyContextAI.Core/Managers/CorrectionManager.cs` | deferred | — | — | -> iteration 004 |
-| T042 | Learning from rejected corrections | FR-009a, FR-009b, FR-028, SC-013 | US3 | 2 | Implementer | `src/KeyContextAI.Core/Managers/CorrectionManager.cs`, `src/KeyContextAI.Platform/Storage/DictionaryAccessor.cs` | deferred | — | — | -> iteration 004 |
-| T043 | Settings window | FR-026 | US3 | 3 | Implementer | `src/KeyContextAI.App/Clients/SettingsWindow.xaml` | deferred | — | — | -> iteration 004 |
-| T044 | Settings and learning integration tests | FR-009a, FR-028, SC-002, SC-013 | US3 | 1.5 | Implementer | `tests/KeyContextAI.Platform.Tests/SettingsAndLearningTests.cs` | deferred | — | — | -> iteration 004 |
-| T045 | Diagnostic log ring buffer | FR-031, FR-032, SC-007 | — | 2 | Implementer | `src/KeyContextAI.Core/Diagnostics/DiagnosticLog.cs` | deferred | — | — | -> iteration 003 |
-| T046 | Hook watchdog | FR-027, FR-030, SC-010 | — | 1.5 | Implementer | `src/KeyContextAI.Platform/Input/KeystrokeAccessor.cs` | deferred | — | — | -> iteration 003 |
-| T047 | Latency benchmarks | FR-001, FR-032, SC-003, SC-004 | — | 1.5 | Implementer | `tests/KeyContextAI.Platform.Tests/LatencyBenchmarks.cs` | deferred | — | — | -> iteration 003 |
-| T048 | Quickstart evidence run | SC-001, SC-008, SC-010 | — | 1.5 | Implementer | `specs/001-layout-autocorrect/iterations/001/quality/quality-evidence.md` | deferred | — | — | -> iteration 004 |
 
 ## Effort Model
 
@@ -187,6 +157,8 @@ settings window is built on top of an unproven detector. Iteration 002 pulls the
 forward from its original US-priority position because the password gate is a precondition for
 dogfooding a keystroke-reading tool at all, not a feature of it.
 
-**Iteration 001 scope is therefore T001–T016, T019 and T025 — 19 story points against a capacity of
-20.** The remaining tasks stay in tasks.md with their iteration assignment recorded, deferred rather
-than dropped.
+**Iteration 001 scope is therefore T001–T016, T020 and T025 — 19.5 story points against a capacity of
+20.** Only those 18 tasks appear in this iteration's task table, so the capacity line reflects this
+iteration rather than the feature. The other 30 tasks keep their iteration assignment in
+file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/tasks.md and move into their own iteration
+plans when those iterations open — deferred rather than dropped.
