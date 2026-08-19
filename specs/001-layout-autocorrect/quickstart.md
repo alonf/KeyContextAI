@@ -22,7 +22,7 @@ You need Hebrew and English keyboard layouts installed. Open Notepad.
 
 1. **Make sure English is the active layout.** The tray tooltip shows the active pair.
 2. **Type `akuo` and press space.** Those are the keys under the Hebrew letters of `שלום`.
-   *Expected*: the text becomes `שלום `, the keyboard layout switches to Hebrew, a soft tick plays, and
+   *Expected*: the text becomes `שלום`, the keyboard layout switches to Hebrew, a soft tick plays, and
    a small bubble appears near the caret reading `akuo → שלום   EN ▸ HE`. The bubble fades after about a
    second and never takes focus.
 3. **Type a normal English word and press space.**
