@@ -2,8 +2,8 @@
 schema: v1
 source: PostToolUse
 from_host: claude
-recorded_at: 2026-08-19T09:07:28.3350409Z
-from_commit: 526d0b2
+recorded_at: 2026-08-19T09:08:32.7667022Z
+from_commit: 930f49b
 active_feature: 001-layout-autocorrect
 active_boundary: before-implement
 last_authorized_boundary: before-implement
@@ -14,12 +14,12 @@ workshop_done: architecture-core, component-design, requirements-nfr, ui-ux, dat
 
 ## What I just did (last 3-5 turns or last boundary work)
 
+- [2026-08-19T09:08:32Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/001/state.md] (+1 Specrew-managed); HEAD 930f49b (chore(lint): auto-fix markdownlint violations); 2 new commit(s): 930f49b chore(lint): auto-fix markdownlint violations | 31bb0c6 boundary(review): iteration 001 review with an honest independence gap
 - [2026-08-19T09:07:28Z] (PostToolUse) 6 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/001/plan.md, specs/001-layout-autocorrect/iterations/001/quality/mechanical-findings.json, specs/001-layout-autocorrect/iterations/001/review.md] (+7 Specrew-managed); HEAD 526d0b2 (implement(001): T004, T007-T010, T020, T025 - iteration 001 complete)
 - [2026-08-19T09:06:36Z] (PostToolUse) 6 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/001/plan.md, specs/001-layout-autocorrect/iterations/001/quality/mechanical-findings.json, specs/001-layout-autocorrect/iterations/001/review.md] (+7 Specrew-managed); HEAD 526d0b2 (implement(001): T004, T007-T010, T020, T025 - iteration 001 complete)
 - [2026-08-19T09:05:35Z] (PostToolUse) 6 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/001/plan.md, specs/001-layout-autocorrect/iterations/001/quality/mechanical-findings.json, specs/001-layout-autocorrect/iterations/001/review.md] (+7 Specrew-managed); HEAD 526d0b2 (implement(001): T004, T007-T010, T020, T025 - iteration 001 complete)
 - [2026-08-19T09:04:36Z] (PostToolUse) 3 changed user file(s) [specs/001-layout-autocorrect/iterations/001/plan.md, specs/001-layout-autocorrect/iterations/001/quality/mechanical-findings.json, specs/001-layout-autocorrect/iterations/001/review.md] (+3 Specrew-managed); HEAD 526d0b2 (implement(001): T004, T007-T010, T020, T025 - iteration 001 complete)
 - [2026-08-19T09:04:23Z] (PostToolUse) 2 changed user file(s) [specs/001-layout-autocorrect/iterations/001/plan.md, specs/001-layout-autocorrect/iterations/001/quality/mechanical-findings.json] (+3 Specrew-managed); HEAD 526d0b2 (implement(001): T004, T007-T010, T020, T025 - iteration 001 complete)
-- [2026-08-19T09:04:13Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/001/plan.md] (+3 Specrew-managed); HEAD 526d0b2 (implement(001): T004, T007-T010, T020, T025 - iteration 001 complete)
 
 ## Why I'm stopping (the switch trigger)
 
@@ -35,15 +35,14 @@ Hook-captured at trigger 'PostToolUse' (the agent did not author a handover this
 
 ## Recommended next-immediate-step
 
-Resume feature 001-layout-autocorrect at boundary before-implement. 6 of YOUR file(s) are uncommitted [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/001/plan.md, specs/001-layout-autocorrect/iterations/001/quality/mechanical-findings.json, specs/001-layout-autocorrect/iterations/001/review.md] (+7 Specrew-managed) - review/commit them before advancing.
+Resume feature 001-layout-autocorrect at boundary before-implement. 1 of YOUR file(s) are uncommitted [specs/001-layout-autocorrect/iterations/001/state.md] (+1 Specrew-managed) - review/commit them before advancing.
 
 ## Context the receiving host needs that artifacts don't carry
 
-branch 001-layout-autocorrect, HEAD 526d0b2 (implement(001): T004, T007-T010, T020, T025 - iteration 001 complete). Active feature 001-layout-autocorrect, boundary before-implement. Your uncommitted work: scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/001/plan.md, specs/001-layout-autocorrect/iterations/001/quality/mechanical-findings.json, specs/001-layout-autocorrect/iterations/001/review.md. (7 Specrew-managed files also uncommitted.)
+branch 001-layout-autocorrect, HEAD 930f49b (chore(lint): auto-fix markdownlint violations). Active feature 001-layout-autocorrect, boundary before-implement. Your uncommitted work: specs/001-layout-autocorrect/iterations/001/state.md. (1 Specrew-managed files also uncommitted.)
 
 ## Recent conversation (last few exchanges, hook-captured)
 
-- **assistant:** Now `DictionaryAccessor` (T020) — the only component in this iteration that touches the outside world, and the one that enforces schema-version and licence rules:
 - **assistant:** Now the corpus accuracy test (T025) — the one that produces the number this iteration exists to produce:
 - **assistant:** All 5 corpus tests pass — meaning zero false corrections across the must-not-correct set, and every true positive corrected to the right text. Now the CI lane (T004) and composition root (T008):
 - **assistant:** Whole solution builds clean with warnings-as-errors, and all 57 tests pass. Recording the measured evidence and the one honest gap:
@@ -51,6 +50,7 @@ branch 001-layout-autocorrect, HEAD 526d0b2 (implement(001): T004, T007-T010, T0
 - **assistant:** One row doesn't match disk truth — the corpus test landed in Platform.Tests, since it needs the real accessor:
 - **assistant:** The earlier round only saw planning artifacts; code exists now, so I want another round over the actual code rather than closing on the stale one:
 - **assistant:** The review tool is in an inconsistent state — it reports round 1 waiting for an answer, then reports nothing waiting when I answer it. I've tried twice; per the recovery guidance I'll stop rather than keep retrying. Let me check the actual ...
+- **assistant:** Confirmed: only one review run exists on disk — the one from before any code was written. The later attempts allocated run IDs but never executed. So the independent Copilot review has **not** seen the code, and I'll record that as a gap ra...
 
 Full transcript (read on-demand for depth): C:\Users\alon\.claude\projects\C--Dev-KeyContextAI\e9c42e87-5f87-44b1-8b2c-9dfc70bfdd46.jsonl
 
@@ -72,3 +72,4 @@ What would you like to do? Type one of these:
   discuss prompt 1
 
 <!-- SPECREW-VERDICT-BOUNDARY: tasks -> before-implement -->
+
