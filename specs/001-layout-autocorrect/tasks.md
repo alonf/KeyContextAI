@@ -150,32 +150,37 @@ Phase 2 (Foundational — blocks everything)
 - Phase 5: T036 and T037 in parallel.
 - Phase 7: T045, T046, T047 in parallel.
 
-## Capacity and Deferral
+## Capacity and Iteration Assignment
 
 **Configured capacity**: 20 story points per iteration, overcommit threshold 1.0.
 
-Effort is estimated per task in the iteration plan's task table. The decomposition above is **48 tasks
-covering 31 requirements**, which will not fit 20 story points — this is the overrun predicted at the
-plan boundary and it is named here rather than absorbed.
+The 48 tasks sum to **70.5 story points**. The human's decision at the tasks boundary was to **keep the
+20-point capacity** and split the work across four iterations, rather than inflate the capacity to fit.
+What calibration produces after each iteration is the **actual velocity in days per story point**, which
+turns a fixed 20-point capacity into an increasingly accurate time prediction — a number that only
+becomes real by being measured.
 
-**Proposed deferral candidates, in the order I would defer them** (lowest-priority requirement slices
-first, per the configured manual defer strategy):
+| Iteration | Deliverable | Tasks | SP |
+| --- | --- | --- | --- |
+| **001** | The detection algorithm proven against a real corpus — a **measured** false-correction rate, with no UI | T001–T016, T020, T025 | 19.5 |
+| 002 | Live single-word correction plus the privacy lifecycle — a tool safe to leave running | T017–T019, T021–T024, T033–T037 | 17.5 |
+| 003 | Multi-word runs, the Option B committing-key path, resilience and diagnostics — reliability | T026–T032, T045–T047 | 19 |
+| 004 | Tray, settings, flip hotkey, learning, quickstart evidence — the experience | T038–T044, T048 | 14.5 |
 
-1. **T043 — the settings window** (FR-026). The tray already exposes pause, mode, and exclusion, so the
-   window is convenience in iteration 001. Deferring it means editing the JSON settings file by hand,
-   which is acceptable for a maintainer dogfooding the tool. **Largest saving, lowest pain.**
-2. **T042 — learning from repeated use** (the retyping half of FR-009a). Flip-back learning is the
-   unambiguous half and is cheap; the repeated-use inference is the part that needs a conservative
-   threshold and its own tests.
-3. **T045 — the diagnostic log** (FR-031, FR-032). Valuable as a research instrument but not required
-   for the tool to correct text. Deferring it delays the typing-speed analysis.
+**Why iteration 001 ships no user-visible behavior.** It produces the one number the product rests on.
+If the dictionary tier cannot reach SC-001's false-correction target against a real corpus, that is
+worth discovering before a hook, an overlay, and a settings window are built on top of it.
 
-**What must not be deferred**: T031 (suppressed-key delivery), T036 (fail-closed password gate), T037
-(no typed text persisted), and T007 (the architecture test). These are the correctness and trust floor.
+**Why the privacy lifecycle moves forward** from its US-priority position into 002: the password gate is
+a precondition for dogfooding a keystroke-reading tool at all, not a feature of it.
 
-The final effort numbers and the deferral decision belong in the iteration plan's task table at
-file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/001/plan.md and require the human's
-decision before the before-implement gate.
+**What is never deferred**, in whichever iteration it lands: T007 (the architecture test), T031
+(suppressed-key delivery), T036 (fail-closed password gate), T037 (no typed text persisted). These are
+the correctness and trust floor.
+
+Per-task iteration assignment and status are recorded in the task table at
+file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/001/plan.md — iteration 001's tasks
+carry `planned`, later ones carry `deferred` with their target iteration.
 
 ## Requirement Coverage
 
