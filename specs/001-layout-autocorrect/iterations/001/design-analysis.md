@@ -190,31 +190,43 @@ All ten technical lenses were worked at intake with human confirmation; their re
 file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/workshop/ and their bindings are carried into
 this analysis rather than re-decided.
 
-- **architecture-core** — Addressed: the option comparison is entirely about how the bound hook and
-  pipeline model satisfy FR-005b; see Option B Approach (speculative verdict off the hook thread) and
-  Option C Trade-offs (why owning the input stream contradicts the bound single-process trust model).
-- **component-design** — Addressed: see the Co-Design Record below — Option B adds no components, and
-  the two changed responsibilities are placed to respect the strict IDesign call rules.
-- **requirements-nfr** — Addressed: see Option B Quality features — the 300 ms `LowLevelHooksTimeout`
-  ceiling is the binding constraint that eliminates any in-callback evaluation, and Option A/B/C are
-  compared on it directly.
-- **ui-ux** — Addressed: see Option B Trade-offs — suppression is invisible to the user by design; the
-  agreed bubble and sound behavior is unchanged by all three options.
-- **data-storage** — Addressed: no option changes the data model; the `VerdictReady` state in Option B
-  is in-memory transcript state, which the data lens already bounds as never-persisted.
-- **security-compliance** — Addressed: see Option B Quality features and Option C Trade-offs — the
-  password-gate and focus-change abandon rules apply unchanged in B, while C materially enlarges the
-  trust ask by routing all input through the tool.
-- **integration-api** — Addressed: see decision point 4 and Option B Trade-offs — the AI tier's 500 ms
-  target against a 300 ms hook ceiling is what excludes it from ever arming a suppression.
-- **observability-resilience** — Addressed: see Option B Approach (compensating re-injection) and
-  Trade-offs — the new failure mode is named and answered, with a diagnostic counter for suppressed keys
-  not re-injected.
-- **devops-operations** — Addressed: iteration slicing below places packaging and signing in 002, after
-  the correcting core is proven, matching the agreed release model.
-- **code-implementation** — Addressed: see Option B Reversibility — the suppression path is confined
-  behind the accessor contract so it degrades to Option A as a runtime kill-switch, consistent with the
-  bound testing posture that engines are tested first and mock-free.
+- **architecture-core**
+  Addressed: the option comparison is entirely about how the bound hook and pipeline model satisfy
+  FR-005b; see Option B Approach (speculative verdict computed off the hook thread) and Option C
+  Trade-offs (why owning the input stream contradicts the bound single-process trust model).
+- **component-design**
+  Addressed: see the Co-Design Record below — Option B adds no components, and the two changed
+  responsibilities (`TranscriptEngine` gains `VerdictReady`, `KeystrokeAccessor` gains the flag read)
+  are placed to respect the strict IDesign call rules.
+- **requirements-nfr**
+  Addressed: see Option B Quality features — the 300 ms `LowLevelHooksTimeout` ceiling is the binding
+  constraint that eliminates any in-callback evaluation, and Options A, B and C are compared directly
+  against it.
+- **ui-ux**
+  Addressed: see Option B Trade-offs and the agreed UI layout in the Co-Design Record — suppression is
+  invisible to the user by design, and the agreed bubble, sound and tray behavior is unchanged by all
+  three options.
+- **data-storage**
+  Addressed: no option changes the data model; the `VerdictReady` state introduced by Option B is
+  in-memory transcript state, which the data lens already bounds as never-persisted.
+- **security-compliance**
+  Addressed: see Option B Quality features and Option C Trade-offs — the fail-closed password gate and
+  the focus-change abandon rule apply unchanged under B, while C materially enlarges the trust ask by
+  routing every keystroke through the tool.
+- **integration-api**
+  Addressed: see decision point 4 and Option B Trade-offs — the AI tier's 500 ms target against a
+  300 ms hook ceiling is precisely what excludes it from ever arming a suppression, so AI-tier
+  corrections stay post-hoc.
+- **observability-resilience**
+  Addressed: see Option B Approach (the compensating re-injection path) and Trade-offs — the new
+  failure mode is named and answered, with a diagnostic counter for suppressed keys not re-injected.
+- **devops-operations**
+  Addressed: see the agreed iteration slicing below — packaging, signing and the CI release lane move
+  to iteration 002, after the correcting core is proven, matching the agreed pr-flow release model.
+- **code-implementation**
+  Addressed: see Option B Reversibility cost — the suppression path is confined behind the accessor
+  contract so it degrades to Option A as a runtime kill-switch, consistent with the bound testing
+  posture that engines are tested first and mock-free.
 
 ## Co-Design Record
 
@@ -223,7 +235,10 @@ agreed at the intake component-design lens and re-confirmed here as the structur
 the human typed **"B"** for the committing-key design and **"2"** for the slicing, after both the map
 and the Option B flow were rendered in full.
 
-### Agreed component map
+### Agreed component-to-responsibility map
+
+Every component is named below with its one-line responsibility, grouped by the bound IDesign
+vocabulary (Clients, Managers, Engines, ResourceAccessors).
 
 ```text
   CLIENTS          ┌────────────┐  ┌───────────────┐
@@ -284,6 +299,39 @@ and the Option B flow were rendered in full.
 - `LlmAccessor` — the MAF agent call: one sentence of context in, a structured verdict out
 - `AudioAccessor` — plays the tiered feedback sounds
 - `SettingsAccessor` — persists settings; encrypts credentials at rest
+
+### Agreed UI layout (ui-ux is a selected lens)
+
+The UI layout agreed at the ui-ux lens is unchanged by this design decision — suppression and
+re-injection are invisible to the user — and is carried here so the agreement is durable rather than
+living only in the intake record. The correction bubble screen layout:
+
+```text
+ Text the user is typing in some other app
+ ┌──────────────────────────────────────────────────┐
+ │  Hi Dana, akuo| ...                              │
+ │                └─ caret                          │
+ │      ╭───────────────────────────────╮           │
+ │      │  akuo → שלום      EN ▸ HE  ⎌  │  ← bubble │
+ │      ╰───────────────────────────────╯           │
+ └──────────────────────────────────────────────────┘
+   what changed ─┘         new layout ─┘  flip hint ─┘
+```
+
+The tray screen layout, which is the entire interactive surface:
+
+```text
+ ╭──────────────────────────────╮
+ │ ● KeyContext AI — Active     │   ● green: active   ◐ amber: LLM offline
+ │──────────────────────────────│   ○ grey: paused
+ │ Pause corrections            │
+ │ Mode ▸  Correct / Notify only│
+ │ Exclude "Visual Studio"      │  ← current foreground app, one click
+ │──────────────────────────────│
+ │ Settings…                    │
+ │ Quit                         │
+ ╰──────────────────────────────╯
+```
 
 ### Agreed flow — the committing-key path (Option B)
 
