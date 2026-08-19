@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "pair_id": "en-US<->he-IL",
+  "layouts": {
+    "en-US": {
+      "name": "US English",
+      "direction": "ltr"
+    },
+    "he-IL": {
+      "name": "Hebrew (Standard)",
+      "direction": "rtl"
+    }
+  },
+  "comment": [
+    "Each entry maps one physical key to the character each layout produces on it.",
+    "Scan codes are the Windows set-1 make codes for the three letter rows.",
+    "Translation always works from the scan code, never from the rendered character,",
+    "so a correction does not depend on which layout happened to be active."
+  ],
+  "keys": [
+    { "scan": 16, "en-US": "q", "he-IL": "/" },
+    { "scan": 17, "en-US": "w", "he-IL": "'" },
+    { "scan": 18, "en-US": "e", "he-IL": "ק" },
+    { "scan": 19, "en-US": "r", "he-IL": "ר" },
+    { "scan": 20, "en-US": "t", "he-IL": "א" },
+    { "scan": 21, "en-US": "y", "he-IL": "ט" },
+    { "scan": 22, "en-US": "u", "he-IL": "ו" },
+    { "scan": 23, "en-US": "i", "he-IL": "ן" },
+    { "scan": 24, "en-US": "o", "he-IL": "ם" },
+    { "scan": 25, "en-US": "p", "he-IL": "פ" },
+    { "scan": 30, "en-US": "a", "he-IL": "ש" },
+    { "scan": 31, "en-US": "s", "he-IL": "ד" },
+    { "scan": 32, "en-US": "d", "he-IL": "ג" },
+    { "scan": 33, "en-US": "f", "he-IL": "כ" },
+    { "scan": 34, "en-US": "g", "he-IL": "ע" },
+    { "scan": 35, "en-US": "h", "he-IL": "י" },
+    { "scan": 36, "en-US": "j", "he-IL": "ח" },
+    { "scan": 37, "en-US": "k", "he-IL": "ל" },
+    { "scan": 38, "en-US": "l", "he-IL": "ך" },
+    { "scan": 39, "en-US": ";", "he-IL": "ף" },
+    { "scan": 44, "en-US": "z", "he-IL": "ז" },
+    { "scan": 45, "en-US": "x", "he-IL": "ס" },
+    { "scan": 46, "en-US": "c", "he-IL": "ב" },
+    { "scan": 47, "en-US": "v", "he-IL": "ה" },
+    { "scan": 48, "en-US": "b", "he-IL": "נ" },
+    { "scan": 49, "en-US": "n", "he-IL": "מ" },
+    { "scan": 50, "en-US": "m", "he-IL": "צ" },
+    { "scan": 51, "en-US": ",", "he-IL": "ת" },
+    { "scan": 52, "en-US": ".", "he-IL": "ץ" },
+    { "scan": 53, "en-US": "/", "he-IL": "." }
+  ]
+}

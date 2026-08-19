@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "language": "he-IL",
+  "name": "Hebrew — starter pack",
+  "source": "Hand-authored starter list for iteration 001",
+  "licence": "CC0-1.0",
+  "licence_verified": true,
+  "words_file": "words.txt",
+  "status": "starter",
+  "comment": [
+    "As with the English pack: a small hand-authored CC0 list so iteration 001 can measure",
+    "detection behaviour honestly, rather than shipping an unverified third-party word list.",
+    "Hebrew is written without niqqud here, which is how it is typed in practice.",
+    "The full permissively licensed pack is still to be sourced — see the iteration 001 drift log."
+  ]
+}

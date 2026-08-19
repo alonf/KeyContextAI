@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    # Windows-only by design: the product targets Windows and the platform tests use Win32.
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        run: dotnet restore
+
+      # Warnings are errors, so a build failure here includes analyzer findings.
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+        env:
+          ContinuousIntegrationBuild: true
+
+      # The architecture test enforces the IDesign call rules. It runs first so a structural
+      # violation is reported before a wall of unrelated behavioural failures.
+      - name: Architecture rules
+        run: dotnet test tests/KeyContextAI.Architecture.Tests --no-build --configuration Release
+
+      - name: Unit tests
+        run: dotnet test tests/KeyContextAI.Core.Tests --no-build --configuration Release
+
+      # Includes the corpus accuracy measurement that evidences SC-001.
+      - name: Platform and corpus tests
+        run: dotnet test tests/KeyContextAI.Platform.Tests --no-build --configuration Release

@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "pair": "en-US<->he-IL",
+  "comment": [
+    "The golden corpus SC-001 is measured against.",
+    "Every case names what the user MEANT and what appeared on screen, plus the expected verdict.",
+    "true_positive  : wrong-layout text that must be corrected.",
+    "true_negative  : text typed correctly, which must be left alone.",
+    "ambiguous      : text that is a real word in BOTH readings, which must be left alone because",
+    "                 choosing would be a guess, and a wrong guess mangles what the user meant.",
+    "unknown        : text recognized in neither language (names, identifiers, typos) — left alone.",
+    "A false correction is any case where the engine corrects a true_negative, an ambiguous, or an",
+    "unknown. That count over the total is the number SC-001 constrains."
+  ],
+  "cases": [
+    { "id": "tp-01", "kind": "true_positive", "typed_layout": "en-US", "on_screen": "akuo",   "intended": "שלום",  "intended_layout": "he-IL" },
+    { "id": "tp-02", "kind": "true_positive", "typed_layout": "en-US", "on_screen": ",usv",   "intended": "תודה",  "intended_layout": "he-IL" },
+    { "id": "tp-03", "kind": "true_positive", "typed_layout": "en-US", "on_screen": "tbh",    "intended": "אני",   "intended_layout": "he-IL" },
+    { "id": "tp-04", "kind": "true_positive", "typed_layout": "en-US", "on_screen": "yuc",    "intended": "טוב",   "intended_layout": "he-IL" },
+    { "id": "tp-05", "kind": "true_positive", "typed_layout": "en-US", "on_screen": "cuer",   "intended": "בוקר",  "intended_layout": "he-IL" },
+    { "id": "tp-06", "kind": "true_positive", "typed_layout": "en-US", "on_screen": "vhuo",   "intended": "היום",  "intended_layout": "he-IL" },
+    { "id": "tp-07", "kind": "true_positive", "typed_layout": "en-US", "on_screen": "gcusv",  "intended": "עבודה", "intended_layout": "he-IL" },
+    { "id": "tp-08", "kind": "true_positive", "typed_layout": "en-US", "on_screen": "atkv",   "intended": "שאלה",  "intended_layout": "he-IL" },
+    { "id": "tp-09", "kind": "true_positive", "typed_layout": "en-US", "on_screen": "kt",     "intended": "לא",    "intended_layout": "he-IL" },
+    { "id": "tp-10", "kind": "true_positive", "typed_layout": "en-US", "on_screen": "fi",     "intended": "כן",    "intended_layout": "he-IL" },
+
+    { "id": "tp-11", "kind": "true_positive", "typed_layout": "he-IL", "on_screen": "יקךךם",  "intended": "hello",  "intended_layout": "en-US" },
+    { "id": "tp-12", "kind": "true_positive", "typed_layout": "he-IL", "on_screen": "אישמלד", "intended": "thanks", "intended_layout": "en-US" },
+    { "id": "tp-13", "kind": "true_positive", "typed_layout": "he-IL", "on_screen": "פךקשדק", "intended": "please", "intended_layout": "en-US" },
+    { "id": "tp-14", "kind": "true_positive", "typed_layout": "he-IL", "on_screen": "'םרל",   "intended": "work",   "intended_layout": "en-US" },
+    { "id": "tp-15", "kind": "true_positive", "typed_layout": "he-IL", "on_screen": "אקדא",   "intended": "test",   "intended_layout": "en-US" },
+    { "id": "tp-16", "kind": "true_positive", "typed_layout": "he-IL", "on_screen": "בםגק",   "intended": "code",   "intended_layout": "en-US" },
+    { "id": "tp-17", "kind": "true_positive", "typed_layout": "he-IL", "on_screen": "כןךק",   "intended": "file",   "intended_layout": "en-US" },
+
+    { "id": "tn-01", "kind": "true_negative", "typed_layout": "en-US", "on_screen": "hello" },
+    { "id": "tn-02", "kind": "true_negative", "typed_layout": "en-US", "on_screen": "world" },
+    { "id": "tn-03", "kind": "true_negative", "typed_layout": "en-US", "on_screen": "meeting" },
+    { "id": "tn-04", "kind": "true_negative", "typed_layout": "en-US", "on_screen": "tomorrow" },
+    { "id": "tn-05", "kind": "true_negative", "typed_layout": "en-US", "on_screen": "question" },
+    { "id": "tn-06", "kind": "true_negative", "typed_layout": "en-US", "on_screen": "because" },
+    { "id": "tn-07", "kind": "true_negative", "typed_layout": "en-US", "on_screen": "people" },
+    { "id": "tn-08", "kind": "true_negative", "typed_layout": "en-US", "on_screen": "should" },
+    { "id": "tn-09", "kind": "true_negative", "typed_layout": "en-US", "on_screen": "keyboard" },
+    { "id": "tn-10", "kind": "true_negative", "typed_layout": "en-US", "on_screen": "review" },
+
+    { "id": "tn-11", "kind": "true_negative", "typed_layout": "he-IL", "on_screen": "שלום" },
+    { "id": "tn-12", "kind": "true_negative", "typed_layout": "he-IL", "on_screen": "תודה" },
+    { "id": "tn-13", "kind": "true_negative", "typed_layout": "he-IL", "on_screen": "עבודה" },
+    { "id": "tn-14", "kind": "true_negative", "typed_layout": "he-IL", "on_screen": "מחשב" },
+    { "id": "tn-15", "kind": "true_negative", "typed_layout": "he-IL", "on_screen": "פגישה" },
+    { "id": "tn-16", "kind": "true_negative", "typed_layout": "he-IL", "on_screen": "שאלה" },
+    { "id": "tn-17", "kind": "true_negative", "typed_layout": "he-IL", "on_screen": "משפחה" },
+    { "id": "tn-18", "kind": "true_negative", "typed_layout": "he-IL", "on_screen": "בוקר" },
+
+    { "id": "am-01", "kind": "ambiguous", "typed_layout": "en-US", "on_screen": "so",
+      "note": "s+o renders as דם (blood) in Hebrew. Both readings are real words, so correcting would be a coin flip." },
+
+    { "id": "un-01", "kind": "unknown", "typed_layout": "en-US", "on_screen": "xyzzy",  "note": "nonsense in both readings" },
+    { "id": "un-02", "kind": "unknown", "typed_layout": "en-US", "on_screen": "kubectl", "note": "an identifier, not a word in either language" },
+    { "id": "un-03", "kind": "unknown", "typed_layout": "en-US", "on_screen": "zzzz",   "note": "keyboard mashing" },
+    { "id": "un-04", "kind": "unknown", "typed_layout": "he-IL", "on_screen": "ךךךך",   "note": "nonsense in both readings" },
+    { "id": "un-05", "kind": "unknown", "typed_layout": "en-US", "on_screen": "Dana",   "note": "a proper noun the dictionary does not carry" }
+  ]
+}
