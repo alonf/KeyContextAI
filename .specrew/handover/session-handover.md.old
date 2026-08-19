@@ -2,8 +2,8 @@
 schema: v1
 source: PostToolUse
 from_host: claude
-recorded_at: 2026-08-19T08:44:20.9278457Z
-from_commit: f14f72a
+recorded_at: 2026-08-19T08:47:19.7075479Z
+from_commit: a9a1aa6
 active_feature: 001-layout-autocorrect
 active_boundary: before-implement
 last_authorized_boundary: before-implement
@@ -14,12 +14,12 @@ workshop_done: architecture-core, component-design, requirements-nfr, ui-ux, dat
 
 ## What I just did (last 3-5 turns or last boundary work)
 
-- [2026-08-19T08:44:20Z] (PostToolUse) 93 changed user file(s) [Directory.Build.props, KeyContextAI.slnx, src/KeyContextAI.App/App.xaml, src/KeyContextAI.App/App.xaml.cs, src/KeyContextAI.App/AssemblyInfo.cs, src/KeyContextAI.App/KeyContextAI.App.csproj, src/KeyContextAI.App/MainWindow.xaml, src/KeyContextAI.App/MainWindow.xaml.cs, src/KeyContextAI.App/obj/KeyContextAI.App.csproj.nuget.dgspec.json, src/KeyContextAI.App/obj/KeyContextAI.App.csproj.nuget.g.props, src/KeyContextAI.App/obj/KeyContextAI.App.csproj.nuget.g.targets, src/KeyContextAI.App/obj/project.assets.json, +more] (+5 Specrew-managed); HEAD f14f72a (fix(001): scope the iteration task table to iteration 001 only)
-- [2026-08-19T08:43:57Z] (PostToolUse) 79 changed user file(s) [Directory.Build.props, KeyContextAI.slnx, src/KeyContextAI.App/App.xaml, src/KeyContextAI.App/App.xaml.cs, src/KeyContextAI.App/AssemblyInfo.cs, src/KeyContextAI.App/KeyContextAI.App.csproj, src/KeyContextAI.App/MainWindow.xaml, src/KeyContextAI.App/MainWindow.xaml.cs, src/KeyContextAI.App/obj/KeyContextAI.App.csproj.nuget.dgspec.json, src/KeyContextAI.App/obj/KeyContextAI.App.csproj.nuget.g.props, src/KeyContextAI.App/obj/KeyContextAI.App.csproj.nuget.g.targets, src/KeyContextAI.App/obj/project.assets.json, +more] (+5 Specrew-managed); HEAD f14f72a (fix(001): scope the iteration task table to iteration 001 only)
-- [2026-08-19T08:43:35Z] (PostToolUse) 63 changed user file(s) [Directory.Build.props, KeyContextAI.slnx, src/KeyContextAI.App/App.xaml, src/KeyContextAI.App/App.xaml.cs, src/KeyContextAI.App/AssemblyInfo.cs, src/KeyContextAI.App/KeyContextAI.App.csproj, src/KeyContextAI.App/MainWindow.xaml, src/KeyContextAI.App/MainWindow.xaml.cs, src/KeyContextAI.App/obj/KeyContextAI.App.csproj.nuget.dgspec.json, src/KeyContextAI.App/obj/KeyContextAI.App.csproj.nuget.g.props, src/KeyContextAI.App/obj/KeyContextAI.App.csproj.nuget.g.targets, src/KeyContextAI.App/obj/project.assets.json, +more] (+5 Specrew-managed); HEAD f14f72a (fix(001): scope the iteration task table to iteration 001 only)
-- [2026-08-19T08:43:20Z] (PostToolUse) 62 changed user file(s) [Directory.Build.props, KeyContextAI.slnx, src/KeyContextAI.App/App.xaml, src/KeyContextAI.App/App.xaml.cs, src/KeyContextAI.App/AssemblyInfo.cs, src/KeyContextAI.App/KeyContextAI.App.csproj, src/KeyContextAI.App/MainWindow.xaml, src/KeyContextAI.App/MainWindow.xaml.cs, src/KeyContextAI.App/obj/KeyContextAI.App.csproj.nuget.dgspec.json, src/KeyContextAI.App/obj/KeyContextAI.App.csproj.nuget.g.props, src/KeyContextAI.App/obj/KeyContextAI.App.csproj.nuget.g.targets, src/KeyContextAI.App/obj/project.assets.json, +more] (+5 Specrew-managed); HEAD f14f72a (fix(001): scope the iteration task table to iteration 001 only)
-- [2026-08-19T08:43:04Z] (PostToolUse) 61 changed user file(s) [Directory.Build.props, KeyContextAI.slnx, src/KeyContextAI.App/App.xaml, src/KeyContextAI.App/App.xaml.cs, src/KeyContextAI.App/AssemblyInfo.cs, src/KeyContextAI.App/KeyContextAI.App.csproj, src/KeyContextAI.App/MainWindow.xaml, src/KeyContextAI.App/MainWindow.xaml.cs, src/KeyContextAI.App/obj/KeyContextAI.App.csproj.nuget.dgspec.json, src/KeyContextAI.App/obj/KeyContextAI.App.csproj.nuget.g.props, src/KeyContextAI.App/obj/KeyContextAI.App.csproj.nuget.g.targets, src/KeyContextAI.App/obj/project.assets.json, +more] (+5 Specrew-managed); HEAD f14f72a (fix(001): scope the iteration task table to iteration 001 only)
-- [2026-08-19T08:42:36Z] (PostToolUse) 60 changed user file(s) [Directory.Build.props, KeyContextAI.slnx, src/KeyContextAI.App/App.xaml, src/KeyContextAI.App/App.xaml.cs, src/KeyContextAI.App/AssemblyInfo.cs, src/KeyContextAI.App/KeyContextAI.App.csproj, src/KeyContextAI.App/MainWindow.xaml, src/KeyContextAI.App/MainWindow.xaml.cs, src/KeyContextAI.App/obj/KeyContextAI.App.csproj.nuget.dgspec.json, src/KeyContextAI.App/obj/KeyContextAI.App.csproj.nuget.g.props, src/KeyContextAI.App/obj/KeyContextAI.App.csproj.nuget.g.targets, src/KeyContextAI.App/obj/project.assets.json, +more] (+5 Specrew-managed); HEAD f14f72a (fix(001): scope the iteration task table to iteration 001 only)
+- [2026-08-19T08:47:19Z] (PostToolUse) 3 changed user file(s) [src/KeyContextAI.Core/Engines/DetectionEngine.cs, tests/KeyContextAI.Core.Tests/CautionLevelTests.cs, tests/KeyContextAI.Core.Tests/DetectionEngineTests.cs] (+3 Specrew-managed); HEAD a9a1aa6 (implement(001): T001-T003, T005-T006, T011, T013-T014, T016)
+- [2026-08-19T08:46:56Z] (PostToolUse) 2 changed user file(s) [src/KeyContextAI.Core/Engines/DetectionEngine.cs, tests/KeyContextAI.Core.Tests/DetectionEngineTests.cs] (+3 Specrew-managed); HEAD a9a1aa6 (implement(001): T001-T003, T005-T006, T011, T013-T014, T016)
+- [2026-08-19T08:46:53Z] (PostToolUse) 2 changed user file(s) [src/KeyContextAI.Core/Engines/DetectionEngine.cs, tests/KeyContextAI.Core.Tests/DetectionEngineTests.cs] (+3 Specrew-managed); HEAD a9a1aa6 (implement(001): T001-T003, T005-T006, T011, T013-T014, T016)
+- [2026-08-19T08:46:22Z] (PostToolUse) 2 changed user file(s) [src/KeyContextAI.Core/Engines/DetectionEngine.cs, tests/KeyContextAI.Core.Tests/DetectionEngineTests.cs] (+3 Specrew-managed); HEAD a9a1aa6 (implement(001): T001-T003, T005-T006, T011, T013-T014, T016)
+- [2026-08-19T08:46:19Z] (PostToolUse) 2 changed user file(s) [src/KeyContextAI.Core/Engines/DetectionEngine.cs, tests/KeyContextAI.Core.Tests/DetectionEngineTests.cs] (+3 Specrew-managed); HEAD a9a1aa6 (implement(001): T001-T003, T005-T006, T011, T013-T014, T016)
+- [2026-08-19T08:46:00Z] (PostToolUse) 2 changed user file(s) [src/KeyContextAI.Core/Engines/DetectionEngine.cs, tests/KeyContextAI.Core.Tests/DetectionEngineTests.cs] (+3 Specrew-managed); HEAD a9a1aa6 (implement(001): T001-T003, T005-T006, T011, T013-T014, T016)
 
 ## Why I'm stopping (the switch trigger)
 
@@ -35,22 +35,22 @@ Hook-captured at trigger 'PostToolUse' (the agent did not author a handover this
 
 ## Recommended next-immediate-step
 
-Resume feature 001-layout-autocorrect at boundary before-implement. 93 of YOUR file(s) are uncommitted [Directory.Build.props, KeyContextAI.slnx, src/KeyContextAI.App/App.xaml, src/KeyContextAI.App/App.xaml.cs, src/KeyContextAI.App/AssemblyInfo.cs, src/KeyContextAI.App/KeyContextAI.App.csproj, src/KeyContextAI.App/MainWindow.xaml, src/KeyContextAI.App/MainWindow.xaml.cs, src/KeyContextAI.App/obj/KeyContextAI.App.csproj.nuget.dgspec.json, src/KeyContextAI.App/obj/KeyContextAI.App.csproj.nuget.g.props, src/KeyContextAI.App/obj/KeyContextAI.App.csproj.nuget.g.targets, src/KeyContextAI.App/obj/project.assets.json, +more] (+5 Specrew-managed) - review/commit them before advancing.
+Resume feature 001-layout-autocorrect at boundary before-implement. 3 of YOUR file(s) are uncommitted [src/KeyContextAI.Core/Engines/DetectionEngine.cs, tests/KeyContextAI.Core.Tests/CautionLevelTests.cs, tests/KeyContextAI.Core.Tests/DetectionEngineTests.cs] (+3 Specrew-managed) - review/commit them before advancing.
 
 ## Context the receiving host needs that artifacts don't carry
 
-branch 001-layout-autocorrect, HEAD f14f72a (fix(001): scope the iteration task table to iteration 001 only). Active feature 001-layout-autocorrect, boundary before-implement. Your uncommitted work: Directory.Build.props, KeyContextAI.slnx, src/KeyContextAI.App/App.xaml, src/KeyContextAI.App/App.xaml.cs, src/KeyContextAI.App/AssemblyInfo.cs, src/KeyContextAI.App/KeyContextAI.App.csproj, src/KeyContextAI.App/MainWindow.xaml, src/KeyContextAI.App/MainWindow.xaml.cs, src/KeyContextAI.App/obj/KeyContextAI.App.csproj.nuget.dgspec.json, src/KeyContextAI.App/obj/KeyContextAI.App.csproj.nuget.g.props, src/KeyContextAI.App/obj/KeyContextAI.App.csproj.nuget.g.targets, src/KeyContextAI.App/obj/project.assets.json, +more. (5 Specrew-managed files also uncommitted.)
+branch 001-layout-autocorrect, HEAD a9a1aa6 (implement(001): T001-T003, T005-T006, T011, T013-T014, T016). Active feature 001-layout-autocorrect, boundary before-implement. Your uncommitted work: src/KeyContextAI.Core/Engines/DetectionEngine.cs, tests/KeyContextAI.Core.Tests/CautionLevelTests.cs, tests/KeyContextAI.Core.Tests/DetectionEngineTests.cs. (3 Specrew-managed files also uncommitted.)
 
 ## Recent conversation (last few exchanges, hook-captured)
 
-- **assistant:** App targets `net10.0-windows` for WPF, so the architecture test must too — this is a Windows-only product, so that's no loss:
-- **assistant:** Skeleton is in place (T001–T003). Now T005 and T006 — the contracts and domain records that everything else depends on:
-- **assistant:** Now the contracts for the three engines in iteration 001 (T005), then their tests before their implementations:
-- **assistant:** Contracts are in place. Now the tests, written before the implementations per the bound test-first posture (T011–T013):
-- **assistant:** The Hebrew row is one character short — it needs all 30 letter keys to align with the English row:
 - **assistant:** Now the engine tests, written against the contracts before any implementation exists:
 - **assistant:** Now the implementations these tests describe (T014, T016):
 - **assistant:** Core builds clean with warnings-as-errors. Running the two engine test suites:
+- **assistant:** Two analyzer rules are fighting standard test conventions — CA1707 rejects the `Method_Scenario_Expectation` naming, and CA1859 wants tests to use concrete types when testing through the interface seam is the point. Scoping those two except...
+- **assistant:** 22 tests passing — the mapping and word-assembly engines are done (T011, T013, T014, T016). Committing, then the detection engine:
+- **assistant:** Now the detection engine — the most consequential component in this iteration, since SC-001 is measured against it. Tests first (T012):
+- **assistant:** That one's legitimate — these are private helpers always called with a `List`, so the analyzer is right:
+- **assistant:** The test caught a real design gap, not a test bug: my confidence scoring gave every multi-candidate case a flat 0.75, which doesn't distinguish "resolved decisively by a 100× frequency gap" from "barely resolved." Since `ResolveWinner` alre...
 
 Full transcript (read on-demand for depth): C:\Users\alon\.claude\projects\C--Dev-KeyContextAI\e9c42e87-5f87-44b1-8b2c-9dfc70bfdd46.jsonl
 
