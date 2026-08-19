@@ -53,3 +53,24 @@ rather than by a unit test, which is a measurement plan rather than an untestabl
 **Bounded scope**: Composition-based input languages, a background service component, dictionary cloud
 sync, and the telemetry backend are explicitly excluded, matching the deferred list agreed in the
 product-domain phase.
+
+## Re-validation after clarify (2026-08-19)
+
+All 16 checklist items passed before clarify and still pass after it: 16/16 → 16/16, with no
+regressions and nothing newly failing.
+
+The clarify round added seven requirements and one success criterion, and each strengthens an item
+rather than threatening one:
+
+- **FR-005b** (word-completion trigger) removed a testability gap — "a completed word" was previously
+  undefined, which would have made acceptance scenarios unfalsifiable.
+- **FR-006** (caution-level semantics) converted a vague adjective set into behavior that can be tested,
+  which is exactly what the "no unquantified adjectives" criterion asks for.
+- **FR-009a / FR-009b** (learning and its privacy limit) added capability without weakening the
+  no-persistence rule, because the limit was written alongside the capability rather than after it.
+- **FR-008a** (dictionary licence provenance) closed a constraint the spec had silently assumed.
+- **SC-013** (unwanted corrections do not recur) is measurable by replay across sessions.
+
+Content quality holds: none of the new requirements names a technology. FR-008a comes closest by naming
+licence families, but a licence is a legal constraint on the product rather than an implementation
+choice, so it belongs in the spec.

@@ -149,6 +149,9 @@ kind; inspect all files the tool writes and confirm no typed text is present.
   input surfaces) — the correction is abandoned and, after repeated failures in the same application,
   the user is offered an exclusion.
 - The user presses the flip hotkey when no correction is pending — nothing happens.
+- The user finishes a message with Enter, sending it — the last word is evaluated on that keystroke, and
+  if the correction cannot complete before the message is sent it is abandoned rather than applied to a
+  now-empty input box.
 - A dictionary or settings file is corrupt or from an unknown version — the tool refuses that file with
   a visible reason and continues with what remains valid, rather than silently misreading it.
 - The keyboard hook is dropped by the operating system — the tool restores it automatically and only
@@ -180,17 +183,37 @@ kind; inspect all files the tool writes and confirm no typed text is present.
 
 - **FR-005**: The system MUST evaluate a completed word by translating the keystrokes to each candidate
   layout and comparing every candidate, including the text as typed, against dictionary data.
+- **FR-005b**: A word MUST be treated as complete when the user types a space, a punctuation mark, or a
+  key that commits input such as Enter or Tab. The system MUST NOT evaluate partially typed words,
+  because word boundaries are not knowable mid-word. On a committing key the system MUST attempt the
+  correction before the key reaches the application, and MUST abandon the attempt rather than delay the
+  keystroke if it cannot complete in time.
 - **FR-005a**: When the user has exactly two layouts installed, the intended layout MUST be taken as the
   one not currently active. When more than two are installed, the system MUST determine which layout the
   text was intended for by comparing all candidate translations, and MUST leave the text unchanged when
   no single candidate is a clear winner.
 - **FR-006**: The system MUST apply a correction only when confidence exceeds the threshold implied by
-  the user's chosen caution level, and MUST leave text unchanged when uncertain.
+  the user's chosen caution level, and MUST leave text unchanged when uncertain. The caution level MUST
+  set both the confidence bar and whether an ambiguous case is escalated to the AI tier: **conservative**
+  corrects only unambiguous dictionary matches and never escalates; **balanced** corrects clear matches
+  and escalates ambiguous ones; **aggressive** escalates more readily and accepts a lower AI confidence.
 - **FR-007**: The system MUST widen detection from a single word to the full run of consecutive
   wrong-layout words so a mistyped phrase corrects as one action.
 - **FR-008**: The system MUST support any language pair through data alone, so adding a pair requires
   no change to the correcting behavior itself.
+- **FR-008a**: Shipped dictionary data MUST come only from sources whose licence permits redistribution
+  in an MIT-licensed product, and each language pack MUST record its source and licence so the
+  obligation is verifiable rather than assumed. A language pack whose provenance cannot be established
+  MUST NOT ship.
 - **FR-009**: The system MUST NOT re-correct a word the user has flipped back during that session.
+- **FR-009a**: The system MUST learn from the user's own corrections rather than repeating a mistake.
+  When the user flips back a correction, or repeatedly types a word the system keeps wanting to correct,
+  that word MUST be added to the user's own dictionary as valid in the language they typed it in — even
+  when it appears in no shipped dictionary and no AI tier recognizes it — and MUST stop being corrected
+  in later sessions.
+- **FR-009b**: Only words the user has affirmed, by flipping back a correction or by repeated use, may
+  be written to the user dictionary. No other typed text may be persisted by the learning behavior, and
+  the learned words MUST live in the user's own readable, editable file.
 
 **Correction**
 
@@ -260,8 +283,9 @@ kind; inspect all files the tool writes and confirm no typed text is present.
   intended, the target layout, the confidence, and which tier produced it.
 - **Layout pair**: the mapping between two keyboard layouts that makes translation possible. Shipped as
   data; extending the tool to a new pair means adding a pair, not changing behavior.
-- **Dictionary**: the word data for one language, in two parts — the shipped set and the user's own
-  additions and never-correct entries, kept separate and user-inspectable.
+- **Dictionary**: the word data for one language, in two parts — the shipped set, which carries its
+  source and licence, and the user's own additions and never-correct entries, kept separate and
+  user-inspectable. The user's part grows as the tool learns from corrections they reject.
 - **Settings**: the user's configuration, including encrypted provider credentials.
 - **Application exclusion**: an application the user has designated as off-limits for capture and
   correction.
@@ -292,8 +316,27 @@ kind; inspect all files the tool writes and confirm no typed text is present.
   correction behavior.
 - **SC-012**: With three or more layouts installed, corrections target the right language as reliably as
   with two, and ambiguous cases leave text untouched rather than guessing.
+- **SC-013**: A word the user rejects once is not offered again — the same unwanted correction does not
+  recur in a later session, so repeated annoyance decays toward zero with use.
 
 ## Clarifications
+
+### Session 2026-08-19 (clarify)
+
+- Q: When does the tool decide a word is finished? → A: On space, punctuation, or a committing key such
+  as Enter or Tab — never mid-word, because word boundaries are not knowable while typing. On a
+  committing key the correction is attempted before the key reaches the application and abandoned if it
+  cannot complete in time. Captured as FR-005b and a new Enter/send edge case.
+- Q: What do the caution levels change? → A: Both the dictionary confidence bar and whether an ambiguous
+  case is escalated to the AI tier — conservative never escalates, balanced escalates ambiguous cases,
+  aggressive escalates readily and accepts lower AI confidence. Additionally, the tool must **learn**:
+  a word the user flips back, or repeatedly retypes against the tool's wishes, is added to their own
+  dictionary as valid in the language they typed it in and is no longer corrected in later sessions.
+  Captured as FR-006, FR-009a, FR-009b and SC-013.
+- Q: Where do the shipped dictionaries come from, and under what licence? → A: Permissively licensed
+  sources only (MIT/BSD/CC-BY/public domain), with each language pack recording its source and licence;
+  richer but GPL-encumbered lists are ruled out so the project's MIT licence stays intact and adding a
+  pair remains a data task. Captured as FR-008a and a revised dictionary-provenance assumption.
 
 ### Session 2026-08-19 (specify boundary)
 
@@ -324,6 +367,9 @@ kind; inspect all files the tool writes and confirm no typed text is present.
   provider, and are shown exactly what is sent before it happens.
 - Distribution is through a public repository release; the maintainer bears no inference costs because
   users supply their own AI access.
+- Permissively licensed word lists of adequate quality exist for the first shipped languages. If a
+  language's only usable list turns out to be licence-incompatible, that pair is deferred rather than
+  shipped, and the AI tier carries that language until a compatible source is found.
 - Telemetry infrastructure is out of scope for this release; the user-facing consent and controls ship
   with the feature while the receiving service comes later.
 - A concurrent third-party tool performing the same layout correction is not accounted for and would
