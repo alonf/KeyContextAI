@@ -412,12 +412,26 @@ the tool.
 
 ## Human Decision
 
-<Populated after the design-analysis verdict — left empty until then so the gate blocks plan until a
-decision is recorded.>
+Recorded 2026-08-19 after the design-analysis stop was presented with all three options, the
+component-to-responsibility map, the agreed UI layout, and the committing-key flow rendered in full.
 
-- **Decision verdict**: <pending>
-- **Chosen option**: <pending>
-- **Reason**: <pending>
-- **Modifications**: <pending>
-- **Design-analysis draft commit**: <pending>
-- **Decision recorded in commit**: <pending>
+- **Decision verdict**: approved for plan with Option B
+- **Chosen option**: Option B — speculative pre-decision, then suppress and re-inject
+- **Reason**: Option B is the only alternative that satisfies FR-005b without changing what the tool
+  fundamentally is. The last word before Enter is the one that goes out to other people, so an
+  observe-only hook (Option A) structurally misses the product's most visible failure. Option B keeps
+  the hook callback trivial by moving the expensive decision earlier rather than making the callback
+  faster, and its failure path — re-inject the suppressed key alone, change nothing else — degrades to
+  exactly the situation the user is in today without the tool. Option C's input-stream ownership was
+  rejected as buying ordering guarantees the transcript journal already provides, at the cost of the
+  trust the product depends on.
+- **Modifications**: None to the option itself. The iteration slicing agreed alongside it splits
+  delivery into 001 (the dogfoodable correcting core) and 002 (AI tier, BYOK, Copilot-CLI discovery,
+  telemetry consent, packaging and signing). Two open refinements were raised as discussion prompts and
+  are carried into the plan as recorded intent rather than as changes to the option: the suppression
+  kill-switch is built but not surfaced in settings, and the speculative pass may arm suppression but
+  never triggers a correction without a real word boundary.
+- **Design-analysis draft commit**: 0122b5d (options first drafted), refined for gate structure in
+  cb129b1
+- **Decision recorded in commit**: this section's commit, recorded below by the boundary commit that
+  contains it
