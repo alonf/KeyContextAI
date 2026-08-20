@@ -33,9 +33,15 @@ Evidence: 57 tests passing (45 core, 5 platform and corpus, 7 architecture), zer
 warnings-as-errors, zero mechanical findings, and 0 false corrections across the 24 must-not-correct
 corpus cases with 17 of 17 true positives corrected to the intended text.
 
-Two things are carried rather than closed, both recorded rather than discovered: DRIFT-001, the
-starter dictionary packs; and the independent co-review, which did not execute over the code, leaving
-the review a self-review. Both are surfaced at review sign-off.
+DRIFT-001 is closed: real dictionary packs are sourced and licence-verified (370,079 English words
+under the Unlicense, 22,250 Hebrew words under CC0), and the corpus measurement was re-run against
+them with the conservative property holding unchanged.
+
+One item is carried: **no independent co-review has produced a valid verdict on the code**. The run
+that examined the implementation returned incomplete/partial with scope-mismatched findings; a later
+run that returned pass had been retargeted onto the iteration plan document rather than the code. The
+review therefore remains a self-review, and that is surfaced at review sign-off rather than recorded
+as cleared.
 
 ## Notes
 
