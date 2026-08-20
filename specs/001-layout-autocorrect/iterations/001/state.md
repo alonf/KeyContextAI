@@ -4,12 +4,17 @@
 **Current Phase**: review-signoff
 **Iteration Status**: reviewing
 **Last Completed Task**: T025 (corpus accuracy measurement)
-**Tasks Remaining**: (none — all 18 iteration-001 tasks are done)
+**Tasks Remaining**: (none — all 18 iteration-001 tasks are complete)
 **In Progress**: (none)
 **Baseline Ref**: 218be8bc61d26a2b2449332c15afa21a3b59e6af
-**Updated**: 2026-08-19T09:20:00Z
+**Updated**: 2026-08-20T08:37:41.6782106Z
 
 ## Execution Summary
+
+<!-- specrew:task-progress-summary:begin -->
+- Task progress: 18 complete, 0 in-progress, 0 pending, 0 blocked.
+- Latest completed task: T025 (corpus accuracy measurement)
+<!-- specrew:task-progress-summary:end -->
 
 All 18 tasks of iteration 001 are complete: T001–T016, T020 and T025, totalling 19.5 of 20 story
 points. The remaining 30 tasks of the feature carry their iteration assignment in tasks.md and move

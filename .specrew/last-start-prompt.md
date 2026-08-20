@@ -1,46 +1,58 @@
----
-baseline_commit_hash: 956f0ad55406b6ed4898ffcc37e9a3c048afe9d0
-updated_at: 2026-08-19T21:15:03Z
-session_state_active: true
-session_state_boundary: review-signoff
-session_state_feature: 001-layout-autocorrect
-session_state_feature_path: "C:\Dev\KeyContextAI\specs\001-layout-autocorrect"
-session_state_iteration: 001
-session_state_task: "(none)"
-session_state_auth_commit: 956f0ad55406b6ed4898ffcc37e9a3c048afe9d0
-session_state_recorded_at: 2026-08-19T21:15:03Z
----
-
 This repository uses Specrew; work here follows the project lifecycle and its human-authorized boundaries.
 
 Project root: C:\Dev\KeyContextAI
 Project root (file:// URL form for clickable references): file:///C:/Dev/KeyContextAI
-Mode: full
-Active feature directory: (create or resolve from this request)
+Mode: welcome-back
+Active feature directory: C:\Dev\KeyContextAI\specs\001-layout-autocorrect
 User feature request: (not provided yet; gather or confirm during intake)
 
-Operational Specrew roster snapshot:
+## Welcome Back Snapshot
 
+- Active feature: 001-layout-autocorrect
+- Feature path: C:\Dev\KeyContextAI\specs\001-layout-autocorrect
+- Worktree: C:\Dev\KeyContextAI
+- Current boundary: review-signoff
+- Current task: (none)
+- Last completed task: (none)
+- Last completed boundary: 956f0ad55406b6ed4898ffcc37e9a3c048afe9d0 at 2026-08-19T21:15:03Z
+- Task progress: 0 complete, 0 in-progress, 18 pending, 0 blocked
+- Pending: T001, T002, T003
+- Validator state: 5 warnings: 5 soft, 0 medium, 0 hard
+
+### Suggested Next Actions
+
+- Start T001 — Solution skeleton, three projects, .NET 10 posture
+- Review validator warnings with: validate-governance
+
+## Resume Reconciliation (current tree, re-computed now)
+
+Last captured stop: 2026-08-20T08:00:48.5155509Z (boundary review-signoff). Files changed since (re-computed NOW - may post-date the last stop): specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml. READ those files to recover the true current state (the handover snapshot may predate your latest work), THEN continue.
+
+
+
+Operational Specrew roster snapshot:
 - Mode: none
 - No Specrew-managed roster snapshot was detected.
 
 Project state snapshot:
-
 - State: active
 - Existing feature directories: (none)
 - Non-bootstrap top-level entries: (none)
 
-Effective delegated agent routing plan:
 
-- Enabled agents:
+
+
+
+Effective delegated agent routing plan:
+- Enabled agents: 
 - No start-time fallback events detected.
 
 ## Resolved Feature-Closeout Delivery
 
-Resolved feature-closeout release model: local-only (provenance: inferred).
-AGENT NEXT ACTION: finalize the local commit and closeout evidence only.
-N/A: remote delivery and release publication do not apply because no remote or publish target is recorded.
-HUMAN ACTION NEEDED: approve the local closeout; no external delivery validation is requested.
+Resolved feature-closeout release model: pr-flow (provenance: recorded).
+AGENT NEXT ACTION: push, open the forge review, address the recorded review gate, and merge per the branch model after human approval.
+N/A: release publication and staged package validation do not apply because no publish target is recorded.
+HUMAN ACTION NEEDED: approve each external mutation and provide any required human review.
 
 This resolved block is authoritative for feature-closeout. Generic lifecycle examples below never add a step
 that this model marks N/A, and staged prerelease-to-stable validation applies only to `beta-stable`.
@@ -81,7 +93,7 @@ This is the authoritative map of Specrew's lifecycle and governance machinery as
 | `.specify/extensions/specrew-speckit/scripts/scaffold-reviewer-artifacts.ps1 -IterationDirectory <dir>` | Scaffolds code-map / coverage-evidence / reviewer-index / review-diagrams / dependency-report. **Param is `-IterationDirectory`, NOT `-SpecDirectory`.** | After implement, before /specrew-review |
 | `.specify/extensions/specrew-speckit/scripts/scaffold-feature-closeout-dashboard.ps1 -ProjectPath . -FeatureId <NNN>` | Scaffolds the closeout-dashboard.md at feature-closeout boundary. **Note: auto-render at feature-closeout is now wired into sync-boundary-state.ps1 (F-040 dogfooding Fix B), so you don't normally invoke this directly.** | Rarely; only for manual re-render |
 | `.specify/extensions/specrew-speckit/scripts/validate-governance.ps1 -ProjectPath .` | Runs the full validator; emits PASS/WARN/FAIL findings | Before each boundary commit and at iteration close |
-| `.specify/extensions/specrew-speckit/scripts/sync-boundary-state.ps1` | Advances the boundary cursor in `.specrew/start-context.json`; writes `.specrew/runtime/pending-verdict-stop.md` with the exact pending boundary, approval phrase, and last-line verdict marker whenever the cursor is ahead of human authorization; auto-renders dashboard.md at iteration-closeout + closeout-dashboard.md at feature-closeout. Use this WRAPPER path from downstream projects — it discovers the installed Specrew module and loads the actual implementation from there. | Called by sync-*agents; invoke directly via `pwsh -File` after each boundary commit when the sync-* agents aren't available. After a human-judgment sync, read/render the pending-verdict stop artifact; do not infer the marker from the next phase. |
+| `.specify/extensions/specrew-speckit/scripts/sync-boundary-state.ps1` | Advances the boundary cursor in `.specrew/start-context.json`; writes `.specrew/runtime/pending-verdict-stop.md` with the exact pending boundary, approval phrase, and last-line verdict marker whenever the cursor is ahead of human authorization; auto-renders dashboard.md at iteration-closeout + closeout-dashboard.md at feature-closeout. Use this WRAPPER path from downstream projects — it discovers the installed Specrew module and loads the actual implementation from there. | Called by sync-* agents; invoke directly via `pwsh -File` after each boundary commit when the sync-* agents aren't available. After a human-judgment sync, read/render the pending-verdict stop artifact; do not infer the marker from the next phase. |
 
 **Any other .ps1 file in the deployment is a utility / deploy / library helper invoked automatically by the system. Do NOT explore them during normal lifecycle execution.** Specifically: `shared-governance.ps1`, `common.ps1`, `Test-CopilotInstructionsChangeType.ps1` are libraries (not invokable); `deploy-speckit-extension.ps1`, `deploy-squad-runtime.ps1`, `scaffold-governance.ps1`, `validate-versions.ps1`, `collision-detect.ps1`, `brownfield-merge.ps1` are init/update helpers; `manage-escalation-state.ps1`, `manage-reviewer-regression.ps1`, `sync-squad-model-overrides.ps1`, `drift-diff.ps1`, `resume-iteration.ps1` are internal helpers called by other scripts. If a script isn't in the table above, you do NOT need to invoke or understand it during normal lifecycle execution.
 
@@ -108,7 +120,6 @@ The `crew_runtime_status` field tells you whether the downstream sync-* agents a
 - **Web-feature acceptance evidence:** for browser features, the review-time evidence must include a screenshot or recorded interaction showing the golden-path AND Enter-key behavior — running `Invoke-WebRequest` against the static HTML proves the file deployed, NOT that the feature works. Lighthouse / DOM-inspection MCPs (or manual browser steps documented in quickstart.md) are the canonical evidence layer.
 
 Follow this conversational sequence before implementation work:
-
 1. Preserve the roster snapshot first. Treat the operational roster above as active project state, do not recast it, and defer specialist additions until the spec and clarify outcome are grounded.
 2. Classify the repository using the project-state snapshot above before asking for spec details:
    - "greenfield-new": freshly bootstrapped project with no meaningful app code or active specs yet
@@ -128,7 +139,7 @@ Then follow the formal Specrew + Spec Kit lifecycle end to end:
 9c. (Folded into the `specrew-design-workshop` skill, Rule 9a — it carries the collaborative co-design conduct and the SC-025 Co-Design Record obligations; Amendment A6 / FR-035 / FR-036.)
 10. After speckit.specify, run speckit.clarify for every newly generated spec before speckit.plan so Spec Kit can surface unresolved questions and validate the spec shape.
 11. Only skip speckit.clarify when resuming an existing feature whose current spec has already been clarified or is demonstrably unchanged and already materially complete for planning.
-
+12. If you skip speckit.clarify, record a concrete dated skip rationale in .squad\decisions.md before speckit.plan, naming why the current spec is already clear enough to plan safely.
 13. If Mode is new-feature, treat the provided text as a short plain-language request or source-spec pointer, ground any missing intake first, and only then invoke speckit.specify. Do not expect the human to provide a full spec upfront.
 14. If Mode is intake-or-resume, inspect the repository, .specify\feature.json, existing specs, and iteration artifacts. Continue any in-progress feature automatically; otherwise gather only the missing intake needed to begin specify, and do not call speckit.specify until that intake is grounded.
 15. If the human provides a URL, pasted draft, or other source document during intake, extract the relevant scope from it, confirm any remaining behavior questions at intake, and then pass the grounded request into speckit.specify.
@@ -153,12 +164,13 @@ Then follow the formal Specrew + Spec Kit lifecycle end to end:
 34. Keep the spec authoritative, surface drift explicitly, and do not claim Spec-Kit/Specrew compliance if you bypass the lifecycle.
 35. If the roster snapshot says Mode is specrew-managed, treat it as active project state. Do NOT run generic Squad team setup, do NOT replace the baseline roles, and do NOT discard supplemental members.
 36. Use the delegated routing plan above for lifecycle work and repair ownership unless the human explicitly overrides it. Planning/problem-solving work should prefer Planner or Spec Steward delegated routing when enabled, and review/governance work should prefer Reviewer or Spec Steward delegated routing when enabled.
-
+37. For every delegated lifecycle, review, governance, or repair spawn, append a short dated runtime-evidence entry to .squad\decisions.md naming the role or work item, requested agent, actual agent, concrete model ID, whether the assignment was honored or fell back, and any fallback reason.
 38. Operate with a no-gap policy for lifecycle-governed work. If review, governance, or validation reveals a known alignment gap across spec, implementation, tests, docs, or observability, do not close the run as complete until the gap is fixed or the human explicitly approves a defer that is recorded in the governing artifacts.
 39. During review and final readiness checks, act as a critical reviewer for hardened lifecycle/governance requirements: classify them as implemented, enforced, observable, and documented, and emit a gap ledger whenever any dimension is missing.
 40. If review finds an ambiguity, contradiction, or missing decision in the governing spec, stop closure, ask targeted clarification questions, update the spec with the answers, and reconcile any affected plan, tasks, review, or governance artifacts before continuing.
 41. If the human approves deferring a known gap, record the defer rationale, affected requirement or artifact, and next action explicitly instead of letting the gap roll into the next iteration invisibly.
-
+42. Before spawning lifecycle agents, read .squad\config.json and honor any "agentModelOverrides". Re-read it before each repair spawn instead of caching it once for the entire session.
+43. When a governance-gate failure activates or resolves repair escalation, run .specify\extensions\specrew-speckit\scripts\sync-squad-model-overrides.ps1 -IterationDirectory <active-iteration> so .squad\config.json is updated immediately from the current escalation state.
 44. On repeated governance-gate failures, use that sync helper to raise the failing repair owner's model tier (balanced -> deep) and clear the temporary override after the gate passes.
 45. **Boundary-commit discipline.** After every lifecycle artifact write that closes a boundary (spec.md after specify, plan.md after plan, tasks.md after tasks, iteration plan + hardening-gate after before-implement, source/tests after implement, review.md after review, retro.md after retro), stage and commit the affected files with a focused message like `boundary(specify): write spec.md` or `boundary(implement): T013 reducer + tests`. Without these commits the F-033 markdownlint gate, F-039 boundary discipline, and the git-history audit trail cannot function — the lifecycle silently bypasses every commit-scoped guardrail.
 46. **Human re-entry packet (mandatory).** At every human-judgment boundary stop, make the stop a human re-entry point. Do not duplicate the same stop with a legacy `=== SPECREW HANDOFF ===` block unless a transitional host/runtime explicitly requires that compatibility. The primary stop contract is this six-section packet:
@@ -220,10 +232,10 @@ At `feature-closeout`, copy the `AGENT NEXT ACTION:` and `HUMAN ACTION NEEDED:` 
 48. **Session opening orientation (mandatory FIRST output).** Your very first user-visible output, immediately after reading `.specrew\last-start-prompt.md` + `.specrew\start-context.json`, must be a short friendly orientation block in the host-rendered shape below (8-15 lines, conversational tone, no bullet-list of phases). The visible Specrew version, selected host, runtime class, and lifecycle position in this block are generated from the installed runtime and saved start context; do not substitute, infer, omit, or claim any other host/runtime behavior. **All artifact and directory references in this block MUST use visible bare `file:///` URLs** built from the Project root URL above (see Rule 52):
 
 ```markdown
-Welcome - Specrew is active in this project.
+Welcome back - resuming feature 001-layout-autocorrect at review-signoff.
 Specrew: 0.40.0-beta3
-Host: claude (Claude Code CLI); runtime: non-Squad
-Lifecycle: new feature intake.
+Host: copilot (GitHub Copilot CLI); runtime: non-Squad
+Lifecycle: feature 001-layout-autocorrect at review-signoff.
 
 How this works: Specrew governs the spec -> plan -> implement -> review -> retro
 lifecycle. This session follows the saved lifecycle prompt and structured start
@@ -235,7 +247,7 @@ What I'll ask from you: clarify questions when something is genuinely ambiguous
 (2-3 max per phase), and an approve/redirect verdict at each boundary stop. I'll
 emit a clear human re-entry packet every time I need you.
 
-What you can browse: no feature exists yet — once you create one, its artifacts land under `specs/<feature-id>/` (spec.md, plan.md, tasks.md) with per-iteration files under `specs/<feature-id>/iterations/<NNN>/`. Open another terminal and run `code .` to browse the workspace; I will share the exact file:/// paths once the feature is scaffolded.
+What you can browse: artifacts land under file:///<project-root-url>/specs/<feature>/ — spec file file:///<project-root-url>/specs/<feature>/spec.md, plan file file:///<project-root-url>/specs/<feature>/plan.md, tasks file file:///<project-root-url>/specs/<feature>/tasks.md, plus the iteration artifacts under file:///<project-root-url>/specs/<feature>/iterations/001/. Open another terminal and run `code .` to browse them while I work. After each iteration close, your dashboard lives at file:///<project-root-url>/specs/<feature>/iterations/<NNN>/dashboard.md.
 
 Starting now: <one specific action — e.g. "creating feature 001-tip-calculator
 and drafting the spec">.
@@ -358,7 +370,7 @@ What would you like to do? Type one of these:
 
 All four response kinds are kept: **approve with instructions** is how a human approves without rubber-stamping, and **discuss prompt N** opens one item without withdrawing approval of the rest. Do NOT add a line warning that clicking or numbering will not authorize — it defends against an affordance no longer offered, plants the idea, and speaks in the machinery's voice. If someone sends 1 anyway, answer them helpfully at that point.
 
-Host-rendered interaction guidance for Claude Code CLI:
-At every human-verdict boundary stop, invoke the specrew-gate-stop skill to PERFORM the stop. That skill's frontmatter disallows the AskUserQuestion tool, so for the stop you have no picker to collapse into: render the FULL Rule 46 six-section re-entry packet -- What I Just Did / Why I Stopped / What Needs Your Review / What Happens Next / Discussion Prompts / What I Need From You, with every artifact reference a visible bare file:/// URL -- followed by the four responses as LINES THE HUMAN CAN LITERALLY SEND ("approved for <to>", "approved for <to> - <your instructions>", "changes needed: <what to change>", "discuss prompt 1"), then stop for the human's typed reply. NOT a numbered list: only a typed phrase is captured, and a number is a selection affordance -- measured, a human typed 1 here, nothing was captured, and the agent edited and committed the spec on the strength of it. Do NOT call AskUserQuestion directly for a boundary verdict on this host: it collapses the packet into the picker's short fields, so the human is asked to approve content they cannot read -- that is a Rule 46 violation, not a valid stop. The specrew-design-workshop skill independently disallows AskUserQuestion for the full workshop and renders numbered prose choices for typed answers, so product-domain, agenda, diagram, and component-map context cannot be swallowed and every recorded workshop answer has a typed-turn receipt. Clarify questions remain unaffected and keep the picker. ONLY boundary verdict stops route through specrew-gate-stop. The four response KINDS are unchanged - approve, approve-with-instructions, send-back, discuss - but they are OFFERED as sendable lines, never as numbered choices. Initial feature intake may remain free-form.
+Host-rendered interaction guidance for GitHub Copilot CLI:
+No structured question/menu primitive is declared for this host package. At every approval boundary render the four responses as lines the human can literally send - "approved for <to>", "approved for <to> - <your instructions>", "changes needed: <what to change>", "discuss prompt 1" - and stop for the typed reply. Workshop product-domain, agenda, and lens questions also use visible prose and typed replies; Ctrl+O or a picker result is no answer and grants no authority. Initial feature intake may remain free-form. Clarify questions should use structured choices when the expected answer set is known and a structured primitive is available; otherwise ask a concise free-form question.
 
 Discussion is not approval unless the human clearly authorizes the boundary after the discussion. The goal is to let the human developer decide unresolved questions and approval boundaries while Specrew follows the lifecycle contract for the selected host/runtime.

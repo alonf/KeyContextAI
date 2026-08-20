@@ -1,1 +1,2 @@
 {"host":"claude","mode":"full","anchor_cleared":null,"handover_valid":false,"handover_placeholder":false,"concurrent_session":false,"concurrency_reason":"none","dedupe_key":"e9c42e87-5f87-44b1-8b2c-9dfc70bfdd46","source":"startup","findings":["no active session anchor"]}
+{"host":"copilot","mode":"welcome-back","anchor_cleared":null,"handover_valid":true,"handover_placeholder":false,"concurrent_session":false,"concurrency_reason":"stale-marker-unclean-exit","dedupe_key":"15d32bb7-f620-4bad-9da7-7c10731bbaff","source":"new","findings":[]}
