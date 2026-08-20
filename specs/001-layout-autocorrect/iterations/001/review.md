@@ -2,9 +2,9 @@
 
 **Feature**: 001-layout-autocorrect
 **Iteration**: 001
-**Reviewed**: 2026-08-19
+**Reviewed**: 2026-08-19 (independence evidence updated 2026-08-20)
 **Commit under review**: `526d0b2`
-**Status**: Complete on the implementation, open on reviewer independence — awaiting human sign-off
+**Status**: Complete — reviewer independence resolved by a valid campaign run — awaiting human sign-off
 **Overall Verdict**: accepted
 
 The `accepted` verdict is this reviewer's assessment of the **implementation**: it does what iteration
@@ -24,14 +24,27 @@ Not in scope, because not built: the keyboard hook, text injection, the transcri
 privacy lifecycle, the tray and overlay clients, the AI tier. Those belong to iterations 002–004 by
 the human-approved slicing.
 
-## Reviewer independence — still OPEN, after a false claim I have retracted
+## Reviewer independence — now CLOSED by a valid campaign run, after a false claim I have retracted
 
 The code-implementation lens selected **Copilot** as the independent co-review host, recorded at
 file:///C:/Dev/KeyContextAI/.specrew/reviewer-hosts.json .
 
-**No independent review has produced a valid verdict on the code.** An earlier revision of this
-document claimed one had. That claim was wrong, it was mine, and it was caught by the maintainer
-asking directly whether the reviewer had really run against the code.
+**A valid independent campaign review of the code now exists.** Run
+`run-20260820-150735904-458c5888` (harness `copilot-cli-file-primary`, target digest `273c69bb`, 250s)
+returned `pass` / `complete` / `current` with `validation: valid`, zero findings, and
+`can_approve_current: true`. Its `examined_paths` list names 36 files and is the evidence that it read
+the code rather than a planning document: all four contracts, all three engines, every domain record,
+`DictionaryAccessor`, `ServiceRegistration`, `CallRuleTests`, the four core test classes,
+`CorpusAccuracyTests`, the corpus, both dictionary packs, the key map, `Directory.Build.props`, the CI
+workflow and the solution file. Its summary reasons about the human-approved slicing explicitly —
+naming the deferred runtime components as intentionally out of scope for iteration 001 — which is
+precisely the yardstick error that spoiled the earlier code-examining run. Authority record:
+file:///C:/Dev/KeyContextAI/.specrew/review/authority/campaigns/cmp-001-layout-autocorrect-i001/runs/run-20260820-150735904-458c5888/result.json
+
+The history below is kept because the retraction it records must stay visible. **An earlier revision of
+this document claimed a valid independent review existed when none did.** That claim was wrong, it was
+mine, and it was caught by the maintainer asking directly whether the reviewer had really run against
+the code.
 
 What the authority store actually holds, both runs sharing target digest `b8585be9`:
 
@@ -39,6 +52,12 @@ What the authority store actually holds, both runs sharing target digest `b8585b
 | --- | --- | --- | --- |
 | `run-20260819-210747148-9bd5980b` | 186s | **The code** — its summary reads "Implementation skeleton present with correct core engines but critical orchestration components missing" | `incomplete`, completion `partial`, 14 findings |
 | `run-20260819-211204294-86de8c6e` | 56s | **The frozen iteration 001 plan** — its summary says so in those words | `pass`, completion `complete`, 0 findings |
+
+And the run that finally settled it, at target digest `273c69bb`:
+
+| Run | Duration | What it examined | Verdict |
+| --- | --- | --- | --- |
+| `run-20260820-150735904-458c5888` | 250s | **The code** — 36 `examined_paths` covering every contract, engine, record, test class and data file | `pass`, completion `complete`, `valid`, 0 findings |
 
 The second run is the one I cited as a clean independent review of the implementation. It reviewed a
 planning document. Passing `--design-context-ref` at the iteration plan did not *scope* the review as I
@@ -65,10 +84,11 @@ later iterations build) and read the source: `DetectionEngine`, `MappingEngine`,
 > right places, the mapping/assembly path is internally consistent, and the tests cover the important
 > failure modes for this slice."
 
-That is a real independent read of the implementation by a different model than the one that wrote it.
-It is **not** Specrew review-authority evidence, because it did not run through the campaign — so the
-`review-signoff` gate still sees no valid campaign result, and the honest position is that independent
-scrutiny happened while the recorded authority for it did not.
+That was a real independent read of the implementation by a different model than the one that wrote it,
+but it was **not** Specrew review-authority evidence, because it did not run through the campaign. It
+now has a campaign counterpart that is: run `run-20260820-150735904-458c5888` above reached the same
+conclusion — no findings — through the governed path, so the two agree and the `review-signoff` gate
+has authority evidence to cite.
 
 One caution recorded because it nearly became a second false claim: at the end of its output the
 reviewer began mimicking this project's boundary-packet format, having read the `.specrew` files, and
@@ -76,12 +96,11 @@ emitted the literal string `approved for review-signoff` with a verdict marker. 
 echoing a template it found in the repository. It is not an approval, it authorizes nothing, and it is
 noted here so no future reader mistakes it for one.
 
-**Why the campaign runs kept missing the code.** A sign-off run auto-anchors its baseline to the last
-recorded pass and reviews only what changed since. Once the bogus pass existed, the only changes were
-governance files — so each subsequent run dutifully reviewed governance files. `--baseline-ref` would
-override the anchor, but attempts to start such a run hit a pause-state loop in which `approve-round`
-reports a round awaiting an answer while `pause-choice` reports none. Three of four rounds are spent,
-one of them on my error.
+**Why the earlier campaign runs kept missing the code.** A sign-off run auto-anchors its baseline to the
+last recorded pass and reviews only what changed since. Once the bogus pass existed, the only changes
+were governance files — so each subsequent run dutifully reviewed governance files. The round approved
+by the maintainer on 2026-08-20 (`cmp-001-layout-autocorrect-i001-round-5`) broke that loop: it ran
+against the full iteration-001 surface and produced the valid code verdict recorded above.
 
 ## Task Verdicts
 
@@ -136,9 +155,11 @@ Every iteration-001 requirement, and how it is evidenced:
 - **Mechanical checks**: `run-mechanical-checks.ps1` reports zero findings.
 - **Independent code review**: obtained OUTSIDE the campaign — Copilot CLI invoked directly, read the
   source, reported no substantive defects in the in-scope code. Real independent scrutiny.
-- **Campaign review authority**: NOT established. The only campaign run that examined the code
-  (`run-20260819-210747148-9bd5980b`) returned `incomplete` / `partial`; the runs that returned `pass`
-  (`...211204294`, `...083412478`) reviewed the iteration plan and the governance artifacts.
+- **Campaign review authority**: ESTABLISHED by `run-20260820-150735904-458c5888` — `pass`,
+  `complete`, `valid`, `current`, zero findings, 36 examined paths spanning the whole iteration-001
+  surface. Earlier runs did not establish it: `run-20260819-210747148-9bd5980b` examined the code but
+  returned `incomplete` / `partial`, and the earlier `pass` runs (`...211204294`, `...083412478`)
+  reviewed the iteration plan and the governance artifacts rather than the code.
 - **Measurement**: recorded at
   file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/001/quality/quality-evidence.md
 
@@ -232,7 +253,7 @@ rather than as "the call rules cannot be broken".
 
 ## Gap Ledger
 
-- **GAP-01 — fixed-now** — independent scrutiny of the code was obtained by invoking Copilot CLI directly, which read the source and found no substantive defects, but no Specrew CAMPAIGN run has produced a valid verdict on the code because sign-off runs auto-anchor to the last pass and so reviewed governance files instead; closure requires either a campaign run with an explicit `--baseline-ref` spanning the code, or the maintainer recording `approved for partial review signoff - <reason>` accepting the out-of-band review as sufficient (dimension: verification independence).
+- **GAP-01 — CLOSED 2026-08-20** — no Specrew campaign run had produced a valid verdict on the code, because sign-off runs auto-anchor to the last pass and so reviewed governance files instead; closed by campaign run `run-20260820-150735904-458c5888`, which examined 36 iteration-001 source, test and data files and returned `pass` / `complete` / `valid` with zero findings, agreeing with the earlier out-of-band Copilot CLI read (dimension: verification independence).
 - **GAP-02 — fixed-now** — dictionary packs were hand-authored starters rather than sourced permissive packs; closed on 2026-08-20 by sourcing 370,079 English words under the Unlicense and 22,250 Hebrew words under CC0, with the corpus measurement re-run against them and the conservative property holding unchanged, as recorded in DRIFT-001 in the iteration drift log (dimension: implemented).
 
 ## What a reviewer should check most closely
@@ -252,19 +273,21 @@ rather than as "the call rules cannot be broken".
 
 ## Verdict
 
-**Accepted on the implementation; reviewer independence is unresolved.**
+**Accepted on the implementation; reviewer independence resolved.**
 
 The iteration delivered what it promised, with evidence rather than assertion: a detection algorithm
 that is conservative by construction, architecture rules enforced by a test that fails the build, and
 a measurement taken against 392,329 real public-domain words. DRIFT-001 is closed — the dictionary
 packs are sourced and licence-verified.
 
-**Independent scrutiny happened; recorded campaign authority did not.** Copilot read the source
-directly and found no substantive defects, which is a genuine second opinion from a different model
-than the one that wrote the code. But no campaign run produced a valid verdict on the implementation,
-so the `review-signoff` gate has no authority evidence to cite. An earlier revision of this document
-claimed a campaign pass covered the code; that was false, and the retraction with its evidence stands
-above.
+**Independent scrutiny happened, and recorded campaign authority now exists for it.** Copilot read the
+source directly and found no substantive defects — a genuine second opinion from a different model than
+the one that wrote the code — and campaign run `run-20260820-150735904-458c5888` reached the same
+conclusion through the governed path, examining 36 iteration-001 files and returning `pass` /
+`complete` / `valid` with zero findings. The `review-signoff` gate has authority evidence to cite. An
+earlier revision of this document claimed a campaign pass covered the code before any did; that was
+false, and the retraction with its evidence stands above so the record shows how the claim was made and
+how it was caught.
 
 One further limit, a property of the corpus rather than the code: 41 cases cannot evidence a rate of
 fewer than 1 false correction per 1,000. Zero false corrections means the algorithm behaves correctly

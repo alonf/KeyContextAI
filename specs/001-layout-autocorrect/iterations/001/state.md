@@ -2,18 +2,19 @@
 
 **Schema**: v2
 **Current Phase**: review-signoff
-**Iteration Status**: reviewing
-**Last Completed Task**: T025 (corpus accuracy measurement)
-**Tasks Remaining**: (none — all 18 iteration-001 tasks are complete)
+**Iteration Status**: not-started
+**Last Completed Task**: (none)
+**Tasks Remaining**: T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025
 **In Progress**: (none)
 **Baseline Ref**: 218be8bc61d26a2b2449332c15afa21a3b59e6af
-**Updated**: 2026-08-20T08:37:41.6782106Z
+**Updated**: 2026-08-20T15:05:51.7844052Z
 
 ## Execution Summary
 
 <!-- specrew:task-progress-summary:begin -->
-- Task progress: 18 complete, 0 in-progress, 0 pending, 0 blocked.
-- Latest completed task: T025 (corpus accuracy measurement)
+- Execution has not started yet.
+- Task progress: 0 complete, 0 in-progress, 18 pending, 0 blocked.
+- Latest completed task: (none)
 <!-- specrew:task-progress-summary:end -->
 
 All 18 tasks of iteration 001 are complete: T001–T016, T020 and T025, totalling 19.5 of 20 story
@@ -42,11 +43,12 @@ DRIFT-001 is closed: real dictionary packs are sourced and licence-verified (370
 under the Unlicense, 22,250 Hebrew words under CC0), and the corpus measurement was re-run against
 them with the conservative property holding unchanged.
 
-One item is carried: **no independent co-review has produced a valid verdict on the code**. The run
-that examined the implementation returned incomplete/partial with scope-mismatched findings; a later
-run that returned pass had been retargeted onto the iteration plan document rather than the code. The
-review therefore remains a self-review, and that is surfaced at review sign-off rather than recorded
-as cleared.
+The carried independence item is now closed: campaign run `run-20260820-150735904-458c5888` produced a
+valid verdict on the code — `pass` / `complete` / `valid`, zero findings, 36 examined paths across the
+iteration-001 source, tests and data. Earlier attempts had failed on scope rather than substance: one
+run examined the implementation but returned incomplete/partial with findings that described later
+iterations' components as absent, and a run that returned pass had been retargeted onto the iteration
+plan document rather than the code.
 
 ## Notes
 
