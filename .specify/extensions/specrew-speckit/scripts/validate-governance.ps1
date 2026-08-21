@@ -855,6 +855,238 @@ function Get-ActiveGapLedgerLines {
     return $activeLines.ToArray()
 }
 
+function Test-ReviewDerivedIndependenceBlock {
+    # W34-A. The independence claim is a function of the store, so it is recomputed rather than read.
+    # Anything may emit the block; a hand-edited one fails here, which is what makes emitting it safe.
+    #
+    # FAIL-OPEN ON ABSENCE: a record without the block is not refused - the same reasoning that gives
+    # W33 and W34-B their fail-open cases, since every record written before this existed has none.
+    param(
+        # A markdown record is mostly blank lines, and a bare [string[]] refuses an array that
+        # contains one - so without this the check throws on every real review.md rather than
+        # reading it. Caught by a fixture whose body had a blank line in it.
+        [AllowEmptyString()][string[]]$ReviewLines,
+        [string]$ProjectRoot,
+        [string]$IterationDirectory,
+        [System.Collections.Generic.List[string]]$Errors
+    )
+    if ($null -eq $ReviewLines -or @($ReviewLines).Count -eq 0) { return }
+    if (-not (Get-Command -Name 'Get-SpecrewEmbeddedIndependenceBlock' -ErrorAction SilentlyContinue)) { return }
+    $embedded = Get-SpecrewEmbeddedIndependenceBlock -ReviewLines $ReviewLines
+    if ([string]::IsNullOrWhiteSpace($embedded)) {
+        # ITEM 6 / RAMP. An absent block is not silence and it is not automatically a refusal.
+        #
+        # The exposure this closes is not the boundary - the signoff gate is already fail-closed and its
+        # override phrase is tree-bound and prompt-captured, so an out-of-band review cannot advance
+        # anything. What is exposed is the MAINTAINER'S DECISION: the override asks whether accepting
+        # partial coverage is safe, and the only input to that judgement is prose written by the party
+        # under review. This puts the machine-derived truth on the same page as the claim.
+        #
+        # THE RAMP PROMOTES ITSELF, rather than waiting on a date or a hand-touched list. A record
+        # written after W34-A landed carries an observed authorship fact BY CONSTRUCTION; one written
+        # before does not. So new records meet the full standard immediately and old ones warn, with no
+        # migration step and no false-positive path - the block always renders, including to "No run
+        # qualifies", so there is no legitimate case where authorship is observed and nothing derives.
+        #
+        # Erroring from the start would wedge the gate shut on every project already holding a
+        # review.md, which is the same call made for W33's fail-open cases and for W34-B's
+        # `unattributed`. A warning that can never become an error is decoration; this one becomes one
+        # the moment the project moves forward.
+        $observedAuthorship = 'unattributed'
+        if ((Get-Command -Name 'Get-SpecrewReviewAuthorship' -ErrorAction SilentlyContinue) -and
+            -not [string]::IsNullOrWhiteSpace($IterationDirectory)) {
+            $recordPath = Join-Path $IterationDirectory 'review.md'
+            if (Test-Path -LiteralPath $recordPath -PathType Leaf) {
+                $relativeRecord = try { ([IO.Path]::GetRelativePath($ProjectRoot, (Resolve-Path -LiteralPath $recordPath).Path)).Replace([char]92, [char]47) } catch { '' }
+                if (-not [string]::IsNullOrWhiteSpace($relativeRecord)) {
+                    $observedAuthorship = [string](Get-SpecrewReviewAuthorship -ProjectRoot $ProjectRoot -ReviewPath $relativeRecord).state
+                }
+            }
+        }
+        $derivedForAbsent = Get-SpecrewDerivedIndependenceBlock -ProjectRoot $ProjectRoot
+        if ($observedAuthorship -cne 'unattributed') {
+            $Errors.Add(("review.md carries no derived independent-review block, and this record was written after the block existed (its authorship was observed: {0}). The block states the machine-checkable part of the independence claim and is recomputed at validation, so it belongs beside whatever the record asserts. Add it:{1}{2}" -f $observedAuthorship, [Environment]::NewLine, $derivedForAbsent))
+        }
+        else {
+            Write-TrustHardeningWarning -Category 'review-independence-block-absent' -Detail (
+                "review.md carries no derived independent-review block, so nothing in this record has been checked against what the review store actually holds. Absent is not clean. This record predates the block; records written from now on are refused without it. The store currently derives:" + [Environment]::NewLine + $derivedForAbsent)
+        }
+        return
+    }
+    $derived = Get-SpecrewDerivedIndependenceBlock -ProjectRoot $ProjectRoot
+    if ([string]$embedded -cne [string]$derived) {
+        $Errors.Add(("review.md carries a derived independent-review block that does not match what this project's review store derives. The block states the machine-checkable part of the independence claim and is recomputed at validation, so it cannot be authored or edited by hand. Replace it with the derived block, or remove it and state plainly what the record's independence rests on. Derived:{0}{1}" -f [Environment]::NewLine, $derived))
+    }
+}
+
+function Test-ReviewRecordAuthorship {
+    # W34-B. Report the observed authorship of the review record. It LABELS, it does not launder: a
+    # record written by the implementing session becomes honest about that, not clean.
+    #
+    # A WARNING, not an error, and deliberately so. The observation says who wrote the verdict; it
+    # does not say the verdict is wrong, and refusing every such record would fail closed on the
+    # unreviewable past - the same reasoning that gives W33 its three fail-open cases. Absence reads
+    # as UNATTRIBUTED and is reported as its own state, because an unobserved record is not a clean
+    # one and silence here would make it look like one.
+    param(
+        [string]$ProjectRoot,
+        [string]$IterationDirectory,
+        [string]$OverallVerdict,
+        [System.Collections.Generic.List[string]]$Errors
+    )
+    if ([string]::IsNullOrWhiteSpace($ProjectRoot) -or [string]::IsNullOrWhiteSpace($IterationDirectory)) { return }
+    if (-not (Get-Command -Name 'Get-SpecrewReviewAuthorship' -ErrorAction SilentlyContinue)) { return }
+    $reviewPath = Join-Path $IterationDirectory 'review.md'
+    if (-not (Test-Path -LiteralPath $reviewPath -PathType Leaf)) { return }
+    $relative = try { ([IO.Path]::GetRelativePath($ProjectRoot, (Resolve-Path -LiteralPath $reviewPath).Path)).Replace([char]92, [char]47) } catch { $null }
+    if ([string]::IsNullOrWhiteSpace($relative)) { return }
+    $authorship = Get-SpecrewReviewAuthorship -ProjectRoot $ProjectRoot -ReviewPath $relative
+    switch ([string]$authorship.state) {
+        'implementing-session' {
+            $who = (@($authorship.implementing_writers) | ForEach-Object { [string]$_.owner } | Select-Object -First 2) -join ', '
+            Write-TrustHardeningWarning -Category 'review-authored-by-implementer' -Detail (
+                "review.md at {0} was written by the session that also wrote source in this project ({1}). The verdicts in it are the implementer's own judgement of the implementer's own work. That is recorded, not refused - cite an independent run for the claims that rest on one." -f $relative, $who)
+        }
+        'unattributed' {
+            Write-TrustHardeningWarning -Category 'review-authorship-unobserved' -Detail (
+                "review.md at {0} carries no observed authorship. Nothing watched it being written - an older record, another host, or a hook that never fired - so who wrote these verdicts is unknown. Unknown is not independent." -f $relative)
+        }
+        default { }
+    }
+}
+
+function Test-ReviewCitedRunEvidence {
+    # W31: A REVIEW RECORD MAY NOT CLAIM MORE THAN ITS CITED EVIDENCE SUPPORTS.
+    #
+    # Measured 2026-08-19 (KeyContextAI). review.md asserted "the independent review ran and passed
+    # against this exact tree" and closed its verification-independence gap, citing a run id. The
+    # authority store said that run examined a single planning document and finished in 57 seconds -
+    # the same duration as a review of planning artifacts with no code in the tree - while the only run
+    # that read the implementation came back `incomplete`/`partial` with 14 findings and was discarded.
+    #
+    # The existing gates check that review.md EXISTS and that its gaps are classified. Nothing checked
+    # whether the run it names is capable of supporting the claim. That is mechanically checkable: the
+    # record cites a run id, the store holds that run's result, and a result that is not complete,
+    # current, valid and passing cannot evidence a clean independent review.
+    #
+    # SCOPED AND FAIL-OPEN BY CONSTRUCTION: it fires only when review.md cites a run id AND that run is
+    # found in this project's store. An uncited record, a pruned store, or an unreadable fact leaves
+    # the check silent - it exists to catch an overstated claim, never to invent one.
+    param(
+        [string[]]$ReviewLines,
+        [string]$ProjectRoot,
+        [System.Collections.Generic.List[string]]$Errors
+    )
+
+    # W35: EVIDENCE IS DECLARED, NEVER INFERRED FROM PROSE.
+    #
+    # This used to scan the WHOLE record for run ids and require every one of them to be complete,
+    # current, valid and passing. It had no notion of citation context, so it could not tell a run the
+    # record RELIES ON from a run the record NAMES IN ORDER TO RETRACT A CLAIM ABOUT IT.
+    #
+    # Measured 2026-08-20 (KeyContextAI, review-signoff boundary): a record that rests on a clean 250s
+    # run - `pass`/`complete`/`valid`, 31 source paths examined - and preserves a retraction naming the
+    # earlier partial run it wrongly relied on, was REFUSED FOR CONTAINING THAT HISTORY. The only way to
+    # pass was to delete the retraction, so the check's single available remedy was destroying the
+    # honesty it exists to enforce. Second time a text-matching detector has punished compliant output
+    # (W16 was bullet glyphs).
+    #
+    # The fix removes the inference rather than sharpening it, per W27's principle. Prose run ids are
+    # NARRATIVE and carry no weight by construction. Evidence comes from two declared sources, and the
+    # UNION of them is checked - so naming a run explicitly can only add scrutiny, never remove it:
+    #   1. an explicit evidence marker, exact and authored for this purpose;
+    #   2. the derived independent-review block, which is computed from the store and recomputed at
+    #      validation, so it cannot be authored.
+    # A record declaring neither has nothing to check here; W34-A's ramp is what governs the absence of
+    # a block, warning for records that predate it and refusing for records written after.
+    if ($null -eq $ReviewLines -or @($ReviewLines).Count -eq 0) { return }
+    $reviewText = ($ReviewLines -join "`n").Replace("`r`n", "`n")
+    # PROVENANCE IS KEPT, not merged away. The first version collapsed both sources into one list of
+    # ids and then told every reader to "remove it from the SPECREW-REVIEW-EVIDENCE marker" - which for
+    # a block-sourced run names an edit that is both impossible (there is no marker) and forbidden (the
+    # block is recomputed and must not be hand-edited). That is the painted-on-door shape W35 had just
+    # fixed one layer up: the only offered action is the one the reader must not take.
+    $declaredSources = [ordered]@{}
+
+    # 1. The explicit marker. An HTML comment so it is invisible in rendered markdown, and a fixed
+    #    shape so reading it needs no judgement:
+    #        <!-- SPECREW-REVIEW-EVIDENCE: run-20260820-150735904-458c5888 -->
+    foreach ($markerMatch in [regex]::Matches($reviewText, '(?i)<!--\s*SPECREW-REVIEW-EVIDENCE\s*:(?<ids>[^>]*?)-->')) {
+        foreach ($idMatch in [regex]::Matches([string]$markerMatch.Groups['ids'].Value, 'run-\d{8}-\d{9}-[0-9a-f]{8}')) {
+            $declaredSources[[string]$idMatch.Value] = 'marker'
+        }
+    }
+
+    # 2. The derived block's run - the authoritative one, and the only run id in the record that no
+    #    author chose.
+    if (Get-Command -Name 'Get-SpecrewEmbeddedIndependenceBlock' -ErrorAction SilentlyContinue) {
+        $blockText = Get-SpecrewEmbeddedIndependenceBlock -ReviewLines $ReviewLines
+        if (-not [string]::IsNullOrWhiteSpace($blockText)) {
+            foreach ($idMatch in [regex]::Matches([string]$blockText, 'run-\d{8}-\d{9}-[0-9a-f]{8}')) {
+                # The block WINS when a run is in both. Removing it from the marker would not remove it
+                # from the block, so telling the reader to edit the marker would still be a door that
+                # opens onto nothing.
+                $declaredSources[[string]$idMatch.Value] = 'derived-block'
+            }
+        }
+    }
+
+    $citedRuns = @($declaredSources.Keys)
+    if (@($citedRuns).Count -eq 0) { return }
+
+    $campaignsRoot = Join-Path $ProjectRoot '.specrew/review/authority/campaigns'
+    if (-not (Test-Path -LiteralPath $campaignsRoot -PathType Container)) { return }
+
+    foreach ($runId in $citedRuns) {
+        $resultPaths = @(Get-ChildItem -LiteralPath $campaignsRoot -Directory -ErrorAction SilentlyContinue |
+                ForEach-Object { Join-Path $_.FullName ("runs/$runId/result.json") } |
+                Where-Object { Test-Path -LiteralPath $_ -PathType Leaf })
+        if (@($resultPaths).Count -eq 0) { continue }
+        $result = $null
+        try { $result = Get-Content -LiteralPath $resultPaths[0] -Raw -Encoding UTF8 | ConvertFrom-Json -Depth 20 }
+        catch { continue }
+        if ($null -eq $result) { continue }
+
+        $weak = [System.Collections.Generic.List[string]]::new()
+        if ([string]$result.completion -ne 'complete') { $weak.Add("completion '$([string]$result.completion)'") | Out-Null }
+        if ([string]$result.verdict -notin @('pass', 'findings')) { $weak.Add("verdict '$([string]$result.verdict)'") | Out-Null }
+        if ([string]$result.currentness -ne 'current') { $weak.Add("currentness '$([string]$result.currentness)'") | Out-Null }
+        if ([string]$result.validation -ne 'valid') { $weak.Add("validation '$([string]$result.validation)'") | Out-Null }
+        # W33. The run's own declared coverage, when it recorded one. A run that says it examined
+        # only records or documents cannot evidence a review OF THE CODE, whatever its verdict.
+        # This is the case W31 alone could not see: the KeyContextAI run that became the recorded
+        # independent review was complete, current, valid and passing by every stored fact.
+        if ($result.PSObject.Properties['examined_paths']) {
+            $examined = @(@($result.examined_paths) | ForEach-Object { [string]$_ } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+            if (@($examined).Count -gt 0) {
+                $sourceExamined = @($examined | Where-Object {
+                        $rel = $_.Trim().Replace([char]92, [char]47)
+                        while ($rel.StartsWith('./')) { $rel = $rel.Substring(2) }
+                        -not ($rel -match '(?i)^(specs|docs)/') -and
+                        -not ($rel -match '(?i)^\.(specrew|squad|specify|github|agents|cursor|copilot|claude)/') -and
+                        -not ($rel -match '(?i)\.(md|markdown|txt|rst|adoc)$')
+                    })
+                if (@($sourceExamined).Count -eq 0) {
+                    $weak.Add(('examined only records or documents ({0})' -f ((@($examined) | Select-Object -First 3) -join ', '))) | Out-Null
+                }
+            }
+        }
+        if (@($weak).Count -eq 0) { continue }
+
+        # Every remedy named here is one this function honours AND the reader can perform. The old
+        # message ended "or state in review.md what the cited run actually established" - which no code
+        # path implemented - and its replacement then told every reader to edit a marker, including the
+        # readers whose weak run came from the do-not-hand-edit block and who have no marker at all.
+        $declaredFrom = [string]$declaredSources[$runId]
+        $remedy = if ($declaredFrom -ceq 'marker') {
+            'Either obtain a run that completed against the current tree, or - if this run is named as history rather than relied upon - remove it from the SPECREW-REVIEW-EVIDENCE marker.'
+        }
+        else {
+            'This run is named by the DERIVED independent-review block, which is computed from the review store and recomputed at validation, so it cannot be edited out by hand. The way forward is to obtain a run that completed against the current tree; the block will then name that run instead.'
+        }
+        $Errors.Add(("review.md declares review run {0} as the evidence it rests on, but that run cannot support a review claim: {1}. {2} Run ids appearing only in prose are treated as narrative and are not checked, so a retraction can name a failed run freely." -f $runId, ($weak -join ', '), $remedy)) | Out-Null
+    }
+}
 function Test-NoGapClosurePolicy {
     param(
         [string[]]$ReviewLines,
@@ -3282,6 +3514,9 @@ function Test-ReviewArtifact {
     }
 
     Test-NoGapClosurePolicy -ReviewLines $reviewLines -ProjectRoot $ProjectRoot -IterationDirectory $IterationDirectory -OverallVerdict $overallVerdict -IterationStatus $IterationStatus -Errors $Errors
+    Test-ReviewCitedRunEvidence -ReviewLines $reviewLines -ProjectRoot $ProjectRoot -Errors $Errors
+    Test-ReviewRecordAuthorship -ProjectRoot $ProjectRoot -IterationDirectory $IterationDirectory -OverallVerdict $overallVerdict -Errors $Errors
+    Test-ReviewDerivedIndependenceBlock -ReviewLines $reviewLines -ProjectRoot $ProjectRoot -IterationDirectory $IterationDirectory -Errors $Errors
 
     # Pillar 5 (FR-022): production evidence cited in review.md must exist in the cited Tree Under Review.
     Test-ReviewEvidenceTreeIntegrity -ReviewLines $reviewLines -ProjectRoot $ProjectRoot -IterationDirectory $IterationDirectory -OverallVerdict $overallVerdict -IterationStatus $IterationStatus -Errors $Errors

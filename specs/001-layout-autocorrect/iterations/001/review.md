@@ -102,6 +102,17 @@ were governance files — so each subsequent run dutifully reviewed governance f
 by the maintainer on 2026-08-20 (`cmp-001-layout-autocorrect-i001-round-5`) broke that loop: it ran
 against the full iteration-001 surface and produced the valid code verdict recorded above.
 
+The machine-derived statement of this independence claim, recomputed from the review authority
+store at every validation:
+
+<!-- SPECREW-DERIVED-INDEPENDENT-REVIEW v1 -->
+<!-- Derived from the review authority store. Do not hand-edit: the validator recomputes it. -->
+- Run: run-20260820-150735904-458c5888 (harness copilot-cli-file-primary)
+- Outcome: pass, complete, current, valid - 0 finding(s)
+- Reviewed tree: 273c69bbabfb0044fc5b8b2a74fc65e739d1803f
+- Coverage: 31 source path(s) of 36 declared and checked against the frozen target.
+<!-- /SPECREW-DERIVED-INDEPENDENT-REVIEW -->
+
 ## Task Verdicts
 
 | Task | Title | Verdict | Evidence |
@@ -253,7 +264,7 @@ rather than as "the call rules cannot be broken".
 
 ## Gap Ledger
 
-- **GAP-01 — CLOSED 2026-08-20** — no Specrew campaign run had produced a valid verdict on the code, because sign-off runs auto-anchor to the last pass and so reviewed governance files instead; closed by campaign run `run-20260820-150735904-458c5888`, which examined 36 iteration-001 source, test and data files and returned `pass` / `complete` / `valid` with zero findings, agreeing with the earlier out-of-band Copilot CLI read (dimension: verification independence).
+- **GAP-01 — fixed-now, CLOSED 2026-08-20** — no Specrew campaign run had produced a valid verdict on the code, because sign-off runs auto-anchor to the last pass and so reviewed governance files instead; closed by campaign run `run-20260820-150735904-458c5888`, which examined 36 iteration-001 source, test and data files and returned `pass` / `complete` / `valid` with zero findings, agreeing with the earlier out-of-band Copilot CLI read (dimension: verification independence).
 - **GAP-02 — fixed-now** — dictionary packs were hand-authored starters rather than sourced permissive packs; closed on 2026-08-20 by sourcing 370,079 English words under the Unlicense and 22,250 Hebrew words under CC0, with the corpus measurement re-run against them and the conservative property holding unchanged, as recorded in DRIFT-001 in the iteration drift log (dimension: implemented).
 
 ## What a reviewer should check most closely

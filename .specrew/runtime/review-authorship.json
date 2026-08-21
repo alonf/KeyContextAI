@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "records": {
+    "specs/001-layout-autocorrect/iterations/001/review.md": {
+      "writers": [
+        {
+          "owner": "claude|142a4782-bd93-402e-9aef-56084372c613",
+          "host": "claude",
+          "session_id": "142a4782-bd93-402e-9aef-56084372c613",
+          "first_observed_at": "202608210948318366568",
+          "last_observed_at": "202608210948318366568"
+        }
+      ]
+    }
+  },
+  "source_sessions": {}
+}

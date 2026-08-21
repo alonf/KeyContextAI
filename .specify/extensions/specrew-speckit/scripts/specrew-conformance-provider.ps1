@@ -906,6 +906,15 @@ try {
         }
         catch { $materialSignal = $null; $materialDecision = $null }
     }
+    # W34-B: mint the authorship observation from what the hook WATCHED this session write, before
+    # any block-kind decision narrows the view. It runs wherever a turn delta exists rather than only
+    # on a material stop, because a review record is often written in a turn that raises no block at
+    # all - which is exactly the turn whose authorship a later reader needs.
+    if ($null -ne $materialSignal -and (Get-Command -Name 'Write-SpecrewReviewAuthorshipObservation' -ErrorAction SilentlyContinue)) {
+        $authorshipPaths = @()
+        try { $authorshipPaths = @($materialSignal.changed_paths | ForEach-Object { [string]$_ }) } catch { $authorshipPaths = @() }
+        Write-SpecrewReviewAuthorshipObservation -ProjectRoot $projectRoot -HostKind $hostKindArg -SessionId $sessionIdArg -ChangedPaths $authorshipPaths
+    }
     if ($null -eq $materialSignal) {
         $materialSignal = [pscustomobject]@{ material = $false; reason = 'turn-delta-unavailable'; key = ''; user_file_count = 0; current_dirty_user_file_count = 0; new_commit_count = 0; attribution_mode = 'degraded-worktree' }
     }
@@ -1241,16 +1250,51 @@ try {
                 }
                 catch { $claimDelivered = $false }
                 if ($claimDelivered) {
+                    # W35: LOOK WHERE THE ORIENTATION ACTUALLY IS - THE OPENING MESSAGE.
+                    #
+                    # This tested $lastAssistantText only, and the obligation is that a session OPENS by
+                    # orienting the human. So the orientation lands in message 1 and the check ran against
+                    # message N, which is a different message on every stop but the first.
+                    #
+                    # Measured 2026-08-20 (KeyContextAI, session e9c42e87): the opening message DOES clear
+                    # this bar - it is a full banner - and only 2 of that session's 190 assistant messages
+                    # do. Every stop whose last message was one of the other 188 told a compliant session
+                    # "your orientation was handed to you and the human never saw it". Third instance of a
+                    # detector punishing compliant output, after W16's bullet glyphs and W35's prose scan.
+                    #
+                    # So candidates are the HEAD of the transcript (where the orientation belongs) as well
+                    # as the last assistant text. Cost is bounded and self-limiting: this runs only while
+                    # the receipt is absent, and the receipt is written the moment it is satisfied - so a
+                    # session pays for the head read at most a handful of times, never per stop.
+                    $orientationCandidates = [System.Collections.Generic.List[string]]::new()
+                    if (-not [string]::IsNullOrWhiteSpace($lastAssistantText)) { [void]$orientationCandidates.Add([string]$lastAssistantText) }
+                    if ($ccLoaded -and -not [string]::IsNullOrWhiteSpace($transcriptPathArg) -and
+                        (Test-Path -LiteralPath $transcriptPathArg -PathType Leaf) -and
+                        (Get-Command Get-SpecrewConversationTurnFromLine -ErrorAction SilentlyContinue)) {
+                        try {
+                            foreach ($headLine in @(Get-Content -LiteralPath $transcriptPathArg -TotalCount 200 -Encoding UTF8 -ErrorAction Stop)) {
+                                $headTurn = Get-SpecrewConversationTurnFromLine -Line $headLine
+                                if ($null -ne $headTurn -and [string]$headTurn.role -eq 'assistant' -and
+                                    -not [string]::IsNullOrWhiteSpace([string]$headTurn.text)) {
+                                    [void]$orientationCandidates.Add([string]$headTurn.text)
+                                }
+                            }
+                        }
+                        catch { $null = $_ }
+                    }
                     # A rendered orientation names the product AND at least one thing only the orientation
                     # carries: the resolved version, or what the crew believes about the human. Deliberately
                     # a LOW bar - any genuine banner clears it, and a reply that goes straight to work does
                     # not. It never demands particular wording, because the banner is free prose.
-                    $namesProduct = $lastAssistantText -match '(?i)\bspecrew\b'
-                    $namesOrientationFact = ($lastAssistantText -match '(?i)what I know about you') -or
-                        ($lastAssistantText -match '(?i)/specrew-user-profile') -or
-                        ($lastAssistantText -match '(?i)\bspecrew\b[^\n]{0,40}\b\d+\.\d+\.\d+')
-                    if ($namesProduct -and $namesOrientationFact) { $orientationSatisfiedNow = $true }
-                    else { $orientationOwed = $true }
+                    $orientationSatisfiedNow = $false
+                    foreach ($candidateText in $orientationCandidates) {
+                        $namesProduct = $candidateText -match '(?i)\bspecrew\b'
+                        $namesOrientationFact = ($candidateText -match '(?i)what I know about you') -or
+                            ($candidateText -match '(?i)/specrew-user-profile') -or
+                            ($candidateText -match '(?i)\bspecrew\b[^\n]{0,40}\b\d+\.\d+\.\d+')
+                        if ($namesProduct -and $namesOrientationFact) { $orientationSatisfiedNow = $true; break }
+                    }
+                    if (-not $orientationSatisfiedNow) { $orientationOwed = $true }
                 }
             }
         }

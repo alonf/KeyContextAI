@@ -17,7 +17,7 @@ User feature request: (not provided yet; gather or confirm during intake)
 - Last completed boundary: 956f0ad55406b6ed4898ffcc37e9a3c048afe9d0 at 2026-08-19T21:15:03Z
 - Task progress: 0 complete, 0 in-progress, 18 pending, 0 blocked
 - Pending: T001, T002, T003
-- Validator state: 5 warnings: 5 soft, 0 medium, 0 hard
+- Validator state: 11 warnings: 9 soft, 0 medium, 2 hard
 
 ### Suggested Next Actions
 
@@ -26,8 +26,7 @@ User feature request: (not provided yet; gather or confirm during intake)
 
 ## Resume Reconciliation (current tree, re-computed now)
 
-Last captured stop: 2026-08-20T08:00:48.5155509Z (boundary review-signoff). Files changed since (re-computed NOW - may post-date the last stop): specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml. READ those files to recover the true current state (the handover snapshot may predate your latest work), THEN continue.
-
+Last captured stop: 2026-08-20T15:19:48.8158622Z (boundary review-signoff). Files changed since (re-computed NOW - may post-date the last stop): scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-design-context.ps1, scripts/internal/continuous-co-review/review-result-ingestor.ps1, scripts/internal/continuous-co-review/reviewer-candidate-prompt.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml. READ those files to recover the true current state (the handover snapshot may predate your latest work), THEN continue.
 
 
 Operational Specrew roster snapshot:
@@ -38,9 +37,6 @@ Project state snapshot:
 - State: active
 - Existing feature directories: (none)
 - Non-bootstrap top-level entries: (none)
-
-
-
 
 
 Effective delegated agent routing plan:
@@ -139,7 +135,7 @@ Then follow the formal Specrew + Spec Kit lifecycle end to end:
 9c. (Folded into the `specrew-design-workshop` skill, Rule 9a — it carries the collaborative co-design conduct and the SC-025 Co-Design Record obligations; Amendment A6 / FR-035 / FR-036.)
 10. After speckit.specify, run speckit.clarify for every newly generated spec before speckit.plan so Spec Kit can surface unresolved questions and validate the spec shape.
 11. Only skip speckit.clarify when resuming an existing feature whose current spec has already been clarified or is demonstrably unchanged and already materially complete for planning.
-12. If you skip speckit.clarify, record a concrete dated skip rationale in .squad\decisions.md before speckit.plan, naming why the current spec is already clear enough to plan safely.
+
 13. If Mode is new-feature, treat the provided text as a short plain-language request or source-spec pointer, ground any missing intake first, and only then invoke speckit.specify. Do not expect the human to provide a full spec upfront.
 14. If Mode is intake-or-resume, inspect the repository, .specify\feature.json, existing specs, and iteration artifacts. Continue any in-progress feature automatically; otherwise gather only the missing intake needed to begin specify, and do not call speckit.specify until that intake is grounded.
 15. If the human provides a URL, pasted draft, or other source document during intake, extract the relevant scope from it, confirm any remaining behavior questions at intake, and then pass the grounded request into speckit.specify.
@@ -164,13 +160,12 @@ Then follow the formal Specrew + Spec Kit lifecycle end to end:
 34. Keep the spec authoritative, surface drift explicitly, and do not claim Spec-Kit/Specrew compliance if you bypass the lifecycle.
 35. If the roster snapshot says Mode is specrew-managed, treat it as active project state. Do NOT run generic Squad team setup, do NOT replace the baseline roles, and do NOT discard supplemental members.
 36. Use the delegated routing plan above for lifecycle work and repair ownership unless the human explicitly overrides it. Planning/problem-solving work should prefer Planner or Spec Steward delegated routing when enabled, and review/governance work should prefer Reviewer or Spec Steward delegated routing when enabled.
-37. For every delegated lifecycle, review, governance, or repair spawn, append a short dated runtime-evidence entry to .squad\decisions.md naming the role or work item, requested agent, actual agent, concrete model ID, whether the assignment was honored or fell back, and any fallback reason.
+
 38. Operate with a no-gap policy for lifecycle-governed work. If review, governance, or validation reveals a known alignment gap across spec, implementation, tests, docs, or observability, do not close the run as complete until the gap is fixed or the human explicitly approves a defer that is recorded in the governing artifacts.
 39. During review and final readiness checks, act as a critical reviewer for hardened lifecycle/governance requirements: classify them as implemented, enforced, observable, and documented, and emit a gap ledger whenever any dimension is missing.
 40. If review finds an ambiguity, contradiction, or missing decision in the governing spec, stop closure, ask targeted clarification questions, update the spec with the answers, and reconcile any affected plan, tasks, review, or governance artifacts before continuing.
 41. If the human approves deferring a known gap, record the defer rationale, affected requirement or artifact, and next action explicitly instead of letting the gap roll into the next iteration invisibly.
-42. Before spawning lifecycle agents, read .squad\config.json and honor any "agentModelOverrides". Re-read it before each repair spawn instead of caching it once for the entire session.
-43. When a governance-gate failure activates or resolves repair escalation, run .specify\extensions\specrew-speckit\scripts\sync-squad-model-overrides.ps1 -IterationDirectory <active-iteration> so .squad\config.json is updated immediately from the current escalation state.
+
 44. On repeated governance-gate failures, use that sync helper to raise the failing repair owner's model tier (balanced -> deep) and clear the temporary override after the gate passes.
 45. **Boundary-commit discipline.** After every lifecycle artifact write that closes a boundary (spec.md after specify, plan.md after plan, tasks.md after tasks, iteration plan + hardening-gate after before-implement, source/tests after implement, review.md after review, retro.md after retro), stage and commit the affected files with a focused message like `boundary(specify): write spec.md` or `boundary(implement): T013 reducer + tests`. Without these commits the F-033 markdownlint gate, F-039 boundary discipline, and the git-history audit trail cannot function — the lifecycle silently bypasses every commit-scoped guardrail.
 46. **Human re-entry packet (mandatory).** At every human-judgment boundary stop, make the stop a human re-entry point. Do not duplicate the same stop with a legacy `=== SPECREW HANDOFF ===` block unless a transitional host/runtime explicitly requires that compatibility. The primary stop contract is this six-section packet:
@@ -234,7 +229,7 @@ At `feature-closeout`, copy the `AGENT NEXT ACTION:` and `HUMAN ACTION NEEDED:` 
 ```markdown
 Welcome back - resuming feature 001-layout-autocorrect at review-signoff.
 Specrew: 0.40.0-beta3
-Host: copilot (GitHub Copilot CLI); runtime: non-Squad
+Host: claude (Claude Code CLI); runtime: non-Squad
 Lifecycle: feature 001-layout-autocorrect at review-signoff.
 
 How this works: Specrew governs the spec -> plan -> implement -> review -> retro
@@ -370,7 +365,7 @@ What would you like to do? Type one of these:
 
 All four response kinds are kept: **approve with instructions** is how a human approves without rubber-stamping, and **discuss prompt N** opens one item without withdrawing approval of the rest. Do NOT add a line warning that clicking or numbering will not authorize — it defends against an affordance no longer offered, plants the idea, and speaks in the machinery's voice. If someone sends 1 anyway, answer them helpfully at that point.
 
-Host-rendered interaction guidance for GitHub Copilot CLI:
-No structured question/menu primitive is declared for this host package. At every approval boundary render the four responses as lines the human can literally send - "approved for <to>", "approved for <to> - <your instructions>", "changes needed: <what to change>", "discuss prompt 1" - and stop for the typed reply. Workshop product-domain, agenda, and lens questions also use visible prose and typed replies; Ctrl+O or a picker result is no answer and grants no authority. Initial feature intake may remain free-form. Clarify questions should use structured choices when the expected answer set is known and a structured primitive is available; otherwise ask a concise free-form question.
+Host-rendered interaction guidance for Claude Code CLI:
+At every human-verdict boundary stop, invoke the specrew-gate-stop skill to PERFORM the stop. That skill's frontmatter disallows the AskUserQuestion tool, so for the stop you have no picker to collapse into: render the FULL Rule 46 six-section re-entry packet -- What I Just Did / Why I Stopped / What Needs Your Review / What Happens Next / Discussion Prompts / What I Need From You, with every artifact reference a visible bare file:/// URL -- followed by the four responses as LINES THE HUMAN CAN LITERALLY SEND ("approved for <to>", "approved for <to> - <your instructions>", "changes needed: <what to change>", "discuss prompt 1"), then stop for the human's typed reply. NOT a numbered list: only a typed phrase is captured, and a number is a selection affordance -- measured, a human typed 1 here, nothing was captured, and the agent edited and committed the spec on the strength of it. Do NOT call AskUserQuestion directly for a boundary verdict on this host: it collapses the packet into the picker's short fields, so the human is asked to approve content they cannot read -- that is a Rule 46 violation, not a valid stop. The specrew-design-workshop skill independently disallows AskUserQuestion for the full workshop and renders numbered prose choices for typed answers, so product-domain, agenda, diagram, and component-map context cannot be swallowed and every recorded workshop answer has a typed-turn receipt. Clarify questions remain unaffected and keep the picker. ONLY boundary verdict stops route through specrew-gate-stop. The four response KINDS are unchanged - approve, approve-with-instructions, send-back, discuss - but they are OFFERED as sendable lines, never as numbered choices. Initial feature intake may remain free-form.
 
 Discussion is not approval unless the human clearly authorizes the boundary after the discussion. The goal is to let the human developer decide unresolved questions and approval boundaries while Specrew follows the lifecycle contract for the selected host/runtime.

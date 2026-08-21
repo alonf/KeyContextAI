@@ -1,1 +1,1 @@
-{"host":"claude","surface":"cli","event":"SessionStart","observed_host_version":"2.1.234 (Claude Code)","version_source":"ambient-path-binding","timestamp":"2026-08-18T19:27:37.2399800Z","adapter_contract_version":3}
+{"host":"claude","surface":"cli","event":"SessionStart","observed_host_version":"2.1.237 (Claude Code)","version_source":"ambient-path-binding","timestamp":"2026-08-21T09:42:44.5932437Z","adapter_contract_version":3}

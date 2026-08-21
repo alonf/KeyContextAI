@@ -1782,6 +1782,37 @@ function Add-ReviewCampaignHumanDisposition {
     if ([string]::IsNullOrWhiteSpace($AuthorizedBy) -or [string]::IsNullOrWhiteSpace($AuthorizationRef) -or [string]::IsNullOrWhiteSpace($Rationale)) {
         throw 'review-human-disposition-requires-explicit-human-evidence'
     }
+    # W34-C: A RATIONALE MUST NOT CONTRADICT THE RESULT IT DISPOSES OF.
+    #
+    # The forged KeyContextAI disposition reads "Remaining findings accepted as follow-ups at the
+    # review pause" against a run with ZERO findings. Nobody needs to establish who typed that to
+    # know it is false: the record contradicts the result it cites, which is checkable at write time
+    # and needs no judgement. W27 closed the surface that produced it; this closes the shape, so a
+    # disposition that talks about findings a run never had is refused at the moment of creation
+    # rather than found a day later in an immutable store with no supersede mechanism.
+    # Split into named steps rather than one compound condition: the first spelling of this
+    # guard was written through sed, which turned the regex's word-boundary escapes into literal
+    # BACKSPACE bytes - so the pattern read (?i)[BS]findings?[BS], never matched, and the guard
+    # sat in the file looking correct while doing nothing. A probe printing both operands as
+    # true beside an `if` that did not fire is what exposed it.
+    $disposedFindingCount = @($result.findings).Count
+    # Word boundaries are back, written directly rather than through a text-mangling tool this time.
+    # They stop a substring match only. They do NOT address the sharper case: a rationale reading
+    # "no findings, accepting current state" contains the WORD findings and still trips this guard,
+    # so an honest negation is refused against a zero-finding run.
+    #
+    # That is accepted, not overlooked. This is a backstop on a path W27 already removed - accepting
+    # a clean result is unreachable through any surface - and its failure direction is closed: it can
+    # refuse an honest rationale, never admit a false one. Detecting negation in prose would mean
+    # putting a judgement heuristic where this whole slice has been removing them, and a brittle one:
+    # "no findings" and "findings: none" and "nothing found" are the easy third of the space.
+    #
+    # IF THE DISPOSITION PATH EVER BECOMES LEGITIMATE FOR CLEAN RUNS AGAIN, this fires on honest
+    # rationales and must be narrowed then. Pinned by a test so it is a known limit, not a discovery.
+    $rationaleCitesFindings = [regex]::IsMatch([string]$Rationale, '\bfindings?\b', [Text.RegularExpressions.RegexOptions]::IgnoreCase)
+    if ($disposedFindingCount -eq 0 -and $rationaleCitesFindings) {
+        throw 'review-human-disposition-rationale-contradicts-result:cites-findings-against-a-zero-finding-run'
+    }
     $token = Get-ReviewCampaignStableToken -Value "$CampaignId/$RunId/$($result.target_digest)/$Decision/$AuthorizationRef" -Length 20
     $fact = [pscustomobject][ordered]@{
         schema_version = '1.0'; fact_type = 'human-disposition'; disposition_id = "disposition-$token"
@@ -2002,7 +2033,23 @@ function Invoke-ReviewCampaignRun {
         $duration = [Math]::Max(0, (Read-ReviewClockMonotonic -ClockPort $ClockPort) - $attemptMono)
         $startedAt = ConvertTo-ReviewObservedTimestampString -Value $spends[0].invocation_started_at
         $degradeReason = if ($DesignContextEmpty) { 'DESIGN_CONTEXT_EMPTY: no spec, design analysis, or formal contract resolved; this run is partial evidence and cannot approve the current target.' } else { $null }
-        $ingress = Invoke-ReviewResultIngress -StoreRoot $StoreRoot -StagingRoot $StagingRoot -CampaignId $CampaignId -RunId $RunId -TargetDigest $targetDigest -HarnessId ([string]$HarnessPort.id) -RuntimeOutcome $runtimeOutcome -Invoked $true -TerminationVerified ([bool]$runtimeResult.termination_verified) -Containment $containment -Currentness ([string]$currentness.classification) -StartedAt $startedAt -EndedAt $endedAt -DurationMs $duration -FailureReason $failureReason -ControllerDegradeReason $degradeReason
+        # W33. Whether the tree the controller FROZE holds source at all. The ingestor needs this to
+        # judge a declared docs-only review: on a genuinely docs-only target such a review is correct
+        # and must not be degraded, and only the orchestrator holds the snapshot to tell them apart.
+        # FAIL-OPEN: any error answers `no source`, so an unreadable snapshot never invents a degrade.
+        $targetHasSource = $false
+        try {
+            $snapshotRoot = [string]$snapshot.snapshot_path
+            if (-not [string]::IsNullOrWhiteSpace($snapshotRoot) -and (Test-Path -LiteralPath $snapshotRoot -PathType Container)) {
+                foreach ($file in (Get-ChildItem -LiteralPath $snapshotRoot -File -Recurse -Force -ErrorAction SilentlyContinue)) {
+                    $rel = [IO.Path]::GetRelativePath($snapshotRoot, $file.FullName)
+                    if (($rel.Replace([char]92, [char]47)) -match '(?i)(^|/)\.git(/|$)') { continue }
+                    if (Test-ReviewExaminedPathIsSource -Path $rel) { $targetHasSource = $true; break }
+                }
+            }
+        }
+        catch { $targetHasSource = $false }
+        $ingress = Invoke-ReviewResultIngress -StoreRoot $StoreRoot -StagingRoot $StagingRoot -CampaignId $CampaignId -RunId $RunId -TargetDigest $targetDigest -HarnessId ([string]$HarnessPort.id) -RuntimeOutcome $runtimeOutcome -Invoked $true -TerminationVerified ([bool]$runtimeResult.termination_verified) -Containment $containment -Currentness ([string]$currentness.classification) -StartedAt $startedAt -EndedAt $endedAt -DurationMs $duration -FailureReason $failureReason -ControllerDegradeReason $degradeReason -TargetHasSource $targetHasSource
         if ($ingress.published) {
             Complete-ReviewAuthorityClaim -StoreRoot $StoreRoot -CampaignId $CampaignId -RunId $RunId -TargetLineage $TargetLineage -Disposition released -ObservedAt (Read-ReviewClockUtc -ClockPort $ClockPort) | Out-Null
             $findingCount = if ($ingress.candidate_category -ceq 'valid' -and [string]$ingress.result.completion -ceq 'complete' -and [string]$ingress.result.validation -ceq 'valid') { @($ingress.result.findings).Count } else { $null }

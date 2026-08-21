@@ -1,0 +1,16 @@
+{
+  "session_id": "142a4782-bd93-402e-9aef-56084372c613",
+  "last_seen_boundary": "review-signoff",
+  "context_mtime": "2026-08-19T21:15:03.3283578Z",
+  "breaker": null,
+  "journal": [
+    {
+      "at": "2026-08-21T09:42:45.4109934Z",
+      "trigger": "b2",
+      "scope": "general",
+      "channel": "hook",
+      "tokens": 566,
+      "outcome": "injected"
+    }
+  ]
+}

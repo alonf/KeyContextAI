@@ -2,8 +2,8 @@
 schema: v1
 source: PostToolUse
 from_host: claude
-recorded_at: 2026-08-20T08:40:08.1290994Z
-from_commit: 68077c6
+recorded_at: 2026-08-21T09:54:10.4105008Z
+from_commit: 4eb11ef
 active_feature: 001-layout-autocorrect
 active_boundary: review-signoff
 last_authorized_boundary: before-implement
@@ -14,12 +14,12 @@ workshop_done: architecture-core, component-design, requirements-nfr, ui-ux, dat
 
 ## What I just did (last 3-5 turns or last boundary work)
 
-- [2026-08-20T08:40:08Z] (PostToolUse) 3 changed user file(s) [specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+34 Specrew-managed); HEAD 68077c6 (review(001): retract a false claim that the independent review passed on code)
-- [2026-08-20T08:39:33Z] (PostToolUse) 2 changed user file(s) [specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+33 Specrew-managed); HEAD 68077c6 (review(001): retract a false claim that the independent review passed on code)
-- [2026-08-20T08:39:19Z] (PostToolUse) 2 changed user file(s) [specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+33 Specrew-managed); HEAD 68077c6 (review(001): retract a false claim that the independent review passed on code)
-- [2026-08-20T08:39:03Z] (PostToolUse) 2 changed user file(s) [specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+33 Specrew-managed); HEAD 68077c6 (review(001): retract a false claim that the independent review passed on code)
-- [2026-08-20T08:38:55Z] (PostToolUse) 2 changed user file(s) [specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+33 Specrew-managed); HEAD 68077c6 (review(001): retract a false claim that the independent review passed on code)
-- [2026-08-20T08:38:31Z] (PostToolUse) 2 changed user file(s) [specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+33 Specrew-managed); HEAD 68077c6 (review(001): retract a false claim that the independent review passed on code)
+- [2026-08-21T09:54:10Z] (PostToolUse) 9 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-design-context.ps1, scripts/internal/continuous-co-review/review-result-ingestor.ps1, scripts/internal/continuous-co-review/reviewer-candidate-prompt.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+50 Specrew-managed); HEAD 4eb11ef (review(001): record the valid independent campaign verdict on the code)
+- [2026-08-21T09:48:48Z] (Stop) 9 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-design-context.ps1, scripts/internal/continuous-co-review/review-result-ingestor.ps1, scripts/internal/continuous-co-review/reviewer-candidate-prompt.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+50 Specrew-managed); HEAD 4eb11ef (review(001): record the valid independent campaign verdict on the code)
+- [2026-08-21T09:48:29Z] (Stop) 9 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-design-context.ps1, scripts/internal/continuous-co-review/review-result-ingestor.ps1, scripts/internal/continuous-co-review/reviewer-candidate-prompt.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+48 Specrew-managed); HEAD 4eb11ef (review(001): record the valid independent campaign verdict on the code)
+- [2026-08-21T09:47:51Z] (PostToolUse) 9 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-design-context.ps1, scripts/internal/continuous-co-review/review-result-ingestor.ps1, scripts/internal/continuous-co-review/reviewer-candidate-prompt.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+48 Specrew-managed); HEAD 4eb11ef (review(001): record the valid independent campaign verdict on the code)
+- [2026-08-21T09:47:40Z] (PostToolUse) 9 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-design-context.ps1, scripts/internal/continuous-co-review/review-result-ingestor.ps1, scripts/internal/continuous-co-review/reviewer-candidate-prompt.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+48 Specrew-managed); HEAD 4eb11ef (review(001): record the valid independent campaign verdict on the code)
+- [2026-08-21T09:47:36Z] (PostToolUse) 9 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-design-context.ps1, scripts/internal/continuous-co-review/review-result-ingestor.ps1, scripts/internal/continuous-co-review/reviewer-candidate-prompt.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+47 Specrew-managed); HEAD 4eb11ef (review(001): record the valid independent campaign verdict on the code)
 
 ## Why I'm stopping (the switch trigger)
 
@@ -35,43 +35,37 @@ Hook-captured at trigger 'PostToolUse' (the agent did not author a handover this
 
 ## Recommended next-immediate-step
 
-Resume feature 001-layout-autocorrect at boundary review-signoff. 3 of YOUR file(s) are uncommitted [specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+34 Specrew-managed) - review/commit them before advancing.
+Resume feature 001-layout-autocorrect at boundary review-signoff. 9 of YOUR file(s) are uncommitted [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-design-context.ps1, scripts/internal/continuous-co-review/review-result-ingestor.ps1, scripts/internal/continuous-co-review/reviewer-candidate-prompt.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+50 Specrew-managed) - review/commit them before advancing.
 
 ## Context the receiving host needs that artifacts don't carry
 
-branch 001-layout-autocorrect, HEAD 68077c6 (review(001): retract a false claim that the independent review passed on code). Active feature 001-layout-autocorrect, boundary review-signoff. Your uncommitted work: specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml. (34 Specrew-managed files also uncommitted.)
+branch 001-layout-autocorrect, HEAD 4eb11ef (review(001): record the valid independent campaign verdict on the code). Active feature 001-layout-autocorrect, boundary review-signoff. Your uncommitted work: scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-design-context.ps1, scripts/internal/continuous-co-review/review-result-ingestor.ps1, scripts/internal/continuous-co-review/reviewer-candidate-prompt.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml. (50 Specrew-managed files also uncommitted.)
 
 ## Recent conversation (last few exchanges, hook-captured)
 
-- **assistant:** Copilot CLI is installed and the reviewer is fully operational — **no blocking issue**. It already proved that: it ran for 186 seconds and produced fourteen substantive findings by actually reading the codebase. The problem was never capabi...
-- **assistant:** A pass in 67 seconds — which is exactly the shape that fooled me last time. Checking what it actually examined before I say anything about it:
-- **assistant:** Same trap, different words: **"the frozen iteration artifacts"** — governance documents again, not source. Note it even cites my own review.md caveat back at me, which is circular. I've found the actual mechanism now. A sign-off run auto-an...
-- **assistant:** It needs the prior round answered before starting a new one. Choosing "run another round" — I'm not stopping on a pass that never read the code:
-- **assistant:** Same loop as before: `approve-round` says round 3 is waiting, `pause-choice` says nothing is waiting. I'm stopping there — 3 of 4 rounds used and I won't spend your last one on a guess. **Direct answer to your question: yes, we can run an e...
-- **assistant:** Copilot ran as a genuine independent reviewer this time — you can see it reading `DictionarySnapshot.cs`, `LayoutId.cs`, `IDetectionEngine.cs`, `CorrectionVerdict.cs` and the contracts. Its verdict: > "No substantive defects found in the in...
-- **assistant:** That file is the source that regenerated `state.md`, and it was auto-created with everything pending. Setting it to disk truth:
-- **assistant:** Now recording the genuine external review — this time citing what it actually read:
+- **assistant:** The block derived cleanly (the exit-code message is a harness artifact, not a failure). The natural home is the "Reviewer independence" section — let me read it:
+- **assistant:** Now I'll make both fixes: classify GAP-01 as `fixed-now`, and embed the derived independence block at the end of the independence section.
+- **assistant:** Now re-running the full validation to confirm the fixes hold:
+- **assistant:** No — under your updated Specrew the governance check was **not** clean. I ran it, fixed what's honestly fixable, and it now **passes**. Details in the packet below. ## What I Just Did Confirmed Specrew 0.40.0-beta3 is compatible with the pr...
+- **user:** Stop hook feedback: Specrew review — your review covers these files. Only governance and records files changed since your review, so it still covers your project. Review run: run-20260820-150735904-458c5888 (identifies this review if you ne...
+- **assistant:** Nothing new to act on — that notice confirms my review.md edits were governance/records changes only, so review run `run-20260820-150735904-458c5888` still covers the project. The governance validation passes, and the decision on the table ...
+- **user:** 1: yes — commit first. Commit the review.md governance fixes together with the deployed runtime files from the Specrew upgrade, so the tree that carries the sign-off is the tree that passes validation. Right now the crossing is recorded at ...
+- **assistant:** Committing first, as instructed. Let me get the full picture of the dirty tree:
 
-Full transcript (read on-demand for depth): C:\Users\alon\.claude\projects\C--Dev-KeyContextAI\e9c42e87-5f87-44b1-8b2c-9dfc70bfdd46.jsonl
+Full transcript (read on-demand for depth): C:\Users\alon\.claude\projects\C--Dev-KeyContextAI\142a4782-bd93-402e-9aef-56084372c613.jsonl
 
 ## Authored boundary packet (captured at stop)
 
-Worth naming, since it's the same trap I fell into: the hook says that review "covers these files" because the **target digest** matches — not because the reviewer examined the code. That's a currentness check, not a content check. `run-...211204294` reviewed the iteration plan document; its digest matching the tree doesn't change what it looked at.
-
-So the state is unchanged from my correction: iteration 001's implementation has solid, reproducible evidence, and the review of it is mine rather than independent.
-
-**Evidence you can reproduce without trusting me** — `dotnet test` at file:///C:/Dev/KeyContextAI/ gives 57 passing tests, zero warnings under warnings-as-errors, and the corpus measurement showing zero false corrections across 26 must-not-correct cases against 370,079 English and 22,250 Hebrew real public-domain words.
-
-**What you'd be accepting on trust**: that the code is well-shaped, which is my judgement as its author, recorded in file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/001/review.md with GAP-01 open and the retraction laid out.
-
-Three ways forward, your call: approve sign-off with the independence gap explicitly open and carried into iteration 002; send it back until a correctly scoped independent review runs; or tell me which scoping approach to try next — no context flag and filter the findings by reading them, or `--allowed-path` narrowed to what iteration 001 built. I've spent two of your four rounds, one on my mistake, so I'd rather you choose than guess again.
+Nothing new to act on — that notice confirms my review.md edits were governance/records changes only, so review run `run-20260820-150735904-458c5888` still covers the project. The governance validation passes, and the decision on the table is unchanged: the review-signoff crossing waits on your verdict.
 
 What would you like to do? Type one of these:
 
+```text
   approved for review-signoff
   approved for review-signoff - <your instructions>
   changes needed: <what to change>
   discuss prompt 1
+```
 
 <!-- SPECREW-VERDICT-BOUNDARY: before-implement -> review-signoff -->
 
