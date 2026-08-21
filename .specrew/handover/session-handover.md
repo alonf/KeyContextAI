@@ -2,8 +2,8 @@
 schema: v1
 source: PostToolUse
 from_host: claude
-recorded_at: 2026-08-21T09:54:10.4105008Z
-from_commit: 4eb11ef
+recorded_at: 2026-08-21T10:01:20.6569206Z
+from_commit: c978171
 active_feature: 001-layout-autocorrect
 active_boundary: review-signoff
 last_authorized_boundary: before-implement
@@ -14,12 +14,12 @@ workshop_done: architecture-core, component-design, requirements-nfr, ui-ux, dat
 
 ## What I just did (last 3-5 turns or last boundary work)
 
+- [2026-08-21T10:01:20Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/tasks.md] (+1 Specrew-managed); HEAD c978171 (chore(lint): auto-fix markdownlint violations from boundary-sync gate); 2 new commit(s): c978171 chore(lint): auto-fix markdownlint violations from boundary-sync gate | b7e13b7 governance(001): make the sign-off tree the tree that validates
 - [2026-08-21T09:54:10Z] (PostToolUse) 9 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-design-context.ps1, scripts/internal/continuous-co-review/review-result-ingestor.ps1, scripts/internal/continuous-co-review/reviewer-candidate-prompt.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+50 Specrew-managed); HEAD 4eb11ef (review(001): record the valid independent campaign verdict on the code)
 - [2026-08-21T09:48:48Z] (Stop) 9 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-design-context.ps1, scripts/internal/continuous-co-review/review-result-ingestor.ps1, scripts/internal/continuous-co-review/reviewer-candidate-prompt.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+50 Specrew-managed); HEAD 4eb11ef (review(001): record the valid independent campaign verdict on the code)
 - [2026-08-21T09:48:29Z] (Stop) 9 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-design-context.ps1, scripts/internal/continuous-co-review/review-result-ingestor.ps1, scripts/internal/continuous-co-review/reviewer-candidate-prompt.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+48 Specrew-managed); HEAD 4eb11ef (review(001): record the valid independent campaign verdict on the code)
 - [2026-08-21T09:47:51Z] (PostToolUse) 9 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-design-context.ps1, scripts/internal/continuous-co-review/review-result-ingestor.ps1, scripts/internal/continuous-co-review/reviewer-candidate-prompt.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+48 Specrew-managed); HEAD 4eb11ef (review(001): record the valid independent campaign verdict on the code)
 - [2026-08-21T09:47:40Z] (PostToolUse) 9 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-design-context.ps1, scripts/internal/continuous-co-review/review-result-ingestor.ps1, scripts/internal/continuous-co-review/reviewer-candidate-prompt.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+48 Specrew-managed); HEAD 4eb11ef (review(001): record the valid independent campaign verdict on the code)
-- [2026-08-21T09:47:36Z] (PostToolUse) 9 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-design-context.ps1, scripts/internal/continuous-co-review/review-result-ingestor.ps1, scripts/internal/continuous-co-review/reviewer-candidate-prompt.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+47 Specrew-managed); HEAD 4eb11ef (review(001): record the valid independent campaign verdict on the code)
 
 ## Why I'm stopping (the switch trigger)
 
@@ -35,22 +35,22 @@ Hook-captured at trigger 'PostToolUse' (the agent did not author a handover this
 
 ## Recommended next-immediate-step
 
-Resume feature 001-layout-autocorrect at boundary review-signoff. 9 of YOUR file(s) are uncommitted [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-design-context.ps1, scripts/internal/continuous-co-review/review-result-ingestor.ps1, scripts/internal/continuous-co-review/reviewer-candidate-prompt.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+50 Specrew-managed) - review/commit them before advancing.
+Resume feature 001-layout-autocorrect at boundary review-signoff. 1 of YOUR file(s) are uncommitted [specs/001-layout-autocorrect/tasks.md] (+1 Specrew-managed) - review/commit them before advancing.
 
 ## Context the receiving host needs that artifacts don't carry
 
-branch 001-layout-autocorrect, HEAD 4eb11ef (review(001): record the valid independent campaign verdict on the code). Active feature 001-layout-autocorrect, boundary review-signoff. Your uncommitted work: scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-design-context.ps1, scripts/internal/continuous-co-review/review-result-ingestor.ps1, scripts/internal/continuous-co-review/reviewer-candidate-prompt.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml. (50 Specrew-managed files also uncommitted.)
+branch 001-layout-autocorrect, HEAD c978171 (chore(lint): auto-fix markdownlint violations from boundary-sync gate). Active feature 001-layout-autocorrect, boundary review-signoff. Your uncommitted work: specs/001-layout-autocorrect/tasks.md. (1 Specrew-managed files also uncommitted.)
 
 ## Recent conversation (last few exchanges, hook-captured)
 
-- **assistant:** The block derived cleanly (the exit-code message is a harness artifact, not a failure). The natural home is the "Reviewer independence" section — let me read it:
-- **assistant:** Now I'll make both fixes: classify GAP-01 as `fixed-now`, and embed the derived independence block at the end of the independence section.
-- **assistant:** Now re-running the full validation to confirm the fixes hold:
-- **assistant:** No — under your updated Specrew the governance check was **not** clean. I ran it, fixed what's honestly fixable, and it now **passes**. Details in the packet below. ## What I Just Did Confirmed Specrew 0.40.0-beta3 is compatible with the pr...
-- **user:** Stop hook feedback: Specrew review — your review covers these files. Only governance and records files changed since your review, so it still covers your project. Review run: run-20260820-150735904-458c5888 (identifies this review if you ne...
-- **assistant:** Nothing new to act on — that notice confirms my review.md edits were governance/records changes only, so review run `run-20260820-150735904-458c5888` still covers the project. The governance validation passes, and the decision on the table ...
-- **user:** 1: yes — commit first. Commit the review.md governance fixes together with the deployed runtime files from the Specrew upgrade, so the tree that carries the sign-off is the tree that passes validation. Right now the crossing is recorded at ...
-- **assistant:** Committing first, as instructed. Let me get the full picture of the dirty tree:
+- **assistant:** Committed as `b7e13b7` (59 files). Now confirming the committed tree validates, then I'll re-record the crossing through the governed sync so the verdict binds to this tree:
+- **user:** Base directory for this skill: C:\Dev\KeyContextAI\.claude\skills\speckit-specrew-speckit-sync-review-signoff # Sync Review Signoff Boundary State ## Record the arrival (before the advancement gate) After review-signoff artifacts are commit...
+- **assistant:** Lint fixes committed as `c978171`. Re-running the boundary sync:
+- **assistant:** The gate requires the branch pushed to origin at HEAD — the branch already tracks origin, so pushing the two new commits and re-running:
+- **assistant:** Push succeeded, but the sync now refuses because `state.md` is stale — it still says execution hasn't started. Let me look at the state files:
+- **assistant:** The header fields and managed summary contradict the prose — likely rewritten from a reset `tasks-progress.yml`. Checking it and what changed:
+- **assistant:** Found the root cause — a known re-sync bug documented in the Specrew source itself. Let me check `tasks.md`, which is the authority it downgrades from:
+- **assistant:** All 18 iteration-001 tasks are unchecked in `tasks.md`, and the re-sync derived from those boxes and downgraded the ledger. Before I mark them complete, I'll verify the work actually is done:
 
 Full transcript (read on-demand for depth): C:\Users\alon\.claude\projects\C--Dev-KeyContextAI\142a4782-bd93-402e-9aef-56084372c613.jsonl
 

@@ -17,10 +17,10 @@ first-class, not optional.
 
 ## Phase 1: Setup
 
-- [ ] T001 Create the three-project solution skeleton (`KeyContextAI.Core`, `KeyContextAI.Platform`, `KeyContextAI.App`) targeting .NET 10 with nullable enabled, warnings-as-errors, and file-scoped namespaces in `KeyContextAI.sln` and the three `src/*/[Project].csproj` files
-- [ ] T002 [P] Create the four test projects (`KeyContextAI.Core.Tests`, `KeyContextAI.Platform.Tests`, `KeyContextAI.Architecture.Tests`, plus the `tests/corpus/` data folder) wired to xUnit in `tests/`
-- [ ] T003 [P] Add `Directory.Build.props` with the shared analyzer, language-version, and warnings-as-errors settings at the repository root
-- [ ] T004 [P] Add the GitHub Actions PR workflow running build, tests, the architecture test, markdownlint, and Specrew governance validation in `.github/workflows/ci.yml`
+- [x] T001 Create the three-project solution skeleton (`KeyContextAI.Core`, `KeyContextAI.Platform`, `KeyContextAI.App`) targeting .NET 10 with nullable enabled, warnings-as-errors, and file-scoped namespaces in `KeyContextAI.sln` and the three `src/*/[Project].csproj` files
+- [x] T002 [P] Create the four test projects (`KeyContextAI.Core.Tests`, `KeyContextAI.Platform.Tests`, `KeyContextAI.Architecture.Tests`, plus the `tests/corpus/` data folder) wired to xUnit in `tests/`
+- [x] T003 [P] Add `Directory.Build.props` with the shared analyzer, language-version, and warnings-as-errors settings at the repository root
+- [x] T004 [P] Add the GitHub Actions PR workflow running build, tests, the architecture test, markdownlint, and Specrew governance validation in `.github/workflows/ci.yml`
 
 ---
 
@@ -28,12 +28,12 @@ first-class, not optional.
 
 **These block every user story. Nothing below Phase 2 can start until they are done.**
 
-- [ ] T005 Define every component interface with its XML documentation, exactly as specified in the contract, in `src/KeyContextAI.Core/Contracts/` (`IWordAssemblyEngine`, `ITranscriptEngine`, `IMappingEngine`, `IDetectionEngine`, `ICorrectionManager`, `ISettingsManager`, `IKeystrokeAccessor`, `IInputInjectionAccessor`, `IFocusAccessor`, `ILayoutAccessor`, `IDictionaryAccessor`, `IAudioAccessor`, `ISettingsAccessor`)
-- [ ] T006 [P] Implement the domain records (`KeyEvent`, `TranscriptEntry`, `CorrectionVerdict`, `CorrectionTransaction`, `Candidate`, `LayoutId`, `DictionarySnapshot`, `Settings`) per the data model in `src/KeyContextAI.Core/Model/`
-- [ ] T007 Write the architecture test enforcing the strict IDesign call rules — accessors reference no system component, engines reference no engine or manager, managers reference no manager, engines make no accessor calls — in `tests/KeyContextAI.Architecture.Tests/CallRuleTests.cs`
-- [ ] T008 [P] Implement the IoC composition root with singleton lifetimes for every manager, engine, and accessor in `src/KeyContextAI.App/Composition/ServiceRegistration.cs`
-- [ ] T009 [P] Define the key-map and dictionary file formats with `schema_version`, source, and licence fields, and author the `en-US↔he-IL` key map in `data/keymaps/en-US_he-IL.json`
-- [ ] T010 Assemble the Hebrew and English dictionary corpus from permissively licensed sources, recording source and licence per pack, plus the golden-file test corpus of true positives, true negatives, and ambiguous cases in `data/dictionaries/` and `tests/corpus/`
+- [x] T005 Define every component interface with its XML documentation, exactly as specified in the contract, in `src/KeyContextAI.Core/Contracts/` (`IWordAssemblyEngine`, `ITranscriptEngine`, `IMappingEngine`, `IDetectionEngine`, `ICorrectionManager`, `ISettingsManager`, `IKeystrokeAccessor`, `IInputInjectionAccessor`, `IFocusAccessor`, `ILayoutAccessor`, `IDictionaryAccessor`, `IAudioAccessor`, `ISettingsAccessor`)
+- [x] T006 [P] Implement the domain records (`KeyEvent`, `TranscriptEntry`, `CorrectionVerdict`, `CorrectionTransaction`, `Candidate`, `LayoutId`, `DictionarySnapshot`, `Settings`) per the data model in `src/KeyContextAI.Core/Model/`
+- [x] T007 Write the architecture test enforcing the strict IDesign call rules — accessors reference no system component, engines reference no engine or manager, managers reference no manager, engines make no accessor calls — in `tests/KeyContextAI.Architecture.Tests/CallRuleTests.cs`
+- [x] T008 [P] Implement the IoC composition root with singleton lifetimes for every manager, engine, and accessor in `src/KeyContextAI.App/Composition/ServiceRegistration.cs`
+- [x] T009 [P] Define the key-map and dictionary file formats with `schema_version`, source, and licence fields, and author the `en-US↔he-IL` key map in `data/keymaps/en-US_he-IL.json`
+- [x] T010 Assemble the Hebrew and English dictionary corpus from permissively licensed sources, recording source and licence per pack, plus the golden-file test corpus of true positives, true negatives, and ambiguous cases in `data/dictionaries/` and `tests/corpus/`
 
 ---
 
@@ -44,21 +44,21 @@ first-class, not optional.
 **Independent test**: Type a known wrong-layout word followed by a space in a plain text field; the
 text is replaced with the intended word, the layout switched, a sound played, and a bubble shown.
 
-- [ ] T011 [P] [US1] Write failing unit tests for `MappingEngine` — scan-code translation, unmapped codes, determinism — in `tests/KeyContextAI.Core.Tests/MappingEngineTests.cs`
-- [ ] T012 [P] [US1] Write failing unit tests for `DetectionEngine` — candidate scoring, the caution thresholds, the never-correct set, `Ignore` on ambiguity, the two-versus-more-than-two layout rule — in `tests/KeyContextAI.Core.Tests/DetectionEngineTests.cs`
-- [ ] T013 [P] [US1] Write failing unit tests for `WordAssemblyEngine` — completion only on space, punctuation, or a committing key, never mid-word — in `tests/KeyContextAI.Core.Tests/WordAssemblyEngineTests.cs`
-- [ ] T014 [US1] Implement `MappingEngine` over data-driven key maps in `src/KeyContextAI.Core/Engines/MappingEngine.cs`
-- [ ] T015 [US1] Implement `DetectionEngine` with caution-level thresholds and target-layout resolution in `src/KeyContextAI.Core/Engines/DetectionEngine.cs`
-- [ ] T016 [US1] Implement `WordAssemblyEngine` with the word-completion rules in `src/KeyContextAI.Core/Engines/WordAssemblyEngine.cs`
+- [x] T011 [P] [US1] Write failing unit tests for `MappingEngine` — scan-code translation, unmapped codes, determinism — in `tests/KeyContextAI.Core.Tests/MappingEngineTests.cs`
+- [x] T012 [P] [US1] Write failing unit tests for `DetectionEngine` — candidate scoring, the caution thresholds, the never-correct set, `Ignore` on ambiguity, the two-versus-more-than-two layout rule — in `tests/KeyContextAI.Core.Tests/DetectionEngineTests.cs`
+- [x] T013 [P] [US1] Write failing unit tests for `WordAssemblyEngine` — completion only on space, punctuation, or a committing key, never mid-word — in `tests/KeyContextAI.Core.Tests/WordAssemblyEngineTests.cs`
+- [x] T014 [US1] Implement `MappingEngine` over data-driven key maps in `src/KeyContextAI.Core/Engines/MappingEngine.cs`
+- [x] T015 [US1] Implement `DetectionEngine` with caution-level thresholds and target-layout resolution in `src/KeyContextAI.Core/Engines/DetectionEngine.cs`
+- [x] T016 [US1] Implement `WordAssemblyEngine` with the word-completion rules in `src/KeyContextAI.Core/Engines/WordAssemblyEngine.cs`
 - [ ] T017 [US1] Implement `KeystrokeAccessor` — the `WH_KEYBOARD_LL` hook on a dedicated message-pumping thread, allocation-free callback, self-injection tagging — in `src/KeyContextAI.Platform/Input/KeystrokeAccessor.cs`
 - [ ] T018 [P] [US1] Implement `InputInjectionAccessor` — `SendInput` backspaces plus replacement text as a single burst, self-injected event tagging — in `src/KeyContextAI.Platform/Input/InputInjectionAccessor.cs`
 - [ ] T019 [P] [US1] Implement `LayoutAccessor` — read the active layout, enumerate installed layouts, switch — in `src/KeyContextAI.Platform/System/LayoutAccessor.cs`
-- [ ] T020 [P] [US1] Implement `DictionaryAccessor` — trie load, query, `schema_version` rejection, licence-manifest validation — in `src/KeyContextAI.Platform/Storage/DictionaryAccessor.cs`
+- [x] T020 [P] [US1] Implement `DictionaryAccessor` — trie load, query, `schema_version` rejection, licence-manifest validation — in `src/KeyContextAI.Platform/Storage/DictionaryAccessor.cs`
 - [ ] T021 [US1] Implement `CorrectionManager`'s single-word flow — the Channel pipeline, engine orchestration, and the serialized correction executor — in `src/KeyContextAI.Core/Managers/CorrectionManager.cs`
 - [ ] T022 [P] [US1] Implement `AudioAccessor` with the three distinct feedback cues in `src/KeyContextAI.Platform/System/AudioAccessor.cs`
 - [ ] T023 [US1] Implement `OverlayClient` — the click-through, caret-anchored, auto-fading bubble with RTL rendering, theme awareness, and reduce-motion support — in `src/KeyContextAI.App/Clients/OverlayClient.cs`
 - [ ] T024 [US1] Write the end-to-end integration test injecting into a real edit control and asserting replacement, layout switch, and feedback in `tests/KeyContextAI.Platform.Tests/SingleWordCorrectionTests.cs`
-- [ ] T025 [US1] Write the corpus-driven accuracy test producing a measured false-correction rate against the golden files in `tests/KeyContextAI.Core.Tests/CorpusAccuracyTests.cs`
+- [x] T025 [US1] Write the corpus-driven accuracy test producing a measured false-correction rate against the golden files in `tests/KeyContextAI.Core.Tests/CorpusAccuracyTests.cs`
 
 ---
 

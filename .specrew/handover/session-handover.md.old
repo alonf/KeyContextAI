@@ -1,8 +1,8 @@
 ---
 schema: v1
-source: Stop
+source: PostToolUse
 from_host: claude
-recorded_at: 2026-08-21T09:48:48.9570768Z
+recorded_at: 2026-08-21T09:54:10.4105008Z
 from_commit: 4eb11ef
 active_feature: 001-layout-autocorrect
 active_boundary: review-signoff
@@ -14,16 +14,16 @@ workshop_done: architecture-core, component-design, requirements-nfr, ui-ux, dat
 
 ## What I just did (last 3-5 turns or last boundary work)
 
+- [2026-08-21T09:54:10Z] (PostToolUse) 9 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-design-context.ps1, scripts/internal/continuous-co-review/review-result-ingestor.ps1, scripts/internal/continuous-co-review/reviewer-candidate-prompt.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+50 Specrew-managed); HEAD 4eb11ef (review(001): record the valid independent campaign verdict on the code)
 - [2026-08-21T09:48:48Z] (Stop) 9 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-design-context.ps1, scripts/internal/continuous-co-review/review-result-ingestor.ps1, scripts/internal/continuous-co-review/reviewer-candidate-prompt.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+50 Specrew-managed); HEAD 4eb11ef (review(001): record the valid independent campaign verdict on the code)
 - [2026-08-21T09:48:29Z] (Stop) 9 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-design-context.ps1, scripts/internal/continuous-co-review/review-result-ingestor.ps1, scripts/internal/continuous-co-review/reviewer-candidate-prompt.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+48 Specrew-managed); HEAD 4eb11ef (review(001): record the valid independent campaign verdict on the code)
 - [2026-08-21T09:47:51Z] (PostToolUse) 9 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-design-context.ps1, scripts/internal/continuous-co-review/review-result-ingestor.ps1, scripts/internal/continuous-co-review/reviewer-candidate-prompt.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+48 Specrew-managed); HEAD 4eb11ef (review(001): record the valid independent campaign verdict on the code)
 - [2026-08-21T09:47:40Z] (PostToolUse) 9 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-design-context.ps1, scripts/internal/continuous-co-review/review-result-ingestor.ps1, scripts/internal/continuous-co-review/reviewer-candidate-prompt.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+48 Specrew-managed); HEAD 4eb11ef (review(001): record the valid independent campaign verdict on the code)
 - [2026-08-21T09:47:36Z] (PostToolUse) 9 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-design-context.ps1, scripts/internal/continuous-co-review/review-result-ingestor.ps1, scripts/internal/continuous-co-review/reviewer-candidate-prompt.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+47 Specrew-managed); HEAD 4eb11ef (review(001): record the valid independent campaign verdict on the code)
-- [2026-08-21T09:47:17Z] (PostToolUse) 8 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-design-context.ps1, scripts/internal/continuous-co-review/review-result-ingestor.ps1, scripts/internal/continuous-co-review/reviewer-candidate-prompt.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+47 Specrew-managed); HEAD 4eb11ef (review(001): record the valid independent campaign verdict on the code)
 
 ## Why I'm stopping (the switch trigger)
 
-Hook-captured at trigger 'Stop' (the agent did not author a handover this turn). Boundary: review-signoff. Refresh reason: tracked-change.
+Hook-captured at trigger 'PostToolUse' (the agent did not author a handover this turn). Boundary: review-signoff. Refresh reason: tracked-change.
 
 ## Open questions / pending clarifications
 
@@ -43,14 +43,14 @@ branch 001-layout-autocorrect, HEAD 4eb11ef (review(001): record the valid indep
 
 ## Recent conversation (last few exchanges, hook-captured)
 
-- **user:** But did we ran the governance check and fix all issues? I updated specrew so we should check that
-- **assistant:** I'll run the governed validation to check. Let me first look at how the script is invoked.
 - **assistant:** The block derived cleanly (the exit-code message is a harness artifact, not a failure). The natural home is the "Reviewer independence" section — let me read it:
 - **assistant:** Now I'll make both fixes: classify GAP-01 as `fixed-now`, and embed the derived independence block at the end of the independence section.
 - **assistant:** Now re-running the full validation to confirm the fixes hold:
 - **assistant:** No — under your updated Specrew the governance check was **not** clean. I ran it, fixed what's honestly fixable, and it now **passes**. Details in the packet below. ## What I Just Did Confirmed Specrew 0.40.0-beta3 is compatible with the pr...
 - **user:** Stop hook feedback: Specrew review — your review covers these files. Only governance and records files changed since your review, so it still covers your project. Review run: run-20260820-150735904-458c5888 (identifies this review if you ne...
 - **assistant:** Nothing new to act on — that notice confirms my review.md edits were governance/records changes only, so review run `run-20260820-150735904-458c5888` still covers the project. The governance validation passes, and the decision on the table ...
+- **user:** 1: yes — commit first. Commit the review.md governance fixes together with the deployed runtime files from the Specrew upgrade, so the tree that carries the sign-off is the tree that passes validation. Right now the crossing is recorded at ...
+- **assistant:** Committing first, as instructed. Let me get the full picture of the dirty tree:
 
 Full transcript (read on-demand for depth): C:\Users\alon\.claude\projects\C--Dev-KeyContextAI\142a4782-bd93-402e-9aef-56084372c613.jsonl
 
@@ -68,4 +68,3 @@ What would you like to do? Type one of these:
 ```
 
 <!-- SPECREW-VERDICT-BOUNDARY: before-implement -> review-signoff -->
-
