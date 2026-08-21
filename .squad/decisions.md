@@ -63,3 +63,30 @@ No decisions recorded yet.
 - **Task ID**: (none)
 - **Auth Commit Hash**: 956f0ad55406b6ed4898ffcc37e9a3c048afe9d0
 - **Recorded At**: 2026-08-19T21:15:03Z
+
+## 2026-08-21T15:23:36Z — Boundary sync warning: review-signoff
+
+- **Boundary Type**: review-signoff
+- **Latest Recorded Boundary**: review-signoff
+- **Recorded At**: 2026-08-21T15:23:36Z
+- **Warning**: Expected next boundary 'retro' but received 'review-signoff'.
+
+## 2026-08-21T15:23:36Z — Boundary sync: review-signoff
+
+- **Boundary Type**: review-signoff
+- **Feature Ref**: 001-layout-autocorrect
+- **Iteration Number**: 001
+- **Task ID**: (none)
+- **Auth Commit Hash**: 613271f920ff2e69e148824074779c7b6fa5a972
+- **Recorded At**: 2026-08-21T15:23:36Z
+
+## 2026-08-21T16:01:48Z — Boundary enforcement: review-signoff
+
+- **Feature**: 001-layout-autocorrect
+- **Boundary Type**: review-signoff
+- **Current Boundary**: before-implement
+- **Requested Boundary**: review-signoff
+- **Enforcement Action**: authorized
+- **Launch Mode**: (none)
+- **Agent Response Snippet**: (none)
+- **Reason**: Persisted authorization matched the requested boundary.

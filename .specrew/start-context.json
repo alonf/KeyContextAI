@@ -2,18 +2,9 @@
   "schema": "v2",
   "boundary_enforcement": {
     "enabled": true,
-    "last_authorized_boundary": "before-implement",
-    "pending_next_boundary": "review-signoff",
-    "pending_crossing": {
-      "crossing_id": "crossing-ebd24b980781c443a6ec2d124fae250942eca5f7d69fd3de85141ed626cd048d",
-      "from_boundary": "before-implement",
-      "to_boundary": "review-signoff",
-      "working_boundary": "review-signoff",
-      "boundary_commit_hash": "956f0ad55406b6ed4898ffcc37e9a3c048afe9d0",
-      "artifact_state_kind": "git-tree",
-      "artifact_state_id": "51e84463479c3ec29fe301e58fa19b93ef945c5f",
-      "recorded_at": "2026-08-19T21:15:03Z"
-    },
+    "last_authorized_boundary": "review-signoff",
+    "pending_next_boundary": null,
+    "pending_crossing": null,
     "policy_classes": {
       "specify": "human-judgment-required",
       "clarify": "human-judgment-required",
@@ -85,12 +76,24 @@
         "kind": "standard",
         "out_of_band": false,
         "authorization_id": "auth-57c233c996bfea1e1aca798726e2b5df3035da63c4b3b72882d5adcf1fb4bd5b"
+      },
+      {
+        "from_boundary": "before-implement",
+        "to_boundary": "review-signoff",
+        "verdict_text": "approved for review-signoff",
+        "authorizing_human": "unattributed",
+        "recorded_at": "2026-08-21T16:01:21Z",
+        "auth_commit_hash": "c3b4502d206453a6dd29b7ec04c2a7c20a19e093",
+        "evidence_source": "hook-captured-from-transcript",
+        "kind": "standard",
+        "out_of_band": false,
+        "authorization_id": "auth-c3e70b5392e53f8ade615bd5c8060ad0e8663439db59f0a8644359c20eaa4925"
       }
     ],
     "correction_history": [],
     "bypass_history": []
   },
-  "generated_at_utc": "2026-08-19T21:15:03Z",
+  "generated_at_utc": "2026-08-21T15:23:36Z",
   "feature_path": "C:\\Dev\\KeyContextAI\\specs\\001-layout-autocorrect",
   "session_state": {
     "active": true,
@@ -99,7 +102,7 @@
     "feature_path": "C:\\Dev\\KeyContextAI\\specs\\001-layout-autocorrect",
     "iteration_number": "001",
     "task_id": null,
-    "auth_commit_hash": "956f0ad55406b6ed4898ffcc37e9a3c048afe9d0",
-    "recorded_at": "2026-08-19T21:15:03Z"
+    "auth_commit_hash": "613271f920ff2e69e148824074779c7b6fa5a972",
+    "recorded_at": "2026-08-21T15:23:36Z"
   }
 }
