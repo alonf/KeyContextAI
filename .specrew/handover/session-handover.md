@@ -70,4 +70,3 @@ The verdict is yours:
 ```
 
 <!-- SPECREW-VERDICT-BOUNDARY: before-implement -> review-signoff -->
-
