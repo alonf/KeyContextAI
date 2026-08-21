@@ -2,11 +2,11 @@
 schema: v1
 source: Stop
 from_host: claude
-recorded_at: 2026-08-21T16:10:42.7304705Z
-from_commit: 66ef512
+recorded_at: 2026-08-21T18:59:40.0720157Z
+from_commit: 81390e0
 active_feature: 001-layout-autocorrect
 active_boundary: retro
-last_authorized_boundary: review-signoff
+last_authorized_boundary: retro
 workshop_done: architecture-core, component-design, requirements-nfr, ui-ux, data-storage, security-compliance, integration-api, observability-resilience, devops-operations, code-implementation, product-domain
 ---
 
@@ -14,11 +14,12 @@ workshop_done: architecture-core, component-design, requirements-nfr, ui-ux, dat
 
 ## What I just did (last 3-5 turns or last boundary work)
 
+- [2026-08-21T18:59:15Z] (Stop) 0 changed user file(s) [(none)] (+3 Specrew-managed); HEAD 81390e0 (boundary(retro): record the human sign-off of the iteration 001 retro); 1 new commit(s): 81390e0 boundary(retro): record the human sign-off of the iteration 001 retro
 - [2026-08-21T16:09:56Z] (PostToolUse) 0 changed user file(s) [(none)] (+9 Specrew-managed); HEAD 66ef512 (chore(lint): auto-fix markdownlint violations from boundary-sync gate); 2 new commit(s): 66ef512 chore(lint): auto-fix markdownlint violations from boundary-sync gate | 1e1d563 retro(001): author the iteration 001 retrospective
 
 ## Why I'm stopping (the switch trigger)
 
-Hook-captured at trigger 'Stop' (the agent did not author a handover this turn). Boundary: retro. Refresh reason: tracked-change.
+Hook-captured at trigger 'Stop' (the agent did not author a handover this turn). Boundary: retro. Refresh reason: end-of-turn conversation refresh (no git/boundary delta).
 
 ## Open questions / pending clarifications
 
@@ -30,75 +31,32 @@ Hook-captured at trigger 'Stop' (the agent did not author a handover this turn).
 
 ## Recommended next-immediate-step
 
-Resume feature 001-layout-autocorrect at boundary retro. Only Specrew-managed scaffolding is uncommitted (15 file(s)) - that is the init baseline; commit it at a boundary.
+Resume feature 001-layout-autocorrect at boundary retro. Only Specrew-managed scaffolding is uncommitted (11 file(s)) - that is the init baseline; commit it at a boundary.
 
 ## Context the receiving host needs that artifacts don't carry
 
-branch 001-layout-autocorrect, HEAD 66ef512 (chore(lint): auto-fix markdownlint violations from boundary-sync gate). Active feature 001-layout-autocorrect, boundary retro. No user files changed; 15 Specrew-managed scaffolding file(s) uncommitted.
+branch 001-layout-autocorrect, HEAD 81390e0 (boundary(retro): record the human sign-off of the iteration 001 retro). Active feature 001-layout-autocorrect, boundary retro. No user files changed; 11 Specrew-managed scaffolding file(s) uncommitted.
 
 ## Recent conversation (last few exchanges, hook-captured)
 
-- **assistant:** The verdict cleared the earlier warning; now the iteration status needs advancing to retro. Let me find the status fields:
-- **assistant:** This is DRIFT-004's real consequence — the crashed sub-step produces these five required artifacts. Let me run it directly:
-- **assistant:** Reproduces standalone — so the five required artifacts can't be generated. Let me establish exactly what they need before I bring this to you:
-- **assistant:** The check is existence-only, so hand-authoring would satisfy it — but that's a decision you own. First, DRIFT-004's severity was understated; correcting it:
-- **assistant:** Retro committed. Running the governed retro boundary sync to mint the crossing:
-- **user:** Base directory for this skill: C:\Dev\KeyContextAI\.claude\skills\speckit-specrew-speckit-sync-retro # Sync Retro Boundary State ## Record the arrival (before the advancement gate) After retro artifacts are committed to the feature branch, ...
-- **assistant:** Crossing minted at `66ef5123`. Running the gate preflight before the packet:
 - **assistant:** Preflight done — and it does not come back clean. Here is the retro boundary stop. ## What I Just Did Authored file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/001/retro.md from plan.md, state.md, drift-log.md, review.md ...
+- **user:** Stop hook feedback: Specrew review — your last review no longer covers these files. The latest campaign result remains useful evidence but targets a moved or earlier snapshot and cannot authorize the current tree. That result belongs to thi...
+- **assistant:** The coverage advisory again, now naming the retro boundary — still informational, and the hook confirms it doesn't decide the approval. The retro commits moved the tree past the reviewed snapshot, which is expected: they changed governance ...
+- **user:** approved for retro
+- **assistant:** Verifying the verdict landed, then committing the boundary state:
+- **assistant:** Retro is authorized and the tree is clean. I'm stopping here rather than pushing into closeout, because the next step needs a choice you haven't made yet. ## What I Just Did Confirmed your verdict was captured — `approved for retro` recorde...
+- **user:** Stop hook feedback: Specrew review — your last review no longer covers these files. The latest campaign result remains useful evidence but targets a moved or earlier snapshot and cannot authorize the current tree. That result belongs to thi...
+- **assistant:** That's the coverage advisory once more, and this time it carries no "approval you still owe" line — because none is pending. Retro is authorized and the tree is clean, so it's purely informational. It is accurate, though: the retro and drif...
 
 Full transcript (read on-demand for depth): C:\Users\alon\.claude\projects\C--Dev-KeyContextAI\142a4782-bd93-402e-9aef-56084372c613.jsonl
 
 ## Authored boundary packet (captured at stop)
 
-Preflight done — and it does not come back clean. Here is the retro boundary stop.
+The coverage advisory again, now naming the retro boundary — still informational, and the hook confirms it doesn't decide the approval. The retro commits moved the tree past the reviewed snapshot, which is expected: they changed governance records only, no product code.
 
-## What I Just Did
+Nothing has changed since my packet. The retro is committed and the crossing is minted at `66ef5123`, and the one thing you should weigh before approving is that validation returns FAIL on that tree — five reviewer closeout artifacts with no working generator (DRIFT-004), classified rather than fixed or papered over.
 
-Authored file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/001/retro.md from plan.md, state.md, drift-log.md, review.md and the commit history rather than session memory, committed it as `1e1d563`, advanced the iteration status to `retro`, and minted the retro crossing `crossing-55f966338ed8bc4bb640c132c8e6e330af66592c3ba3f26af200abcff01351fb` at commit **`66ef5123`**, git tree `8c1acb24`.
-
-What the retro says, in short:
-
-- **Estimation accuracy is recorded as not computable.** file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/001/tasks-progress.yml carries one synthetic start and finish stamp across all 18 tasks, so no task has an actual of its own. I filled the table with "not captured" rather than inventing deltas. Scope landed exactly — 19.5 planned, 19.5 delivered, delta 0 — so this project has scope calibration and no effort calibration.
-- **The one visible mis-estimate is qualitative**: T010 was scoped as data assembly and behaved like research. Points weren't under-estimated; risk was.
-- **The false independence claim is named as the iteration's most serious process failure**, and specifically as human-caught rather than gate-caught: a 56-second `pass` was believed while the 186-second run that actually read the code returned `incomplete`. Two reviewer instructions are promoted from it, one deferred, none dropped.
-- **Calibration suggestion: hold 20 story points.** Adjusting on one unmeasured data point would be fitting a line to one point.
-- A sequencing signal for 002: the review phase carries no estimate at all, yet outran several implementation tasks.
-
-I also found and recorded a third Specrew defect while doing this — **DRIFT-004**.
-
-## Why I Stopped
-
-The retro boundary needs your verdict. But you should know before giving it: **validation does not pass on this tree.**
-
-## What Needs Your Review
-
-**The blocker.** `scaffold-reviewer-artifacts.ps1` throws `Cannot find an overload for "Add" and the argument count: "1"` and **reproduces standalone**, so the five reviewer closeout artifacts have no working generator:
-
-- `code-map.md`, `coverage-evidence.md`, `reviewer-index.md`, `review-diagrams.md` — required because the iteration touched source
-- `dependency-report.md` — required because it touched a manifest
-
-Validation on the committed tree therefore returns **FAIL** with exactly those five findings. The retro scaffold wrote `retro.md` successfully and *then* threw from this sub-step, so it reported failure while half-succeeding — which is how the missing artifacts went unnoticed until the validator refused.
-
-I classified rather than fixed it, per your instruction: the defect is Specrew's and belongs upstream. I did not patch the script, and I did not hand-author the five artifacts either — **the validator checks them for existence only, so hand-authoring would satisfy the gate**, but doing that unilaterally would mask the severity of a defect you're actively tracking. That route is recorded in DRIFT-004 as available and not taken.
-
-Everything else is clean: the nine warnings are the eight historical `handoff-block-missing` entries plus `review-authored-by-implementer`, which is the DRIFT-002 false positive.
-
-## What Happens Next
-
-Your approval authorizes the retro crossing and moves the lifecycle to iteration-closeout — which is where the five missing artifacts become a hard stop, since closeout is exactly the gate that requires them. So the blocker needs a route regardless: fix the scaffold upstream and re-run it, or have me author the five artifacts by hand with real content drawn from the codebase.
-
-## Discussion Prompts
-
-1. Which route for the reviewer artifacts — upstream fix then regenerate, or hand-author them here so closeout can proceed?
-2. Anything in the retro you'd state differently, particularly the calibration call to hold at 20 points?
-3. Improvement action 4 asks for a decision before 002 planning closes: grow the corpus until SC-001 is measurable, or restate the criterion. That one is yours.
-
-## What I Need From You
-
-Your verdict on the retro crossing at `66ef5123`.
-
-What would you like to do? Type one of these:
+Your verdict:
 
 ```text
   approved for retro
