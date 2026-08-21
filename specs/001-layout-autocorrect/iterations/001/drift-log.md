@@ -22,8 +22,8 @@
 
 ## Summary
 
-**Total drift events**: 3 (1 in this project, 2 Specrew-side findings this project surfaced)
-**Resolution rate**: 100% of in-project drift resolved (1/1); the 2 tooling findings are open upstream
+**Total drift events**: 4 (1 in this project, 3 Specrew-side findings this project surfaced)
+**Resolution rate**: 100% of in-project drift resolved (1/1); the 3 tooling findings are open upstream
 **Specification drift**: none outstanding
 
 ## Events
@@ -184,6 +184,43 @@ re-derived through the task-progress path. Committed as `a44f3f6`.
   unticked boxes will downgrade the ledger again. Carried into the retro as a friction item.
 
 **Status**: instance repaired here; the defect is open upstream.
+
+### DRIFT-004: the retro scaffold throws after writing retro.md
+
+**Detected**: 2026-08-21, on the first run of the governed retro scaffold for this iteration.
+**Class**: defect in Specrew's retro scaffold, surfaced by this project. Not spec, plan, or
+implementation drift in KeyContextAI.
+**Requirement**: none. No FR or SC of this feature is affected.
+
+**What fired**: `scaffold-retro-artifact.ps1` wrote
+file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/001/retro.md successfully, then
+threw from its reviewer-artifact sub-step at line 545 — `scaffold-reviewer-artifacts.ps1: Cannot find
+an overload for "Add" and the argument count: "1"` — and exited non-zero.
+
+**Why it matters — this blocks iteration closeout.** The failure is partial and silent about being
+partial: `retro.md` is written, so a caller checking only for that file sees success, while the exit
+code says failure. What the sub-step exists to produce was never created, and validation now refuses
+the iteration for exactly those five missing artifacts:
+
+- `code-map.md`, `coverage-evidence.md`, `reviewer-index.md`, `review-diagrams.md` (required because
+  the iteration touched source)
+- `dependency-report.md` (required because it touched a manifest)
+
+**Reproduces standalone.** Invoking `scaffold-reviewer-artifacts.ps1` directly on this iteration
+directory throws the same error, so the defect is in that script rather than in how the retro scaffold
+calls it. There is no supported route to generate these artifacts while it throws.
+
+**Not diagnosed further here on purpose.** Root-causing the parameter binding is Specrew-repository
+work, and this project's job is to report the symptom precisely, not to reach into the tool it is
+exercising. The validator checks these five artifacts for existence only, so hand-authoring them would
+satisfy the gate — that is recorded as an available route, not taken unilaterally, because it would
+mask the severity of a defect the maintainer is tracking upstream.
+
+- **Class closure**: NONE — the guard belongs in the Specrew repository. Carried into the retro as a
+  friction item, and into the iteration-closeout boundary as an open blocker.
+
+**Status**: open upstream, and **blocking iteration-closeout for this iteration**. The retro artifact
+itself is complete and unaffected.
 
 ### Resolution Strategies (Unused)
 

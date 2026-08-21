@@ -2,8 +2,8 @@
 schema: v1
 source: PostToolUse
 from_host: claude
-recorded_at: 2026-08-21T16:02:10.7305916Z
-from_commit: c3b4502
+recorded_at: 2026-08-21T16:09:03.8656938Z
+from_commit: cebafa4
 active_feature: 001-layout-autocorrect
 active_boundary: review-signoff
 last_authorized_boundary: review-signoff
@@ -14,12 +14,12 @@ workshop_done: architecture-core, component-design, requirements-nfr, ui-ux, dat
 
 ## What I just did (last 3-5 turns or last boundary work)
 
-- [2026-08-21T15:43:12Z] (PostToolUse) 0 changed user file(s) [(none)] (+23 Specrew-managed); HEAD c3b4502 (drift(001): record two Specrew-side defects this iteration surfaced); 1 new commit(s): c3b4502 drift(001): record two Specrew-side defects this iteration surfaced
-- [2026-08-21T15:42:32Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/001/drift-log.md] (+23 Specrew-managed); HEAD 613271f (chore(lint): auto-fix markdownlint violations from boundary-sync gate)
-- [2026-08-21T15:42:21Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/001/drift-log.md] (+23 Specrew-managed); HEAD 613271f (chore(lint): auto-fix markdownlint violations from boundary-sync gate)
-- [2026-08-21T15:41:49Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/001/drift-log.md] (+23 Specrew-managed); HEAD 613271f (chore(lint): auto-fix markdownlint violations from boundary-sync gate)
-- [2026-08-21T15:23:38Z] (PostToolUse) 0 changed user file(s) [(none)] (+11 Specrew-managed); HEAD 613271f (chore(lint): auto-fix markdownlint violations from boundary-sync gate); 1 new commit(s): 613271f chore(lint): auto-fix markdownlint violations from boundary-sync gate
-- [2026-08-21T10:04:25Z] (Stop) 0 changed user file(s) [(none)] (+5 Specrew-managed); HEAD a44f3f6 (chore(001): repair iteration-001 task ledger downgraded by re-sync); 1 new commit(s): a44f3f6 chore(001): repair iteration-001 task ledger downgraded by re-sync
+- [2026-08-21T16:09:03Z] (PostToolUse) 3 changed user file(s) [specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/plan.md, specs/001-layout-autocorrect/iterations/001/retro.md] (+4 Specrew-managed); HEAD cebafa4 (boundary(review-signoff): record the human sign-off of iteration 001)
+- [2026-08-21T16:08:54Z] (PostToolUse) 3 changed user file(s) [specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/plan.md, specs/001-layout-autocorrect/iterations/001/retro.md] (+4 Specrew-managed); HEAD cebafa4 (boundary(review-signoff): record the human sign-off of iteration 001)
+- [2026-08-21T16:08:24Z] (PostToolUse) 3 changed user file(s) [specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/plan.md, specs/001-layout-autocorrect/iterations/001/retro.md] (+4 Specrew-managed); HEAD cebafa4 (boundary(review-signoff): record the human sign-off of iteration 001)
+- [2026-08-21T16:08:17Z] (PostToolUse) 3 changed user file(s) [specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/plan.md, specs/001-layout-autocorrect/iterations/001/retro.md] (+4 Specrew-managed); HEAD cebafa4 (boundary(review-signoff): record the human sign-off of iteration 001)
+- [2026-08-21T16:07:19Z] (PostToolUse) 3 changed user file(s) [specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/plan.md, specs/001-layout-autocorrect/iterations/001/retro.md] (+4 Specrew-managed); HEAD cebafa4 (boundary(review-signoff): record the human sign-off of iteration 001)
+- [2026-08-21T16:07:13Z] (PostToolUse) 2 changed user file(s) [specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/retro.md] (+4 Specrew-managed); HEAD cebafa4 (boundary(review-signoff): record the human sign-off of iteration 001)
 
 ## Why I'm stopping (the switch trigger)
 
@@ -35,22 +35,22 @@ Hook-captured at trigger 'PostToolUse' (the agent did not author a handover this
 
 ## Recommended next-immediate-step
 
-Resume feature 001-layout-autocorrect at boundary review-signoff. Only Specrew-managed scaffolding is uncommitted (23 file(s)) - that is the init baseline; commit it at a boundary.
+Resume feature 001-layout-autocorrect at boundary review-signoff. 3 of YOUR file(s) are uncommitted [specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/plan.md, specs/001-layout-autocorrect/iterations/001/retro.md] (+4 Specrew-managed) - review/commit them before advancing.
 
 ## Context the receiving host needs that artifacts don't carry
 
-branch 001-layout-autocorrect, HEAD c3b4502 (drift(001): record two Specrew-side defects this iteration surfaced). Active feature 001-layout-autocorrect, boundary review-signoff. No user files changed; 23 Specrew-managed scaffolding file(s) uncommitted.
+branch 001-layout-autocorrect, HEAD cebafa4 (boundary(review-signoff): record the human sign-off of iteration 001). Active feature 001-layout-autocorrect, boundary review-signoff. Your uncommitted work: specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/plan.md, specs/001-layout-autocorrect/iterations/001/retro.md. (4 Specrew-managed files also uncommitted.)
 
 ## Recent conversation (last few exchanges, hook-captured)
 
-- **assistant:** Recording both as Specrew-side findings, referenced not fixed:
-- **assistant:** Validation still passes. Committing the drift record so it survives the session:
-- **assistant:** Both defects are recorded and pushed. Holding at the boundary as instructed. ## What I Just Did Recorded both Specrew-side findings in file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/001/drift-log.md and committed them a...
-- **user:** Stop hook feedback: Specrew review — your last review no longer covers these files. The latest campaign result remains useful evidence but targets a moved or earlier snapshot and cannot authorize the current tree. That result belongs to thi...
-- **assistant:** The same coverage advisory, now genuinely accurate — the drift commit `c3b4502` did move the tree past what run `run-20260820-150735904-458c5888` examined. It remains informational and does not block: it's the review-coverage notifier, not ...
-- **user:** approved for review-signoff
-- **assistant:** Verdict received. Verifying the authorization was captured and the gate now opens:
-- **assistant:** Authorization captured — and it bound to `c3b4502`, which includes the drift record, so prompt 1 resolved itself cleanly. Committing the boundary state:
+- **assistant:** Enough to record it accurately. Reading the scaffolded retro so I can fill it with evidence:
+- **assistant:** The scaffold's drift count is stale (says 0; the log now has 3), and per-task actuals were never captured. Let me read the review findings to ground the retro properly:
+- **assistant:** Now I have what I need. Recording the scaffold crash I just hit as DRIFT-004, then writing the retro:
+- **assistant:** Now the retro itself, written from the artifacts:
+- **assistant:** The verdict cleared the earlier warning; now the iteration status needs advancing to retro. Let me find the status fields:
+- **assistant:** This is DRIFT-004's real consequence — the crashed sub-step produces these five required artifacts. Let me run it directly:
+- **assistant:** Reproduces standalone — so the five required artifacts can't be generated. Let me establish exactly what they need before I bring this to you:
+- **assistant:** The check is existence-only, so hand-authoring would satisfy it — but that's a decision you own. First, DRIFT-004's severity was understated; correcting it:
 
 Full transcript (read on-demand for depth): C:\Users\alon\.claude\projects\C--Dev-KeyContextAI\142a4782-bd93-402e-9aef-56084372c613.jsonl
 
