@@ -8,10 +8,15 @@
           "host": "claude",
           "session_id": "142a4782-bd93-402e-9aef-56084372c613",
           "first_observed_at": "202608210948318366568",
-          "last_observed_at": "202608210948318366568"
+          "last_observed_at": "202608211004273942149"
         }
       ]
     }
   },
-  "source_sessions": {}
+  "source_sessions": {
+    "claude|142a4782-bd93-402e-9aef-56084372c613": {
+      "first_observed_at": "202608211004273942149",
+      "last_observed_at": "202608211004273942149"
+    }
+  }
 }

@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "fact_type": "review-signoff-partial-override",
+  "request_id": "override-0ca3df35085f3ace757c1668",
+  "target_tree_id": "214c698523682637f19181ec4b6a8e69c9cd7850",
+  "campaign_id": "cmp-001-layout-autocorrect-i001",
+  "run_id": "run-20260820-150735904-458c5888",
+  "authority_kind": "human",
+  "authorized_by": "unattributed-human",
+  "verdict_text": "approved for partial review signoff - product code is unchanged since the reviewed tree: git diff 273c69bb..a44f3f6 over src/, tests/, data/ and .github/workflows/ is empty. Everything that moved is the Specrew 0.40.0-beta3 runtime deployment and governance records, which no reviewer verdict depends on. Spending a round would re-examine identical bytes.",
+  "rationale": "product code is unchanged since the reviewed tree: git diff 273c69bb..a44f3f6 over src/, tests/, data/ and .github/workflows/ is empty. Everything that moved is the Specrew 0.40.0-beta3 runtime deployment and governance records, which no reviewer verdict depends on. Spending a round would re-examine identical bytes.",
+  "response_hash": "62c874bce3f5b6c3de9faa867b087dea57f4045b1e238a19244c2f2ba300c07e",
+  "evidence_source": "hook-captured-user-prompt",
+  "source_event": "UserPromptSubmit",
+  "host_kind": "claude",
+  "observed_at": "2026-08-21T15:22:35.3215217+00:00"
+}
