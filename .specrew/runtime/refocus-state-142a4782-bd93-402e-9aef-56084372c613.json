@@ -1,7 +1,7 @@
 {
   "session_id": "142a4782-bd93-402e-9aef-56084372c613",
-  "last_seen_boundary": "review-signoff",
-  "context_mtime": "2026-08-21T16:01:21.4393798Z",
+  "last_seen_boundary": "retro",
+  "context_mtime": "2026-08-21T16:09:54.0279794Z",
   "breaker": null,
   "journal": [
     {
@@ -11,6 +11,14 @@
       "channel": "hook",
       "tokens": 566,
       "outcome": "injected"
+    },
+    {
+      "at": "2026-08-21T16:09:55.6633482Z",
+      "trigger": "b3",
+      "scope": "general+boundary.next",
+      "channel": "hook",
+      "tokens": 0,
+      "outcome": "deduped"
     }
   ]
 }

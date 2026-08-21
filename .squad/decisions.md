@@ -90,3 +90,23 @@ No decisions recorded yet.
 - **Launch Mode**: (none)
 - **Agent Response Snippet**: (none)
 - **Reason**: Persisted authorization matched the requested boundary.
+
+## 2026-08-21T16:09:54Z — Boundary sync: retro
+
+- **Boundary Type**: retro
+- **Feature Ref**: 001-layout-autocorrect
+- **Iteration Number**: 001
+- **Task ID**: (none)
+- **Auth Commit Hash**: 66ef51233be701e86d36700086fb0c85bc712a11
+- **Recorded At**: 2026-08-21T16:09:53Z
+
+## 2026-08-21T18:58:16Z — Boundary enforcement: retro
+
+- **Feature**: 001-layout-autocorrect
+- **Boundary Type**: retro
+- **Current Boundary**: review-signoff
+- **Requested Boundary**: retro
+- **Enforcement Action**: authorized
+- **Launch Mode**: (none)
+- **Agent Response Snippet**: (none)
+- **Reason**: Persisted authorization matched the requested boundary.

@@ -2,7 +2,7 @@
   "schema": "v2",
   "boundary_enforcement": {
     "enabled": true,
-    "last_authorized_boundary": "review-signoff",
+    "last_authorized_boundary": "retro",
     "pending_next_boundary": null,
     "pending_crossing": null,
     "policy_classes": {
@@ -88,21 +88,33 @@
         "kind": "standard",
         "out_of_band": false,
         "authorization_id": "auth-c3e70b5392e53f8ade615bd5c8060ad0e8663439db59f0a8644359c20eaa4925"
+      },
+      {
+        "from_boundary": "review-signoff",
+        "to_boundary": "retro",
+        "verdict_text": "approved for retro",
+        "authorizing_human": "unattributed",
+        "recorded_at": "2026-08-21T18:57:46Z",
+        "auth_commit_hash": "66ef51233be701e86d36700086fb0c85bc712a11",
+        "evidence_source": "hook-captured-from-transcript",
+        "kind": "standard",
+        "out_of_band": false,
+        "authorization_id": "auth-c53d6825a298d93ec5b3b797b14c5d67d4098b48954fe51d24cd1669f7049e0f"
       }
     ],
     "correction_history": [],
     "bypass_history": []
   },
-  "generated_at_utc": "2026-08-21T15:23:36Z",
+  "generated_at_utc": "2026-08-21T16:09:53Z",
   "feature_path": "C:\\Dev\\KeyContextAI\\specs\\001-layout-autocorrect",
   "session_state": {
     "active": true,
-    "boundary_type": "review-signoff",
+    "boundary_type": "retro",
     "feature_ref": "001-layout-autocorrect",
     "feature_path": "C:\\Dev\\KeyContextAI\\specs\\001-layout-autocorrect",
     "iteration_number": "001",
     "task_id": null,
-    "auth_commit_hash": "613271f920ff2e69e148824074779c7b6fa5a972",
-    "recorded_at": "2026-08-21T15:23:36Z"
+    "auth_commit_hash": "66ef51233be701e86d36700086fb0c85bc712a11",
+    "recorded_at": "2026-08-21T16:09:53Z"
   }
 }
