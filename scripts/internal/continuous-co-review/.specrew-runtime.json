@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "specrew_version": "0.40.0",
-  "runtime_bundle_sha256": "8cb4ac47dc86655c4c72017a42acb4ab166ef4a3099b68f75c75b78685d29a30",
+  "runtime_bundle_sha256": "843f994aed5087a8be2bcfd195f15156158ffeaec87787830f37e2a5cc90c982",
   "managed_files": [
     {
       "path": "_load.ps1",
@@ -25,7 +25,7 @@
     },
     {
       "path": "continuous-co-review-navigator.ps1",
-      "sha256": "a9c1a59c0090092fc6a336c89734cd619e7bc88d869a58e0ce7e147ba5291aa1"
+      "sha256": "269728df1b69f546b942072051c5b95c4d38cfff678f81e53543f48b9c0203ba"
     },
     {
       "path": "escalation-latch.ps1",
@@ -61,7 +61,7 @@
     },
     {
       "path": "review-authority-core.ps1",
-      "sha256": "93ec83d94fb052ef4ae823fe7abcf46dc9396c732154c29753f3f56be5681473"
+      "sha256": "0183cc265718b0eb3c526f5e6dbf0599ee5b86fc9f8dbd1c17da8058f98342e9"
     },
     {
       "path": "review-authority-cutover.ps1",
@@ -81,7 +81,7 @@
     },
     {
       "path": "review-campaign-orchestrator.ps1",
-      "sha256": "940a3b7e2ac57c858f573ce550c1aa27341ed565befeb9037e71692e621dec0b"
+      "sha256": "593363f6a126dd8eafa68216cd978d088638e94f70286ee2baff5bfcbb6f86ac"
     },
     {
       "path": "review-claude-harness-port.ps1",
@@ -141,7 +141,7 @@
     },
     {
       "path": "review-run-index-writer.ps1",
-      "sha256": "065685da601697c1413d8ee645ece95cd37725d703898e9e216f2cf925ad4e5d"
+      "sha256": "5eb10315717dcd38c34fbb61800d35f3b6ca695ae0b7a3409d4378f495e70d87"
     },
     {
       "path": "review-run-reconciler.ps1",
@@ -217,7 +217,7 @@
     },
     {
       "path": "verification-plan-contract.ps1",
-      "sha256": "2da2f51620aa9c3755a9af668fa029fee0ba578900d7dffaaaadb354b418d570"
+      "sha256": "036095def0a2aa900f8a1f1c42efbfdcedc9a49059d020579cb03ad910a8b35d"
     },
     {
       "path": "verification-plan-materializer.ps1",
@@ -225,11 +225,11 @@
     },
     {
       "path": "verification-plan-runner.ps1",
-      "sha256": "3ae97f0b14760c82a8554092f56ab80bac5452bb4a48d986f25f335ba936b24d"
+      "sha256": "c09eb7c6aac2ea9656fe55e28ce1af55748e9ebafb49621637625ebbd8c76b6d"
     },
     {
       "path": "verification-plan-supplier.ps1",
-      "sha256": "831b8db915fdf162b5aedf43f0e0fffcd41635cd2c70e4b36510c5259b77a53d"
+      "sha256": "a4335cec0a31296d4a4528fc01f7aecd5a04a17bc63a195489b8e410ca566148"
     },
     {
       "path": "worktree-navigator.ps1",

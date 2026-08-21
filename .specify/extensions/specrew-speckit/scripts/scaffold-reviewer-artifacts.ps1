@@ -1262,7 +1262,12 @@ function Get-SensitiveTouchpoints {
             continue
         }
 
-        $matches = New-Object System.Collections.Generic.List[string]
+        # W42: NOT `$matches`. That is an AUTOMATIC variable, and the `-match` below overwrites it
+        # with a Hashtable - whose Add() takes two arguments - so `.Add($pattern)` threw
+        # "Cannot find an overload for Add and the argument count: 1" and took the whole scaffold
+        # down. It fired only once a pattern actually MATCHED, so a project with no matching files
+        # never saw it, which is why it survived reading, -WhatIf, -DryRun and three fixtures.
+        $matchedPatterns = New-Object System.Collections.Generic.List[string]
         $pathText = ([string]$file.Path).ToLowerInvariant()
         $contentText = ''
         $absolutePath = Join-Path $ProjectRoot $file.Path
@@ -1273,14 +1278,14 @@ function Get-SensitiveTouchpoints {
         foreach ($pattern in $Patterns) {
             $regex = Convert-WildcardToRegex -Pattern $pattern.ToLowerInvariant()
             if ($pathText -match $regex -or $contentText -match $regex) {
-                if (-not $matches.Contains($pattern)) {
-                    $null = $matches.Add($pattern)
+                if (-not $matchedPatterns.Contains($pattern)) {
+                    $null = $matchedPatterns.Add($pattern)
                 }
             }
         }
 
-        if ($matches.Count -gt 0) {
-            $null = $touchpoints.Add(('{0} (matched: {1})' -f $file.Path, ($matches -join ', ')))
+        if ($matchedPatterns.Count -gt 0) {
+            $null = $touchpoints.Add(('{0} (matched: {1})' -f $file.Path, ($matchedPatterns -join ', ')))
         }
     }
 
@@ -2706,7 +2711,22 @@ $(($triageHints | ForEach-Object { "- $_" }) -join [Environment]::NewLine)
 $digestLine
 "@
 
-if (-not $SummaryOnly) {
+# W40: -SummaryOnly SUPPRESSES OUTPUT. IT MUST NOT SKIP THE WORK.
+#
+# This whole block - every reviewer closeout artifact - sat behind `if (-not $SummaryOnly)`, and
+# `scaffold-retro-artifact.ps1` invokes this script WITH -SummaryOnly. So the retro flow printed a
+# digest line naming `reviewer-index.md` and wrote none of the five artifacts, and closeout - the
+# gate that requires them - refused. Every project that reaches closeout hits it.
+#
+# One flag was doing two jobs and one of them was wrong. Output suppression already lives on its
+# own further down (`if (-not $SummaryOnly) { $actions | Format-Table }`), which is what the name
+# means and all it should ever have meant.
+#
+# The guard is kept as a named condition rather than deleted so the block's indentation - and the
+# diff - stay legible; re-flowing seventy lines to remove one `if` is how an unrelated defect gets
+# introduced next to a fix.
+$writeReviewerArtifacts = $true
+if ($writeReviewerArtifacts) {
     # F-028: Handle -Force flag with interactive confirmation
     if ($Force) {
         # Check if review artifacts exist

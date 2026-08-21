@@ -272,7 +272,7 @@ function Resolve-ReviewCampaignPauseDecision {
             elapsed_minutes        = $ElapsedMinutes
             result_produced        = $false
             recommendation         = $(if ($continuationAvailable) {
-                    'This review did not finish, so it found nothing AND cleared nothing - there is no evidence either way about your files. Do not read this as a clean result. Run it again: specrew review --live --approve-round'
+                    'This review did not finish, so it found nothing AND cleared nothing - there is no evidence either way about your files. Do not read this as a clean result. Ask the human to run it again: specrew review --live --approve-round - approving a review round is their decision, and that flag is how Specrew records it'
                 } else {
                     'This review did not finish, so it found nothing AND cleared nothing - there is no evidence either way about your files. Do not read this as a clean result. The round budget is spent; reset it explicitly or abandon this campaign.'
                 })
@@ -1334,12 +1334,12 @@ function Test-ReviewCampaignDuplicateCombination {
         [Parameter(Mandatory)][string]$ContractVersion,
         [object[]]$Runs = @()
     )
-    $matches = @($Runs | Where-Object {
+    $matchedItems = @($Runs | Where-Object {
         [string](Get-ReviewAuthorityProperty -Object $_ -Name 'target_digest') -ceq $TargetDigest -and
         [string](Get-ReviewAuthorityProperty -Object $_ -Name 'harness_id') -ceq $HarnessId -and
         [string](Get-ReviewAuthorityProperty -Object $_ -Name 'schema_version') -ceq $ContractVersion
     })
-    return [pscustomobject]@{ duplicate = ($matches.Count -gt 0); prior_run_ids = @($matches | ForEach-Object { [string](Get-ReviewAuthorityProperty -Object $_ -Name 'run_id') }) }
+    return [pscustomobject]@{ duplicate = ($matchedItems.Count -gt 0); prior_run_ids = @($matchedItems | ForEach-Object { [string](Get-ReviewAuthorityProperty -Object $_ -Name 'run_id') }) }
 }
 
 # --- T044: one-invocation run, acceptance/currentness, and finding lineage ----------------------

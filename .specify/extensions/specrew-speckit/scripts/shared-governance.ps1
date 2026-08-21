@@ -1,4 +1,4 @@
-﻿Set-StrictMode -Version Latest
+Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 function Resolve-ProjectPath {
@@ -5535,7 +5535,7 @@ function Get-ApprovalReferenceRecord {
     }
 
     $decisionId = Convert-ToDecisionReferenceId -ApprovalRef $normalizedRef
-    $matches = @(
+    $matchedItems = @(
         Get-DecisionsLedgerEntries -ProjectRoot $ProjectRoot |
             Where-Object {
                 ($_.DecisionId -eq $decisionId -or $_.Title -eq $normalizedRef) -and
@@ -5544,7 +5544,7 @@ function Get-ApprovalReferenceRecord {
             Select-Object -First 1
     )
 
-    if ($matches.Count -eq 0) {
+    if ($matchedItems.Count -eq 0) {
         return [pscustomobject]@{
             ApprovalRef      = $normalizedRef
             DecisionId       = $decisionId
@@ -5555,7 +5555,7 @@ function Get-ApprovalReferenceRecord {
         }
     }
 
-    $entry = $matches[0]
+    $entry = $matchedItems[0]
     return [pscustomobject]@{
         ApprovalRef      = $normalizedRef
         DecisionId       = $entry.DecisionId
@@ -6351,6 +6351,97 @@ function Test-SpecrewWorkshopRecordsPresent {
 # typed-turn receipts and the W25 orientation receipt are, and the agent never supplies it.
 # ---------------------------------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------------------------------
+# W43: THE REST OF THE DEPLOYED RUNTIME GETS THE INTEGRITY CHECK THE CO-REVIEW BUNDLE ALREADY HAD.
+#
+# `scripts/internal/continuous-co-review/` ships a `.specrew-runtime.json` with per-file hashes, and
+# `review-engine-project-runtime-drifted` refuses when the deployed copy no longer matches. The other
+# half of the deployed runtime - `.specify/extensions/specrew-speckit/`, which holds
+# validate-governance.ps1, shared-governance.ps1 and every scaffold - had no marker and no check.
+#
+# During the 2026-08-21 walk a downstream agent hand-patched a deployed scaffold to clear a blocker.
+# Its fix was right and it said so. Nothing stopped it, and nothing would have detected it had it
+# edited the VALIDATOR instead - the file every guarantee from this iteration assumes runs as shipped.
+#
+# HONEST LIMIT, stated rather than implied: this is a self-check. An agent that edits the validator
+# could also edit the marker, or this function. It raises the cost of an undetected edit from zero to
+# three coordinated ones, and it catches every accidental or single-file edit - which is what actually
+# happened. The stronger form, comparing the deployed copy against the INSTALLED module, is what the
+# review engine already does for its own bundle; this deliberately mirrors the marker pattern instead
+# so it still works when the module is absent.
+function Get-SpecrewDeployedExtensionMarkerPath {
+    param([Parameter(Mandatory)][string]$ProjectRoot)
+    return (Join-Path $ProjectRoot '.specify/extensions/specrew-speckit/.specrew-extension-runtime.json')
+}
+
+function Get-SpecrewDeployedExtensionManifest {
+    # Sorted relative path + per-file content hash, the same shape the co-review marker uses. The
+    # marker file itself is excluded because it is about to contain the result.
+    param([Parameter(Mandatory)][string]$ExtensionRoot)
+    $root = (Resolve-Path -LiteralPath $ExtensionRoot -ErrorAction Stop).Path
+    $sha = [System.Security.Cryptography.SHA256]::Create()
+    try {
+        $entries = [System.Collections.Generic.List[object]]::new()
+        $files = @(Get-ChildItem -LiteralPath $root -File -Recurse -Force -ErrorAction Stop |
+                Where-Object { $_.Name -cne '.specrew-extension-runtime.json' } |
+                Sort-Object { ([IO.Path]::GetRelativePath($root, $_.FullName)) -replace '\\', '/' })
+        foreach ($file in $files) {
+            $relative = ([IO.Path]::GetRelativePath($root, $file.FullName)) -replace '\\', '/'
+            # Text-normalised, so a CRLF/LF checkout difference is not reported as tampering - the same
+            # reason the co-review marker hashes logically rather than byte-for-byte.
+            $bytes = [IO.File]::ReadAllBytes($file.FullName)
+            $hash = ([BitConverter]::ToString($sha.ComputeHash($bytes)) -replace '-', '').ToLowerInvariant()
+            [void]$entries.Add([pscustomobject][ordered]@{ path = $relative; sha256 = $hash })
+        }
+        return @($entries)
+    }
+    finally { $sha.Dispose() }
+}
+
+function Write-SpecrewDeployedExtensionMarker {
+    param([Parameter(Mandatory)][string]$ProjectRoot, [string]$SpecrewVersion = 'unknown')
+    $extensionRoot = Join-Path $ProjectRoot '.specify/extensions/specrew-speckit'
+    if (-not (Test-Path -LiteralPath $extensionRoot -PathType Container)) { return $null }
+    $manifest = @(Get-SpecrewDeployedExtensionManifest -ExtensionRoot $extensionRoot)
+    $payload = [ordered]@{
+        schema_version = '1.0'
+        specrew_version = [string]$SpecrewVersion
+        managed_files = @($manifest)
+        source = 'specrew-init-or-update'
+    } | ConvertTo-Json -Depth 12
+    $markerPath = Get-SpecrewDeployedExtensionMarkerPath -ProjectRoot $ProjectRoot
+    [IO.File]::WriteAllText($markerPath, ($payload + [Environment]::NewLine), [Text.UTF8Encoding]::new($false))
+    return $markerPath
+}
+
+function Test-SpecrewDeployedExtensionIntegrity {
+    # Returns the drifted relative paths. FAIL-OPEN on absence: a project deployed before the marker
+    # existed has none, and refusing every one of them would wedge the installed base for a check they
+    # never had. `specrew update` writes the marker, which is also the remedy for real drift.
+    param([Parameter(Mandatory)][string]$ProjectRoot)
+    $result = [pscustomobject]@{ checked = $false; drifted = @(); missing = @(); marker = $null }
+    $markerPath = Get-SpecrewDeployedExtensionMarkerPath -ProjectRoot $ProjectRoot
+    if (-not (Test-Path -LiteralPath $markerPath -PathType Leaf)) { return $result }
+    $marker = $null
+    try { $marker = Get-Content -LiteralPath $markerPath -Raw -Encoding UTF8 | ConvertFrom-Json -Depth 12 }
+    catch { return $result }
+    if ($null -eq $marker -or -not $marker.PSObject.Properties['managed_files']) { return $result }
+
+    $extensionRoot = Join-Path $ProjectRoot '.specify/extensions/specrew-speckit'
+    if (-not (Test-Path -LiteralPath $extensionRoot -PathType Container)) { return $result }
+    $actual = @{}
+    foreach ($entry in (Get-SpecrewDeployedExtensionManifest -ExtensionRoot $extensionRoot)) { $actual[[string]$entry.path] = [string]$entry.sha256 }
+
+    $drifted = [System.Collections.Generic.List[string]]::new()
+    $missing = [System.Collections.Generic.List[string]]::new()
+    foreach ($entry in @($marker.managed_files)) {
+        $relative = [string]$entry.path
+        if (-not $actual.ContainsKey($relative)) { [void]$missing.Add($relative); continue }
+        if ($actual[$relative] -cne [string]$entry.sha256) { [void]$drifted.Add($relative) }
+    }
+    return [pscustomobject]@{ checked = $true; drifted = @($drifted); missing = @($missing); marker = $markerPath }
+}
+
 function Get-SpecrewReviewAuthorshipPath {
     param([Parameter(Mandatory)][string]$ProjectRoot)
     return (Join-Path $ProjectRoot '.specrew/runtime/review-authorship.json')
@@ -6367,6 +6458,16 @@ function Test-SpecrewReviewAuthorshipSourcePath {
     if ([string]::IsNullOrWhiteSpace($p)) { return $false }
     if ($p -match '(?i)^(specs|docs)/') { return $false }
     if ($p -match '(?i)^\.(specrew|squad|specify|github|agents|cursor|copilot|claude)/') { return $false }
+    # W37 REVERTED HERE, DELIBERATELY. Excluding scripts/internal/continuous-co-review/ as "a deployed
+    # copy of Specrew's machinery" is wrong in the one repository where those paths ARE the product,
+    # and this predicate is shared with W33's coverage classifier - so the blanket rule silently
+    # recounted a real review's coverage from 17 source paths to 9, weakening a genuine independence
+    # claim. A quiet degradation of a true claim is the exact failure this week has been about.
+    #
+    # The residual downstream case - a redeploy landing inside an EXACTLY attributed turn - needs a
+    # project-aware discriminator (a downstream project has no Specrew.psd1 at its root), not a path
+    # rule. That is a design decision, recorded rather than smuggled in. The attribution fix below
+    # covers the case that actually occurred.
     if ($p -match '(?i)\.(md|markdown|txt|rst|adoc)$') { return $false }
     return $true
 }
@@ -6390,9 +6491,37 @@ function Write-SpecrewReviewAuthorshipObservation {
         [Parameter(Mandatory)][string]$ProjectRoot,
         [AllowNull()][string]$HostKind,
         [AllowNull()][string]$SessionId,
-        [AllowEmptyCollection()][string[]]$ChangedPaths = @()
+        [AllowEmptyCollection()][string[]]$ChangedPaths = @(),
+        # W37: how the turn delta was attributed. 'exact-turn' means the paths ARE what this turn
+        # wrote; anything else means they are whatever happened to be dirty.
+        [AllowNull()][string]$AttributionMode
     )
     if ([string]::IsNullOrWhiteSpace($SessionId)) { return }
+
+    # W37: MINT NOTHING WHEN ATTRIBUTION IS DEGRADED.
+    #
+    # This function's own header says the fact is minted "from what it watched the session write".
+    # In degraded-worktree mode it was minted from what happened to be DIRTY. On the KeyContextAI
+    # walk a SessionStart redeploy rewrote 15 files under the project's deployed copy of Specrew's
+    # runtime at 09:42; they stayed dirty all session, and a session that wrote only governance
+    # artifacts was labelled `review-authored-by-implementer`.
+    #
+    # `conformance-turn-delta.ps1` already computes exactly the signal that names this problem, and
+    # emits `changed_paths` identically in both modes. Its ONLY consumer outside that file picks a
+    # display label - so a computed control decided wording and nothing else, while a FACTUAL
+    # assertion about who wrote what never consulted it. Sixth instance of that pattern this week.
+    #
+    # NEITHER HALF IS MINTED, not just the source-writer half. Refusing only the source half would
+    # let a degraded session's review-record write stand while its code writes vanished, and the
+    # reader derives `independent-session` from the ABSENCE of source writes - turning an
+    # unsupportable fact into a false CLEAN one, which is the dangerous direction. Minting nothing
+    # leaves the record `unattributed`: unknown, which is what is actually true, and which the
+    # validator already reports out loud as "unknown is not independent".
+    #
+    # FAIL-CLOSED ON ABSENCE, deliberately inverting W33's posture: an unstated mode is treated as
+    # degraded, because a caller that does not say how it attributed cannot support a claim about
+    # who wrote what.
+    if ([string]::IsNullOrWhiteSpace($AttributionMode) -or $AttributionMode -cne 'exact-turn') { return }
     $paths = @(@($ChangedPaths) | Where-Object { -not [string]::IsNullOrWhiteSpace([string]$_) })
     if ($paths.Count -eq 0) { return }
     $reviewPaths = @($paths | ForEach-Object { Get-SpecrewReviewRecordPathMatch -Path $_ } | Where-Object { $null -ne $_ })

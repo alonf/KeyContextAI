@@ -1,9 +1,9 @@
 ---
 schema: v1
-source: Stop
+source: PostToolUse
 from_host: claude
-recorded_at: 2026-08-21T18:59:40.0720157Z
-from_commit: 81390e0
+recorded_at: 2026-08-21T23:58:48.7828776Z
+from_commit: 99a7554
 active_feature: 001-layout-autocorrect
 active_boundary: retro
 last_authorized_boundary: retro
@@ -14,41 +14,55 @@ workshop_done: architecture-core, component-design, requirements-nfr, ui-ux, dat
 
 ## What I just did (last 3-5 turns or last boundary work)
 
-- [2026-08-21T18:59:15Z] (Stop) 0 changed user file(s) [(none)] (+3 Specrew-managed); HEAD 81390e0 (boundary(retro): record the human sign-off of the iteration 001 retro); 1 new commit(s): 81390e0 boundary(retro): record the human sign-off of the iteration 001 retro
-- [2026-08-21T16:09:56Z] (PostToolUse) 0 changed user file(s) [(none)] (+9 Specrew-managed); HEAD 66ef512 (chore(lint): auto-fix markdownlint violations from boundary-sync gate); 2 new commit(s): 66ef512 chore(lint): auto-fix markdownlint violations from boundary-sync gate | 1e1d563 retro(001): author the iteration 001 retrospective
+- [2026-08-21T23:58:48Z] (PostToolUse) 18 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-run-index-writer.ps1, scripts/internal/continuous-co-review/verification-plan-contract.ps1, scripts/internal/continuous-co-review/verification-plan-runner.ps1, scripts/internal/continuous-co-review/verification-plan-supplier.ps1, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml, specs/001-layout-autocorrect/current-architecture.md, +more] (+37 Specrew-managed); HEAD 99a7554 (chore(handover): author the wait-state handover at the retro boundary)
+- [2026-08-21T23:58:23Z] (PostToolUse) 18 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-run-index-writer.ps1, scripts/internal/continuous-co-review/verification-plan-contract.ps1, scripts/internal/continuous-co-review/verification-plan-runner.ps1, scripts/internal/continuous-co-review/verification-plan-supplier.ps1, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml, specs/001-layout-autocorrect/current-architecture.md, +more] (+37 Specrew-managed); HEAD 99a7554 (chore(handover): author the wait-state handover at the retro boundary)
+- [2026-08-21T23:58:08Z] (PostToolUse) 18 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-run-index-writer.ps1, scripts/internal/continuous-co-review/verification-plan-contract.ps1, scripts/internal/continuous-co-review/verification-plan-runner.ps1, scripts/internal/continuous-co-review/verification-plan-supplier.ps1, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml, specs/001-layout-autocorrect/current-architecture.md, +more] (+37 Specrew-managed); HEAD 99a7554 (chore(handover): author the wait-state handover at the retro boundary)
+- [2026-08-21T23:57:54Z] (PostToolUse) 18 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-run-index-writer.ps1, scripts/internal/continuous-co-review/verification-plan-contract.ps1, scripts/internal/continuous-co-review/verification-plan-runner.ps1, scripts/internal/continuous-co-review/verification-plan-supplier.ps1, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml, specs/001-layout-autocorrect/current-architecture.md, +more] (+37 Specrew-managed); HEAD 99a7554 (chore(handover): author the wait-state handover at the retro boundary)
+- [2026-08-21T23:57:13Z] (PostToolUse) 18 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-run-index-writer.ps1, scripts/internal/continuous-co-review/verification-plan-contract.ps1, scripts/internal/continuous-co-review/verification-plan-runner.ps1, scripts/internal/continuous-co-review/verification-plan-supplier.ps1, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml, specs/001-layout-autocorrect/current-architecture.md, +more] (+37 Specrew-managed); HEAD 99a7554 (chore(handover): author the wait-state handover at the retro boundary)
+- [2026-08-21T23:57:08Z] (PostToolUse) 18 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-run-index-writer.ps1, scripts/internal/continuous-co-review/verification-plan-contract.ps1, scripts/internal/continuous-co-review/verification-plan-runner.ps1, scripts/internal/continuous-co-review/verification-plan-supplier.ps1, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml, specs/001-layout-autocorrect/current-architecture.md, +more] (+37 Specrew-managed); HEAD 99a7554 (chore(handover): author the wait-state handover at the retro boundary)
 
 ## Why I'm stopping (the switch trigger)
 
-Hook-captured at trigger 'Stop' (the agent did not author a handover this turn). Boundary: retro. Refresh reason: end-of-turn conversation refresh (no git/boundary delta).
+Hook-captured at trigger 'PostToolUse' (the agent did not author a handover this turn). Boundary: retro. Refresh reason: tracked-change.
 
 ## Open questions / pending clarifications
 
-(placeholder - the agent has not authored this section for retro yet; the next session falls back to the artifact-derived orientation)
+- **When does the upstream fix land?** Wait for the maintainer to say so, then re-run
+  `specrew update` and the retro scaffold with shipped code. Never guess from a version string.
+- **Artifact disposition**: keep the patched-run artifacts or regenerate with the shipped fix —
+  maintainer's call at the hold.
+- **Stale review coverage**: run run-20260820-150735904-458c5888 examined tree 273c69bb; the tree
+  has moved. Fresh round needs the maintainer's `specrew review --live --approve-round`, or they
+  withdraw the independence claim in review.md. Still theirs.
+- **SC-001's fate** (retro improvement action 4): owed before 002 planning closes.
+- **Hebrew corpus realism**: with the maintainer.
 
 ## Agent's working hypothesis / mental model
 
-(placeholder - the agent has not authored this section for retro yet; the next session falls back to the artifact-derived orientation)
+Iteration 001's product work is done and reviewed; every open item is tooling or evidence
+authority. Standing rule learned this session: never edit deployed Specrew runtime here, even to
+unblock requested work — diagnose (stack traces, not reasoning), record in the drift log, hand the
+root cause to the maintainer, hold.
 
 ## Recommended next-immediate-step
 
-Resume feature 001-layout-autocorrect at boundary retro. Only Specrew-managed scaffolding is uncommitted (11 file(s)) - that is the init baseline; commit it at a boundary.
+Resume feature 001-layout-autocorrect at boundary retro. 18 of YOUR file(s) are uncommitted [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-run-index-writer.ps1, scripts/internal/continuous-co-review/verification-plan-contract.ps1, scripts/internal/continuous-co-review/verification-plan-runner.ps1, scripts/internal/continuous-co-review/verification-plan-supplier.ps1, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml, specs/001-layout-autocorrect/current-architecture.md, +more] (+37 Specrew-managed) - review/commit them before advancing.
 
 ## Context the receiving host needs that artifacts don't carry
 
-branch 001-layout-autocorrect, HEAD 81390e0 (boundary(retro): record the human sign-off of the iteration 001 retro). Active feature 001-layout-autocorrect, boundary retro. No user files changed; 11 Specrew-managed scaffolding file(s) uncommitted.
+branch 001-layout-autocorrect, HEAD 99a7554 (chore(handover): author the wait-state handover at the retro boundary). Active feature 001-layout-autocorrect, boundary retro. Your uncommitted work: scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-run-index-writer.ps1, scripts/internal/continuous-co-review/verification-plan-contract.ps1, scripts/internal/continuous-co-review/verification-plan-runner.ps1, scripts/internal/continuous-co-review/verification-plan-supplier.ps1, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml, specs/001-layout-autocorrect/current-architecture.md, +more. (37 Specrew-managed files also uncommitted.)
 
 ## Recent conversation (last few exchanges, hook-captured)
 
-- **assistant:** Preflight done — and it does not come back clean. Here is the retro boundary stop. ## What I Just Did Authored file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/001/retro.md from plan.md, state.md, drift-log.md, review.md ...
-- **user:** Stop hook feedback: Specrew review — your last review no longer covers these files. The latest campaign result remains useful evidence but targets a moved or earlier snapshot and cannot authorize the current tree. That result belongs to thi...
-- **assistant:** The coverage advisory again, now naming the retro boundary — still informational, and the hook confirms it doesn't decide the approval. The retro commits moved the tree past the reviewed snapshot, which is expected: they changed governance ...
-- **user:** approved for retro
-- **assistant:** Verifying the verdict landed, then committing the boundary state:
-- **assistant:** Retro is authorized and the tree is clean. I'm stopping here rather than pushing into closeout, because the next step needs a choice you haven't made yet. ## What I Just Did Confirmed your verdict was captured — `approved for retro` recorde...
-- **user:** Stop hook feedback: Specrew review — your last review no longer covers these files. The latest campaign result remains useful evidence but targets a moved or earlier snapshot and cannot authorize the current tree. That result belongs to thi...
-- **assistant:** That's the coverage advisory once more, and this time it carries no "approval you still owe" line — because none is pending. Retro is authorized and the tree is clean, so it's purely informational. It is accurate, though: the retro and drif...
+- **user:** I updated Specrew This replaces the scaffold you hand-patched and writes the project's first .specrew-extension-runtime.json marker, so the patch is overwritten rather than reported as drift. That's expected — don't treat its disappearance ...
+- **assistant:** I'll start by loading the session orientation (so I can show it to you properly), then verify the patch is gone before re-running anything.
+- **assistant:** Found the shipped source. Comparing every deployed script against it:
+- **assistant:** `retro.md` is safe — the scaffold preserves existing files. And `specrew-update.ps1` does reference the marker writer at line 1130; let me see why it didn't fire during your update.
+- **assistant:** All seven stale artifacts are backed up in the scratchpad. Now re-running the retro scaffold with the shipped code:
+- **assistant:** Updating the memory with the standing rule's new scope, then writing the drift-log entries:
+- **assistant:** Now the drift-log updates — DRIFT-004 closure first:
 
-Full transcript (read on-demand for depth): C:\Users\alon\.claude\projects\C--Dev-KeyContextAI\142a4782-bd93-402e-9aef-56084372c613.jsonl
+Full transcript (read on-demand for depth): C:\Users\alon\.claude\projects\C--Dev-KeyContextAI\d28bd5f9-00cd-4c1b-a062-5a2611484bc0.jsonl
 
 ## Authored boundary packet (captured at stop)
 

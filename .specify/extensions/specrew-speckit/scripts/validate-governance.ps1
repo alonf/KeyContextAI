@@ -919,6 +919,61 @@ function Test-ReviewDerivedIndependenceBlock {
     }
 }
 
+function Test-DeployedExtensionIntegrity {
+    # W43. Every guarantee this validator makes assumes IT ran as shipped. A downstream agent
+    # hand-patched a deployed scaffold during the 2026-08-21 walk to clear a blocker - its fix was
+    # right and it said so - and nothing would have detected the same edit to this file.
+    #
+    # An ERROR, not a warning: a modified validator is not information to reconcile, it is a reason to
+    # distrust the run. The remedy is named, and it is one the reader can perform.
+    param(
+        [string]$ProjectRoot,
+        [System.Collections.Generic.List[string]]$Errors
+    )
+    if ([string]::IsNullOrWhiteSpace($ProjectRoot)) { return }
+    if (-not (Get-Command -Name 'Test-SpecrewDeployedExtensionIntegrity' -ErrorAction SilentlyContinue)) { return }
+    $state = $null
+    try { $state = Test-SpecrewDeployedExtensionIntegrity -ProjectRoot $ProjectRoot }
+    catch { return }
+    if ($null -eq $state -or -not [bool]$state.checked) { return }
+    $drifted = @($state.drifted)
+    $missing = @($state.missing)
+    if (@($drifted).Count -eq 0 -and @($missing).Count -eq 0) { return }
+    $detail = @()
+    if (@($drifted).Count -gt 0) { $detail += ('modified: ' + ((@($drifted) | Select-Object -First 5) -join ', ')) }
+    if (@($missing).Count -gt 0) { $detail += ('missing: ' + ((@($missing) | Select-Object -First 5) -join ', ')) }
+    $Errors.Add(("The deployed Specrew machinery under .specify/extensions/specrew-speckit does not match what was installed ({0}). Everything this validator reports assumes those files run as shipped, so a local edit to them makes this run's result unreliable rather than merely different. Restore them with: specrew update --project-path `"{1}`"  (from PowerShell). If the edit was deliberate and you want to keep it, make it in the Specrew repository and reinstall - a project-local patch is overwritten by the next update and is invisible to everyone else." -f ($detail -join '; '), $ProjectRoot)) | Out-Null
+}
+
+function Test-ScaffoldPendingSiblings {
+    # W41: A GENERATED ARTIFACT DIVERTED TO `.pending` MUST NOT WAIT IN SILENCE.
+    #
+    # When an iteration is already accepted, the reviewer scaffold protects the existing artifact and
+    # writes what it WOULD have produced to `<name>.pending`. That is the right call - overwriting an
+    # artifact under an accepted verdict would silently alter accepted evidence - but the only notice
+    # was a WARN at scaffold time, which scrolls past. Nothing else in the lifecycle ever mentioned the
+    # file again, so a generated version could sit beside an accepted one indefinitely.
+    #
+    # Raised while deciding a related migration question: whether a project that hand-authored these
+    # artifacts to work around a crash would ever receive generated versions. For the five closeout
+    # artifacts it does - they are written by the UPDATING writer, so an unaccepted iteration simply
+    # gets overwritten. The gap was not there; it was here, one door along.
+    #
+    # A WARNING, not an error: a `.pending` sibling is information for a human to reconcile, not a
+    # governance failure. Refusing on it would block closeout on a file the scaffold itself created.
+    param(
+        [string]$IterationDirectory,
+        [System.Collections.Generic.List[string]]$Errors
+    )
+    if ([string]::IsNullOrWhiteSpace($IterationDirectory)) { return }
+    if (-not (Test-Path -LiteralPath $IterationDirectory -PathType Container)) { return }
+    $pending = @(Get-ChildItem -LiteralPath $IterationDirectory -Filter '*.pending' -File -ErrorAction SilentlyContinue |
+            ForEach-Object { $_.Name })
+    if (@($pending).Count -eq 0) { return }
+    Write-TrustHardeningWarning -Category 'scaffold-pending-artifact' -Detail (
+        ("the scaffold produced a generated version of {0} artifact(s) and could not write it, because this iteration is already accepted and overwriting accepted evidence would be silent: {1}. Each is the content the generator would have written. Compare it with the accepted artifact and either fold in what it adds or delete the .pending file - leaving it is the only outcome that decides nothing." -f @($pending).Count, (@($pending) -join ', ')))
+}
+
 function Test-ReviewRecordAuthorship {
     # W34-B. Report the observed authorship of the review record. It LABELS, it does not launder: a
     # record written by the implementing session becomes honest about that, not clean.
@@ -1051,6 +1106,58 @@ function Test-ReviewCitedRunEvidence {
         if ([string]$result.completion -ne 'complete') { $weak.Add("completion '$([string]$result.completion)'") | Out-Null }
         if ([string]$result.verdict -notin @('pass', 'findings')) { $weak.Add("verdict '$([string]$result.verdict)'") | Out-Null }
         if ([string]$result.currentness -ne 'current') { $weak.Add("currentness '$([string]$result.currentness)'") | Out-Null }
+        # W38: `currentness` IS A FIELD THE RUN WROTE ABOUT THE TREE THAT EXISTED THEN.
+        #
+        # It was computed at ingest and never re-asked, so a record whose reviewed tree has since
+        # moved still validated clean - which is how this project's own record kept reading as though
+        # a current independent review covered it while three commits of review machinery landed
+        # after the reviewed tree. The signoff GATE catches that at the boundary, but a record that
+        # reads clean in between is exactly the shape W31 and W33 exist to stop: a stored fact,
+        # true when written, quietly no longer true.
+        #
+        # So the tree is recomputed here, the way W34-A recomputes the derived block rather than
+        # reading it. A run's target_digest is the tree it actually froze; if that is not the tree
+        # that exists now, the run does not cover the current files whatever its stored field says.
+        #
+        # FAIL-OPEN: if the digest cannot be computed - no git, a detached state, the helper absent -
+        # nothing is claimed. "I could not tell" must never manufacture staleness, the same posture
+        # every other check in this file takes.
+        # W39: THE FRESHNESS RULE IS SCOPED OUT OF A REVIEW PREFLIGHT.
+        #
+        # W38 + W36 together produced a wedge every consumer reaches by committing after a review:
+        # governance fails on the stale citation, the fix is a fresh round, the round's preflight runs
+        # governance, and it fails. For a block-sourced run the message named only "obtain a run that
+        # completed against the current tree" - the action the failure prevents - and the block cannot
+        # be hand-edited. The escape exists (withdraw the claim in the record's own prose) but nothing
+        # said so, so only someone who had already reasoned it out could take it.
+        #
+        # Broken at the DEPENDENCY, not the rule: staleness still fails ordinary validation and still
+        # stops the signoff gate, where it actually matters. It simply does not gate the one operation
+        # whose entire purpose is to end the staleness.
+        #
+        # SCOPED TO THIS RULE ALONE. Completion, verdict, validation and declared coverage are all
+        # still enforced during preflight - a preflight is not a licence to cite a bad run.
+        $inReviewPreflight = -not [string]::IsNullOrWhiteSpace([string]$env:SPECREW_REVIEW_PREFLIGHT)
+        $currentTreeId = ''
+        try {
+            if (-not (Get-Command -Name 'Get-ContinuousCoReviewReviewedStateDigest' -ErrorAction SilentlyContinue)) {
+                $digestHelper = Join-Path $ProjectRoot 'scripts/internal/continuous-co-review/reviewed-state-digest.ps1'
+                if (Test-Path -LiteralPath $digestHelper -PathType Leaf) { . $digestHelper }
+            }
+            if (Get-Command -Name 'Get-ContinuousCoReviewReviewedStateDigest' -ErrorAction SilentlyContinue) {
+                $digestState = Get-ContinuousCoReviewReviewedStateDigest -RepoRoot $ProjectRoot
+                if ($null -ne $digestState -and [bool]$digestState.ok) { $currentTreeId = [string]$digestState.tree_id }
+            }
+        }
+        catch { $currentTreeId = '' }
+        # StrictMode-safe: a stored result without target_digest must not take the validator down.
+        # The existing fixtures in this suite have no such field, and reading it unguarded threw.
+        $citedTreeId = if ($result.PSObject.Properties['target_digest']) { [string]$result.target_digest } else { '' }
+        if (-not $inReviewPreflight -and
+            -not [string]::IsNullOrWhiteSpace($currentTreeId) -and -not [string]::IsNullOrWhiteSpace($citedTreeId) -and
+            $currentTreeId -cne $citedTreeId) {
+            $weak.Add(("it reviewed tree {0}, and the files now are tree {1}" -f $citedTreeId.Substring(0, [Math]::Min(8, $citedTreeId.Length)), $currentTreeId.Substring(0, [Math]::Min(8, $currentTreeId.Length)))) | Out-Null
+        }
         if ([string]$result.validation -ne 'valid') { $weak.Add("validation '$([string]$result.validation)'") | Out-Null }
         # W33. The run's own declared coverage, when it recorded one. A run that says it examined
         # only records or documents cannot evidence a review OF THE CODE, whatever its verdict.
@@ -1082,7 +1189,7 @@ function Test-ReviewCitedRunEvidence {
             'Either obtain a run that completed against the current tree, or - if this run is named as history rather than relied upon - remove it from the SPECREW-REVIEW-EVIDENCE marker.'
         }
         else {
-            'This run is named by the DERIVED independent-review block, which is computed from the review store and recomputed at validation, so it cannot be edited out by hand. The way forward is to obtain a run that completed against the current tree; the block will then name that run instead.'
+            'This run is named by the DERIVED independent-review block, which is computed from the review store and recomputed at validation, so it cannot be edited out by hand. Two things you can do: obtain a run that completed against the current tree, and the block will then name it; or, if the claim has simply gone stale and you are not ready to re-run, WITHDRAW it - remove the evidence marker and the block from review.md and say plainly in the record that the independence claim is withdrawn pending a fresh round. Editing the record''s own prose is yours to do; the block and the store are not.'
         }
         $Errors.Add(("review.md declares review run {0} as the evidence it rests on, but that run cannot support a review claim: {1}. {2} Run ids appearing only in prose are treated as narrative and are not checked, so a retraction can name a failed run freely." -f $runId, ($weak -join ', '), $remedy)) | Out-Null
     }
@@ -2678,8 +2785,8 @@ function Test-Phase2HardeningGate {
 
         foreach ($definition in $expectedConcernDefinitions) {
             $concernId = $definition.ConcernId
-            $matches = @($hardeningState.ConcernRows | Where-Object { [string]$_.Concern -eq $concernId })
-            if ($matches.Count -ne 1) {
+            $matchedItems = @($hardeningState.ConcernRows | Where-Object { [string]$_.Concern -eq $concernId })
+            if ($matchedItems.Count -ne 1) {
                 Add-RepoStructuredValidationFailure -Errors $Errors -ProjectRoot $ProjectRoot -TargetPath $hardeningGatePath -LineNumber $concernHeadingLine -Category 'concern-order' -Message ("hardening-gate.md must contain exactly one canonical concern row for '{0}'" -f $concernId) -RemediationHint 'Keep each canonical concern visible exactly once in the Concern Review table.'
                 continue
             }
@@ -3516,6 +3623,8 @@ function Test-ReviewArtifact {
     Test-NoGapClosurePolicy -ReviewLines $reviewLines -ProjectRoot $ProjectRoot -IterationDirectory $IterationDirectory -OverallVerdict $overallVerdict -IterationStatus $IterationStatus -Errors $Errors
     Test-ReviewCitedRunEvidence -ReviewLines $reviewLines -ProjectRoot $ProjectRoot -Errors $Errors
     Test-ReviewRecordAuthorship -ProjectRoot $ProjectRoot -IterationDirectory $IterationDirectory -OverallVerdict $overallVerdict -Errors $Errors
+    Test-ScaffoldPendingSiblings -IterationDirectory $IterationDirectory -Errors $Errors
+    Test-DeployedExtensionIntegrity -ProjectRoot $ProjectRoot -Errors $Errors
     Test-ReviewDerivedIndependenceBlock -ReviewLines $reviewLines -ProjectRoot $ProjectRoot -IterationDirectory $IterationDirectory -Errors $Errors
 
     # Pillar 5 (FR-022): production evidence cited in review.md must exist in the cited Tree Under Review.

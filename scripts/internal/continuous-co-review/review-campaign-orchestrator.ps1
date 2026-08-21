@@ -372,12 +372,19 @@ function Invoke-ReviewCampaignFrozenVerification {
     $executionFailure = $null
     $cleanupFailure = $null
     $preparationComplete = $false
+    # W39: mark this plan run as a REVIEW PREFLIGHT. The round about to fire is what refreshes the
+    # cited run, so gating its own preflight on cited-run freshness makes the fix unreachable by the
+    # only thing that can apply it. Set narrowly around this call and always cleared.
+    $priorPreflightMarker = $env:SPECREW_REVIEW_PREFLIGHT
+    $env:SPECREW_REVIEW_PREFLIGHT = '1'
     try {
         $support = Add-ReviewCampaignVerificationSupport -Snapshot $Snapshot
         $execution = Invoke-ContinuousCoReviewVerificationPlan -RepoRoot $snapshotPath -Plan $selected.plan
     }
     catch { $executionFailure = [string]$_.Exception.Message }
     finally {
+        if ($null -eq $priorPreflightMarker) { Remove-Item Env:SPECREW_REVIEW_PREFLIGHT -ErrorAction SilentlyContinue }
+        else { $env:SPECREW_REVIEW_PREFLIGHT = $priorPreflightMarker }
         if ($null -ne $support) {
             try { Remove-ReviewCampaignVerificationSupport -SnapshotPath $snapshotPath -Manifest $support }
             catch { $cleanupFailure = [string]$_.Exception.Message }
@@ -1294,7 +1301,7 @@ function Resolve-ReviewCampaignPublicIdentity {
         # conclude the feature did not exist and to propose bypassing the gate.
         throw ('Specrew could not work out which feature this review is for. It looked at the lifecycle ' +
             'state, the active feature record, and the branch name, and none of them named one. ' +
-            'Tell it directly: specrew review --live --feature <feature-id> --approve-round')
+            'Tell it directly, and note this is the human''s command to run because --approve-round records their approval: specrew review --live --feature <feature-id> --approve-round')
     }
     $featureDirectory = Join-Path $root "specs/$feature"
     if (-not (Test-Path -LiteralPath $featureDirectory -PathType Container)) { throw "review-campaign-feature-missing:$feature" }

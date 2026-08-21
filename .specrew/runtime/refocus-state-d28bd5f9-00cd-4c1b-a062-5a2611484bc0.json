@@ -1,0 +1,16 @@
+{
+  "session_id": "d28bd5f9-00cd-4c1b-a062-5a2611484bc0",
+  "last_seen_boundary": "retro",
+  "context_mtime": "2026-08-21T18:57:46.5461473Z",
+  "breaker": null,
+  "journal": [
+    {
+      "at": "2026-08-21T23:44:46.0350654Z",
+      "trigger": "b2",
+      "scope": "general",
+      "channel": "hook",
+      "tokens": 566,
+      "outcome": "injected"
+    }
+  ]
+}

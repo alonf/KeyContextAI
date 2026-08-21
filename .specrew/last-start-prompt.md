@@ -1,16 +1,3 @@
----
-baseline_commit_hash: 66ef51233be701e86d36700086fb0c85bc712a11
-updated_at: 2026-08-21T16:09:53Z
-session_state_active: true
-session_state_boundary: retro
-session_state_feature: 001-layout-autocorrect
-session_state_feature_path: "C:\Dev\KeyContextAI\specs\001-layout-autocorrect"
-session_state_iteration: 001
-session_state_task: "(none)"
-session_state_auth_commit: 66ef51233be701e86d36700086fb0c85bc712a11
-session_state_recorded_at: 2026-08-21T16:09:53Z
----
-
 This repository uses Specrew; work here follows the project lifecycle and its human-authorized boundaries.
 
 Project root: C:\Dev\KeyContextAI
@@ -24,37 +11,35 @@ User feature request: (not provided yet; gather or confirm during intake)
 - Active feature: 001-layout-autocorrect
 - Feature path: C:\Dev\KeyContextAI\specs\001-layout-autocorrect
 - Worktree: C:\Dev\KeyContextAI
-- Current boundary: review-signoff
+- Current boundary: retro
 - Current task: (none)
-- Last completed task: (none)
-- Last completed boundary: 956f0ad55406b6ed4898ffcc37e9a3c048afe9d0 at 2026-08-19T21:15:03Z
-- Task progress: 0 complete, 0 in-progress, 18 pending, 0 blocked
-- Pending: T001, T002, T003
-- Validator state: 11 warnings: 9 soft, 0 medium, 2 hard
+- Last completed task: T001 at 2026-08-20T08:40:00.0000000Z
+- Last completed boundary: 66ef51233be701e86d36700086fb0c85bc712a11 at 2026-08-21T16:09:53Z
+- Task progress: 18 complete, 0 in-progress, 0 pending, 0 blocked
+- Complete: T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025
+- Validator state: 10 warnings: 9 soft, 0 medium, 1 hard
 
 ### Suggested Next Actions
 
-- Start T001 — Solution skeleton, three projects, .NET 10 posture
 - Review validator warnings with: validate-governance
 
 ## Resume Reconciliation (current tree, re-computed now)
 
-Last captured stop: 2026-08-20T15:19:48.8158622Z (boundary review-signoff). Files changed since (re-computed NOW - may post-date the last stop): scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-design-context.ps1, scripts/internal/continuous-co-review/review-result-ingestor.ps1, scripts/internal/continuous-co-review/reviewer-candidate-prompt.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml. READ those files to recover the true current state (the handover snapshot may predate your latest work), THEN continue.
+Last captured stop: 2026-08-21T19:40:40.5365677Z (boundary retro). Files changed since (re-computed NOW - may post-date the last stop): scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-run-index-writer.ps1, scripts/internal/continuous-co-review/verification-plan-contract.ps1, scripts/internal/continuous-co-review/verification-plan-runner.ps1, scripts/internal/continuous-co-review/verification-plan-supplier.ps1, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml, specs/001-layout-autocorrect/current-architecture.md, +more. READ those files to recover the true current state (the handover snapshot may predate your latest work), THEN continue.
+
 
 Operational Specrew roster snapshot:
-
 - Mode: none
 - No Specrew-managed roster snapshot was detected.
 
 Project state snapshot:
-
 - State: active
 - Existing feature directories: (none)
 - Non-bootstrap top-level entries: (none)
 
-Effective delegated agent routing plan:
 
-- Enabled agents:
+Effective delegated agent routing plan:
+- Enabled agents: 
 - No start-time fallback events detected.
 
 ## Resolved Feature-Closeout Delivery
@@ -103,7 +88,7 @@ This is the authoritative map of Specrew's lifecycle and governance machinery as
 | `.specify/extensions/specrew-speckit/scripts/scaffold-reviewer-artifacts.ps1 -IterationDirectory <dir>` | Scaffolds code-map / coverage-evidence / reviewer-index / review-diagrams / dependency-report. **Param is `-IterationDirectory`, NOT `-SpecDirectory`.** | After implement, before /specrew-review |
 | `.specify/extensions/specrew-speckit/scripts/scaffold-feature-closeout-dashboard.ps1 -ProjectPath . -FeatureId <NNN>` | Scaffolds the closeout-dashboard.md at feature-closeout boundary. **Note: auto-render at feature-closeout is now wired into sync-boundary-state.ps1 (F-040 dogfooding Fix B), so you don't normally invoke this directly.** | Rarely; only for manual re-render |
 | `.specify/extensions/specrew-speckit/scripts/validate-governance.ps1 -ProjectPath .` | Runs the full validator; emits PASS/WARN/FAIL findings | Before each boundary commit and at iteration close |
-| `.specify/extensions/specrew-speckit/scripts/sync-boundary-state.ps1` | Advances the boundary cursor in `.specrew/start-context.json`; writes `.specrew/runtime/pending-verdict-stop.md` with the exact pending boundary, approval phrase, and last-line verdict marker whenever the cursor is ahead of human authorization; auto-renders dashboard.md at iteration-closeout + closeout-dashboard.md at feature-closeout. Use this WRAPPER path from downstream projects — it discovers the installed Specrew module and loads the actual implementation from there. | Called by sync-*agents; invoke directly via `pwsh -File` after each boundary commit when the sync-* agents aren't available. After a human-judgment sync, read/render the pending-verdict stop artifact; do not infer the marker from the next phase. |
+| `.specify/extensions/specrew-speckit/scripts/sync-boundary-state.ps1` | Advances the boundary cursor in `.specrew/start-context.json`; writes `.specrew/runtime/pending-verdict-stop.md` with the exact pending boundary, approval phrase, and last-line verdict marker whenever the cursor is ahead of human authorization; auto-renders dashboard.md at iteration-closeout + closeout-dashboard.md at feature-closeout. Use this WRAPPER path from downstream projects — it discovers the installed Specrew module and loads the actual implementation from there. | Called by sync-* agents; invoke directly via `pwsh -File` after each boundary commit when the sync-* agents aren't available. After a human-judgment sync, read/render the pending-verdict stop artifact; do not infer the marker from the next phase. |
 
 **Any other .ps1 file in the deployment is a utility / deploy / library helper invoked automatically by the system. Do NOT explore them during normal lifecycle execution.** Specifically: `shared-governance.ps1`, `common.ps1`, `Test-CopilotInstructionsChangeType.ps1` are libraries (not invokable); `deploy-speckit-extension.ps1`, `deploy-squad-runtime.ps1`, `scaffold-governance.ps1`, `validate-versions.ps1`, `collision-detect.ps1`, `brownfield-merge.ps1` are init/update helpers; `manage-escalation-state.ps1`, `manage-reviewer-regression.ps1`, `sync-squad-model-overrides.ps1`, `drift-diff.ps1`, `resume-iteration.ps1` are internal helpers called by other scripts. If a script isn't in the table above, you do NOT need to invoke or understand it during normal lifecycle execution.
 
@@ -130,7 +115,6 @@ The `crew_runtime_status` field tells you whether the downstream sync-* agents a
 - **Web-feature acceptance evidence:** for browser features, the review-time evidence must include a screenshot or recorded interaction showing the golden-path AND Enter-key behavior — running `Invoke-WebRequest` against the static HTML proves the file deployed, NOT that the feature works. Lighthouse / DOM-inspection MCPs (or manual browser steps documented in quickstart.md) are the canonical evidence layer.
 
 Follow this conversational sequence before implementation work:
-
 1. Preserve the roster snapshot first. Treat the operational roster above as active project state, do not recast it, and defer specialist additions until the spec and clarify outcome are grounded.
 2. Classify the repository using the project-state snapshot above before asking for spec details:
    - "greenfield-new": freshly bootstrapped project with no meaningful app code or active specs yet
@@ -242,10 +226,10 @@ At `feature-closeout`, copy the `AGENT NEXT ACTION:` and `HUMAN ACTION NEEDED:` 
 48. **Session opening orientation (mandatory FIRST output).** Your very first user-visible output, immediately after reading `.specrew\last-start-prompt.md` + `.specrew\start-context.json`, must be a short friendly orientation block in the host-rendered shape below (8-15 lines, conversational tone, no bullet-list of phases). The visible Specrew version, selected host, runtime class, and lifecycle position in this block are generated from the installed runtime and saved start context; do not substitute, infer, omit, or claim any other host/runtime behavior. **All artifact and directory references in this block MUST use visible bare `file:///` URLs** built from the Project root URL above (see Rule 52):
 
 ```markdown
-Welcome back - resuming feature 001-layout-autocorrect at review-signoff.
+Welcome back - resuming feature 001-layout-autocorrect at retro.
 Specrew: 0.40.0-beta3
 Host: claude (Claude Code CLI); runtime: non-Squad
-Lifecycle: feature 001-layout-autocorrect at review-signoff.
+Lifecycle: feature 001-layout-autocorrect at retro.
 
 How this works: Specrew governs the spec -> plan -> implement -> review -> retro
 lifecycle. This session follows the saved lifecycle prompt and structured start
