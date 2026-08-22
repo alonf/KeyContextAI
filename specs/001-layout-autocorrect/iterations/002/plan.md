@@ -217,3 +217,6 @@ the product's real bar, and stops the spec asking for a number no iteration was 
 the privacy-first sequence, and the existing four-iteration slicing. The feature spec now records
 SC-001a and SC-001b, and the task artifacts map T025 to SC-001a and the pre-release evidence task T048
 to SC-001b without changing iteration 002's 12 tasks or 17.5/20 SP capacity.
+
+**Before-implement evidence anchor.** This iteration plan is intentionally re-saved together with
+the hardening gate to satisfy the before-implement owed-artifact preflight in this resume session.
