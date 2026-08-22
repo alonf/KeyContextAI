@@ -2,7 +2,7 @@
 
 **Schema**: v1
 **Capture Kind**: iteration-closeout
-**Captured At**: 2026-08-22T00:00:40Z
+**Captured At**: 2026-08-22T10:37:04Z
 **Render Mode**: full
 **Rendering Mode**: monochrome
 **Color Mode**: monochrome
@@ -11,7 +11,7 @@
 ## Dashboard
 
 ```text
-AWAITING YOUR VERDICT: crossing 'crossing-28802868651e05c8b6ae18143a80924a87464891cca3537bb45c742e5a7717ce' (retro -> iteration-closeout) at commit 8eb467d07f7774110ff5e01006e13df1d8e24ce3, Git tree 05398f5812090687c50c083683c73df4bf47ce88, is NOT human-authorized (last authorized: retro). Give the explicit verdict 'approved for iteration-closeout' to authorize this exact crossing; numeric replies are not authority.
+AWAITING YOUR VERDICT: crossing 'crossing-e09f1e30398df0664b2beb5a74cde1d8248b5481b4bcd993a46bbbecb94817fe' (retro -> iteration-closeout) at commit c60df8480a6335558572ad816c204830ebb19adf, Git tree 148080e91faaf6b193b9ddcb08177d0c814defe6, is NOT human-authorized (last authorized: retro). Give the explicit verdict 'approved for iteration-closeout' to authorize this exact crossing; numeric replies are not authority.
 
 Boundary enforcement: enabled
 Last authorized boundary: retro
@@ -21,10 +21,10 @@ Total enforcement events: 7
 
 SPECREW VELOCITY DASHBOARD
 ------------------------------------------------------------------------
-Today: 2026-08-22 | Captured: 2026-08-22T00:00:40Z
+Today: 2026-08-22 | Captured: 2026-08-22T10:37:04Z
 Repo: KeyContextAI | Branch: 001-layout-autocorrect
 Rendering: monochrome-safe fallback
-Summary: > F-001 KeyContext AI — Keyboard Layout Auto-Correction (Implementation Complete · phase review-signoff) | Velocity 6.5 SP/day (1 closed iterations, low)
+Summary: > F-001 KeyContext AI — Keyboard Layout Auto-Correction (Implementation Complete · phase review-signoff) | Velocity 4.88 SP/day (1 closed iterations, low)
 
 ACTIVE WORK
 Feature: > F-001 | KeyContext AI — Keyboard Layout Auto-Correction | status Implementation Complete
@@ -32,16 +32,16 @@ Iteration: feature-001.iter-001 | phase REVIEW-SIGNOFF | started 2026-08-19
 In-flight: 19.5 SP planned | 19.5 SP delivered | 0 SP remaining
 
 VELOCITY
-Headline: 6.5 SP/day | confidence low
-Sample basis: Based on 1 closed iteration(s), 19.5 SP across 3 calendar day(s) (avg 3 day(s)).
+Headline: 4.88 SP/day | confidence low
+Sample basis: Based on 1 closed iteration(s), 19.5 SP across 4 calendar day(s) (avg 4 day(s)).
 Trend: Need at least two closed iterations before the velocity trend can show a stable direction.
 
 RECENT SHIPPED
-[x] F-001 · iter-001 ############################  19.5 SP  1 iter 2026-08-21 KeyContext AI — Keyboard Layo...
+[x] F-001 · iter-001 ############################  19.5 SP  1 iter 2026-08-22 KeyContext AI — Keyboard Layo...
 
 RECENT ITERATIONS (PLAN VS REALITY)
 Iter                  Planned Actual Delta Days
-feature-001.iter-001    19.5   19.5     0    3
+feature-001.iter-001    19.5   19.5     0    4
 
 FULL HISTORY
 feature-001.iter-001  19.5 SP ################

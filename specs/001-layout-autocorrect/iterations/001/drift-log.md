@@ -23,9 +23,9 @@
 ## Summary
 
 **Total drift events**: 7 (1 in this project, 6 Specrew-side findings this project surfaced)
-**Resolution rate**: 100% of in-project drift resolved (1/1); DRIFT-004, DRIFT-005 and DRIFT-006
-resolved by shipped Specrew fixes; the remaining 3 tooling findings (DRIFT-002, DRIFT-003,
-DRIFT-007) are open upstream
+**Resolution rate**: 100% of in-project drift resolved (1/1); DRIFT-004, DRIFT-005, DRIFT-006 and
+DRIFT-007 resolved by shipped Specrew fixes; the remaining 2 tooling findings (DRIFT-002,
+DRIFT-003) are open upstream
 **Specification drift**: none outstanding
 
 ## Events
@@ -375,8 +375,15 @@ currency test can never hold across the commit that records the result it tests.
   state, a "withdrawn" rendering of the derived block, or a digest scope that excludes records)
   belongs in the Specrew repository. Handed to the maintainer at the iteration-closeout boundary.
 
-**Status**: open upstream. The iteration's validation carries one FAIL from this contradiction; the
-withdrawal itself is complete and the record claims no current coverage.
+**Update 2026-08-22 — fixed upstream in Specrew b5c84f48 and deployed to this project the same
+day.** W38's currency test now asks whether source changed since the reviewed tree, not whether any
+byte did: a run stays current while only records move, and goes stale the moment code does. On this
+tree the validator now renders the recorded run as pass, complete, current, valid. The closed record
+above stands exactly as it happened — the withdrawal and the FAIL it carried are iteration 001's
+history, and this note records the upstream fix without re-litigating them.
+
+**Status**: **RESOLVED 2026-08-22** — the validator contradiction is fixed upstream in Specrew
+b5c84f48 and deployed here; the closed withdrawal record above stands as it happened.
 
 ### Resolution Strategies (Unused)
 
