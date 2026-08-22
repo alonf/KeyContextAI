@@ -110,3 +110,44 @@ No decisions recorded yet.
 - **Launch Mode**: (none)
 - **Agent Response Snippet**: (none)
 - **Reason**: Persisted authorization matched the requested boundary.
+
+## 2026-08-22T00:00:39Z — Boundary sync: iteration-closeout
+
+- **Boundary Type**: iteration-closeout
+- **Feature Ref**: 001-layout-autocorrect
+- **Iteration Number**: 001
+- **Task ID**: (none)
+- **Auth Commit Hash**: 8eb467d07f7774110ff5e01006e13df1d8e24ce3
+- **Recorded At**: 2026-08-22T00:00:38Z
+
+## 2026-08-22T10:37:02Z — Boundary sync warning: iteration-closeout
+
+- **Boundary Type**: iteration-closeout
+- **Latest Recorded Boundary**: iteration-closeout
+- **Recorded At**: 2026-08-22T10:37:02Z
+- **Warning**: Expected next boundary 'feature-closeout' but received 'iteration-closeout'.
+
+## 2026-08-22T10:37:03Z — Boundary sync: iteration-closeout
+
+- **Boundary Type**: iteration-closeout
+- **Feature Ref**: 001-layout-autocorrect
+- **Iteration Number**: 001
+- **Task ID**: (none)
+- **Auth Commit Hash**: c60df8480a6335558572ad816c204830ebb19adf
+- **Recorded At**: 2026-08-22T10:37:02Z
+
+## 2026-08-22T11:42:18Z — Boundary sync warning: iteration-closeout
+
+- **Boundary Type**: iteration-closeout
+- **Latest Recorded Boundary**: iteration-closeout
+- **Recorded At**: 2026-08-22T11:42:18Z
+- **Warning**: Expected next boundary 'feature-closeout' but received 'iteration-closeout'.
+
+## 2026-08-22T11:42:18Z — Boundary sync: iteration-closeout
+
+- **Boundary Type**: iteration-closeout
+- **Feature Ref**: 001-layout-autocorrect
+- **Iteration Number**: 001
+- **Task ID**: (none)
+- **Auth Commit Hash**: aad7d9e53adb7d2772d4899411440eacda5ece86
+- **Recorded At**: 2026-08-22T11:42:18Z

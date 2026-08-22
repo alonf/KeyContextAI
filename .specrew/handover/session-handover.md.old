@@ -2,8 +2,8 @@
 schema: v1
 source: PostToolUse
 from_host: claude
-recorded_at: 2026-08-22T12:05:17.5397284Z
-from_commit: aad7d9e
+recorded_at: 2026-08-22T12:06:03.0679305Z
+from_commit: 8c3ac6c
 active_feature: 001-layout-autocorrect
 active_boundary: iteration-closeout
 last_authorized_boundary: plan
@@ -14,12 +14,12 @@ workshop_done: architecture-core, component-design, requirements-nfr, ui-ux, dat
 
 ## What I just did (last 3-5 turns or last boundary work)
 
+- [2026-08-22T12:06:03Z] (PostToolUse) 4 changed user file(s) [specs/001-layout-autocorrect/iterations/001/dashboard.md, specs/001-layout-autocorrect/iterations/002/drift-log.md, specs/001-layout-autocorrect/iterations/002/plan.md, specs/001-layout-autocorrect/iterations/002/quality/hardening-gate.md] (+8 Specrew-managed); HEAD 8c3ac6c (chore(lint): auto-fix markdownlint violations from boundary-sync gate)
+- [2026-08-22T12:05:56Z] (PostToolUse) 4 changed user file(s) [specs/001-layout-autocorrect/iterations/001/dashboard.md, specs/001-layout-autocorrect/iterations/002/drift-log.md, specs/001-layout-autocorrect/iterations/002/plan.md, specs/001-layout-autocorrect/iterations/002/quality/hardening-gate.md] (+5 Specrew-managed); HEAD 8c3ac6c (chore(lint): auto-fix markdownlint violations from boundary-sync gate); 1 new commit(s): 8c3ac6c chore(lint): auto-fix markdownlint violations from boundary-sync gate
+- [2026-08-22T12:05:30Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/001/dashboard.md] (+40 Specrew-managed); HEAD 9f1d5d4 (boundary(plan): iteration 002 plan - live single-word correction plus the privacy lifecycle); 1 new commit(s): 9f1d5d4 boundary(plan): iteration 002 plan - live single-word correction plus the privacy lifecycle
 - [2026-08-22T12:05:17Z] (PostToolUse) 7 changed user file(s) [specs/001-layout-autocorrect/iterations/001/dashboard.md, specs/001-layout-autocorrect/iterations/002/drift-log.md, specs/001-layout-autocorrect/iterations/002/plan.md, specs/001-layout-autocorrect/iterations/002/quality/hardening-gate.md, specs/001-layout-autocorrect/iterations/002/quality/mechanical-findings.json, specs/001-layout-autocorrect/iterations/002/quality/quality-evidence.md, specs/001-layout-autocorrect/iterations/002/state.md] (+40 Specrew-managed); HEAD aad7d9e (chore(lint): auto-fix markdownlint violations from boundary-sync gate)
 - [2026-08-22T12:05:04Z] (PostToolUse) 7 changed user file(s) [specs/001-layout-autocorrect/iterations/001/dashboard.md, specs/001-layout-autocorrect/iterations/002/drift-log.md, specs/001-layout-autocorrect/iterations/002/plan.md, specs/001-layout-autocorrect/iterations/002/quality/hardening-gate.md, specs/001-layout-autocorrect/iterations/002/quality/mechanical-findings.json, specs/001-layout-autocorrect/iterations/002/quality/quality-evidence.md, specs/001-layout-autocorrect/iterations/002/state.md] (+40 Specrew-managed); HEAD aad7d9e (chore(lint): auto-fix markdownlint violations from boundary-sync gate)
 - [2026-08-22T12:04:43Z] (PostToolUse) 7 changed user file(s) [specs/001-layout-autocorrect/iterations/001/dashboard.md, specs/001-layout-autocorrect/iterations/002/drift-log.md, specs/001-layout-autocorrect/iterations/002/plan.md, specs/001-layout-autocorrect/iterations/002/quality/hardening-gate.md, specs/001-layout-autocorrect/iterations/002/quality/mechanical-findings.json, specs/001-layout-autocorrect/iterations/002/quality/quality-evidence.md, specs/001-layout-autocorrect/iterations/002/state.md] (+40 Specrew-managed); HEAD aad7d9e (chore(lint): auto-fix markdownlint violations from boundary-sync gate)
-- [2026-08-22T12:04:37Z] (PostToolUse) 7 changed user file(s) [specs/001-layout-autocorrect/iterations/001/dashboard.md, specs/001-layout-autocorrect/iterations/002/drift-log.md, specs/001-layout-autocorrect/iterations/002/plan.md, specs/001-layout-autocorrect/iterations/002/quality/hardening-gate.md, specs/001-layout-autocorrect/iterations/002/quality/mechanical-findings.json, specs/001-layout-autocorrect/iterations/002/quality/quality-evidence.md, specs/001-layout-autocorrect/iterations/002/state.md] (+40 Specrew-managed); HEAD aad7d9e (chore(lint): auto-fix markdownlint violations from boundary-sync gate)
-- [2026-08-22T12:04:28Z] (PostToolUse) 7 changed user file(s) [specs/001-layout-autocorrect/iterations/001/dashboard.md, specs/001-layout-autocorrect/iterations/002/drift-log.md, specs/001-layout-autocorrect/iterations/002/plan.md, specs/001-layout-autocorrect/iterations/002/quality/hardening-gate.md, specs/001-layout-autocorrect/iterations/002/quality/mechanical-findings.json, specs/001-layout-autocorrect/iterations/002/quality/quality-evidence.md, specs/001-layout-autocorrect/iterations/002/state.md] (+40 Specrew-managed); HEAD aad7d9e (chore(lint): auto-fix markdownlint violations from boundary-sync gate)
-- [2026-08-22T12:04:20Z] (PostToolUse) 7 changed user file(s) [specs/001-layout-autocorrect/iterations/001/dashboard.md, specs/001-layout-autocorrect/iterations/002/drift-log.md, specs/001-layout-autocorrect/iterations/002/plan.md, specs/001-layout-autocorrect/iterations/002/quality/hardening-gate.md, specs/001-layout-autocorrect/iterations/002/quality/mechanical-findings.json, specs/001-layout-autocorrect/iterations/002/quality/quality-evidence.md, specs/001-layout-autocorrect/iterations/002/state.md] (+40 Specrew-managed); HEAD aad7d9e (chore(lint): auto-fix markdownlint violations from boundary-sync gate)
 
 ## Why I'm stopping (the switch trigger)
 
@@ -57,22 +57,22 @@ unchanged: never edit anything under `.specify/` (deploy-only tree).
 
 ## Recommended next-immediate-step
 
-Resume feature 001-layout-autocorrect at boundary iteration-closeout. 7 of YOUR file(s) are uncommitted [specs/001-layout-autocorrect/iterations/001/dashboard.md, specs/001-layout-autocorrect/iterations/002/drift-log.md, specs/001-layout-autocorrect/iterations/002/plan.md, specs/001-layout-autocorrect/iterations/002/quality/hardening-gate.md, specs/001-layout-autocorrect/iterations/002/quality/mechanical-findings.json, specs/001-layout-autocorrect/iterations/002/quality/quality-evidence.md, specs/001-layout-autocorrect/iterations/002/state.md] (+40 Specrew-managed) - review/commit them before advancing.
+Resume feature 001-layout-autocorrect at boundary iteration-closeout. 4 of YOUR file(s) are uncommitted [specs/001-layout-autocorrect/iterations/001/dashboard.md, specs/001-layout-autocorrect/iterations/002/drift-log.md, specs/001-layout-autocorrect/iterations/002/plan.md, specs/001-layout-autocorrect/iterations/002/quality/hardening-gate.md] (+8 Specrew-managed) - review/commit them before advancing.
 
 ## Context the receiving host needs that artifacts don't carry
 
-branch 001-layout-autocorrect, HEAD aad7d9e (chore(lint): auto-fix markdownlint violations from boundary-sync gate). Active feature 001-layout-autocorrect, boundary iteration-closeout. Your uncommitted work: specs/001-layout-autocorrect/iterations/001/dashboard.md, specs/001-layout-autocorrect/iterations/002/drift-log.md, specs/001-layout-autocorrect/iterations/002/plan.md, specs/001-layout-autocorrect/iterations/002/quality/hardening-gate.md, specs/001-layout-autocorrect/iterations/002/quality/mechanical-findings.json, specs/001-layout-autocorrect/iterations/002/quality/quality-evidence.md, specs/001-layout-autocorrect/iterations/002/state.md. (40 Specrew-managed files also uncommitted.)
+branch 001-layout-autocorrect, HEAD 8c3ac6c (chore(lint): auto-fix markdownlint violations from boundary-sync gate). Active feature 001-layout-autocorrect, boundary iteration-closeout. Your uncommitted work: specs/001-layout-autocorrect/iterations/001/dashboard.md, specs/001-layout-autocorrect/iterations/002/drift-log.md, specs/001-layout-autocorrect/iterations/002/plan.md, specs/001-layout-autocorrect/iterations/002/quality/hardening-gate.md. (8 Specrew-managed files also uncommitted.)
 
 ## Recent conversation (last few exchanges, hook-captured)
 
-- **assistant:** Scope confirmed: iteration 002 = T017–T019, T021–T024, T033–T037 (17.5 SP) — live single-word correction plus the privacy lifecycle. Scaffolding iteration 002's artifacts:
-- **assistant:** Now authoring iteration 002's plan. Pulling the FR traceability for the 002 task set:
 - **assistant:** No recorded per-task effort split exists for the 002 set — only the 17.5 total. The machinery for this step is the capacity-planning skill; invoking it before authoring the task table:
 - **user:** Base directory for this skill: C:\Dev\KeyContextAI\.claude\skills\specrew-capacity-planning # specrew-capacity-planning **Type**: Planning Skill **Schema**: v1 **Status**: Active planning method ## Purpose Analyze in-scope requirements, pro...
 - **assistant:** Skill loaded — applying its process to the 002 scope. First reading the rest of the scaffolded stub so I edit in place:
 - **assistant:** Now the Notes section, including the SC-001 decision that retro action 4 says is owed before this planning closes:
 - **assistant:** Now updating iteration 002's state.md and recording the carried navigator finding in its drift log:
 - **assistant:** Now running the traceability check and validator before the boundary commit:
+- **assistant:** The only FAIL is the known iteration-001 W34-A one, unchanged and deliberate; iteration 002's new artifacts raise nothing. Committing the plan boundary:
+- **assistant:** Now syncing the plan boundary — using the pattern that works (sync fixes lint, commit, push, sync) in one call:
 
 Full transcript (read on-demand for depth): C:\Users\alon\.claude\projects\C--Dev-KeyContextAI\9cb65e38-c5f7-4026-9bbf-865db26b1112.jsonl
 
