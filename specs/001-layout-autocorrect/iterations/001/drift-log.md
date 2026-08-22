@@ -22,10 +22,10 @@
 
 ## Summary
 
-**Total drift events**: 6 (1 in this project, 5 Specrew-side findings this project surfaced)
-**Resolution rate**: 100% of in-project drift resolved (1/1); DRIFT-004 resolved by the shipped
-Specrew fix; the remaining 4 tooling findings (DRIFT-002, DRIFT-003, DRIFT-005, DRIFT-006) are open
-upstream
+**Total drift events**: 7 (1 in this project, 6 Specrew-side findings this project surfaced)
+**Resolution rate**: 100% of in-project drift resolved (1/1); DRIFT-004, DRIFT-005 and DRIFT-006
+resolved by shipped Specrew fixes; the remaining 3 tooling findings (DRIFT-002, DRIFT-003,
+DRIFT-007) are open upstream
 **Specification drift**: none outstanding
 
 ## Events
@@ -287,7 +287,16 @@ the two call sites above.
 - **Class closure**: NONE — the fix (stamp before, or independently of, the `-PassThru` return)
   belongs in the Specrew repository. Handed to the maintainer at the iteration-closeout boundary.
 
-**Status**: open upstream.
+**Update 2026-08-22 — fixed and shipped in the Specrew 9424e674 update.** The maintainer confirmed
+the diagnosis was right in every particular: the stamp now runs before every return on the update
+path, and both of `specrew init`'s branches — which were also unstamped, as this event suspected —
+now stamp. After the update this project's first
+`.specify/extensions/specrew-speckit/.specrew-extension-runtime.json` exists and is committed with
+the deployment (`f5ec1e5`), so a hand-edit under `.specify/` is now refused rather than silently
+tolerated — the W43 guarantee is active here.
+
+**Status**: **RESOLVED 2026-08-22** — fixed upstream, deployed via the 9424e674 update, and the
+marker this event exists to demand is present and committed in this project.
 
 ### DRIFT-006: one governed retro-scaffold run emits `.pending` siblings for files it just created
 
@@ -316,7 +325,58 @@ files from this run were moved to the session scratchpad and are not committed.
 - **Class closure**: NONE — the double-invocation and the verdict-fallback scope both belong in the
   Specrew repository. Handed to the maintainer at the iteration-closeout boundary.
 
-**Status**: open upstream.
+**Update 2026-08-22 — fixed and shipped in the Specrew 9424e674 update.** The cause was upstream, as
+diagnosed. After the update, a scaffold re-run on an accepted iteration writes nothing for artifacts
+whose regenerated content is unchanged, and routes genuinely changed content to a `.pending` sibling
+— protection doing its intended job rather than emitting junk templates for files the same run just
+wrote. The move-the-artifacts-out workaround is dropped: regenerated `.pending` content is folded
+into the accepted artifacts at the boundary instead of being moved to the scratchpad.
+
+**Status**: **RESOLVED 2026-08-22** — fixed upstream and deployed via the 9424e674 update; behaviour
+verified on the digest-refresh re-run at this closeout.
+
+### DRIFT-007: W35's withdrawal remedy and W34-A's absence ramp refuse each other's only exit
+
+**Detected**: 2026-08-22, while executing the maintainer-directed withdrawal of the stale
+independent-review claim in review.md.
+**Class**: defect (contradictory checks) in Specrew's governance validator, surfaced by this
+project. Not spec, plan, or implementation drift in KeyContextAI.
+**Requirement**: none. No FR or SC of this feature is affected.
+
+**What fired**: with the evidence marker and the derived independent-review block removed from
+review.md — the exact withdrawal state W35's own stale-run remedy names ("remove the evidence
+marker and the block from review.md and say plainly in the record that the independence claim is
+withdrawn pending a fresh round") — the validator FAILs on W34-A's absence arm instead:
+"review.md carries no derived independent-review block, and this record was written after the block
+existed (its authorship was observed: implementing-session)... Add it." The old stale-coverage FAIL
+is gone; this one replaced it.
+
+**Why the two states close over each other, verified by reading the shipped validator**:
+
+- Block present (matching the derived value): W34-A passes, but W35's W38 arm recomputes the tree —
+  the run's `target_digest` is `273c69bb` and the reviewed-state digest is now `c44d51ac` — and
+  FAILs the record as stale. Its block-sourced remedy is to withdraw: remove the marker and block.
+- Block absent: W35 goes silent by design (prose run ids are narrative), but W34-A's ramp refuses
+  absence for any record whose authorship was observed — which is every record written after the
+  block landed, by construction.
+
+Each check's only offered remedy is the state the other check refuses. For an observed-authorship
+record whose store run has gone stale, no passing state exists short of a fresh review round — which
+is precisely the authorization-spending re-read of identical bytes the withdrawal path exists to
+avoid (`git diff 273c69bb..HEAD -- src tests data .github/workflows` is empty).
+
+**A contributing cause worth naming separately**: the reviewed-state digest includes `specs/` and
+the other governance records, so the act of recording a review moves the tree the review is measured
+against. Every run goes stale at its own boundary commit (`273c69bb` → `e8653d40` → `c44d51ac`
+while `src`, `tests`, `data` and the CI workflow stayed byte-identical). Under that scope, W38's
+currency test can never hold across the commit that records the result it tests.
+
+- **Class closure**: NONE — the reconciliation (an absence arm that recognises W35's withdrawal
+  state, a "withdrawn" rendering of the derived block, or a digest scope that excludes records)
+  belongs in the Specrew repository. Handed to the maintainer at the iteration-closeout boundary.
+
+**Status**: open upstream. The iteration's validation carries one FAIL from this contradiction; the
+withdrawal itself is complete and the record claims no current coverage.
 
 ### Resolution Strategies (Unused)
 

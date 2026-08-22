@@ -5,7 +5,7 @@
 
 > **⚠️ Review Evidence Warning** _(Form-vs-Meaning Gap Detected)_
 >
-> This iteration's task tracking declares **18 completed task(s)**, but the git diff against baseline `218be8bc61d26a2b2449332c15afa21a3b59e6af` contains **220 file(s)**.
+> This iteration's task tracking declares **18 completed task(s)**, but the git diff against baseline `218be8bc61d26a2b2449332c15afa21a3b59e6af` contains **251 file(s)**.
 >
 > **Severity**: WARNING
 > **Implication**: Review evidence may be incomplete or misleading.
@@ -38,6 +38,7 @@ graph TD
 
 ```mermaid
 flowchart TD
+  scripts_internal_continuous_co_review_review_run_index_writer["scripts/internal/continuous-co-review/review-run-index-writer"]
   src_KeyContextAI_App_App_xaml["src/KeyContextAI.App/App.xaml"]
   src_KeyContextAI_App_MainWindow_xaml["src/KeyContextAI.App/MainWindow.xaml"]
   src_KeyContextAI_Core_Contracts_IMappingEngine["src/KeyContextAI.Core/Contracts/IMappingEngine"]

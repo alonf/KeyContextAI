@@ -2,16 +2,18 @@
 
 **Feature**: 001-layout-autocorrect
 **Iteration**: 001
-**Reviewed**: 2026-08-19 (independence evidence updated 2026-08-20)
+**Reviewed**: 2026-08-19 (independence evidence updated 2026-08-20; restated as history 2026-08-22)
 **Commit under review**: `526d0b2`
-**Status**: Complete — reviewer independence resolved by a valid campaign run — awaiting human sign-off
+**Status**: Complete — signed off at review-signoff on 2026-08-21; the independent campaign run is
+recorded below as history
 **Overall Verdict**: accepted
 
 The `accepted` verdict is this reviewer's assessment of the **implementation**: it does what iteration
 001 promised, with evidence. It is not a claim that the review was independent — see the independence
 section below — and it does not pre-empt the automated co-review, whose findings are recorded
-separately. Of the two items open when this review was drafted, one is closed — the dictionary packs
-are sourced — and one remains open: no independent review has produced a valid verdict on the code.
+separately. Both items open when this review was drafted have since closed: the dictionary packs are
+sourced, and an independent campaign run examined the code and returned a valid pass — recorded below
+as history, with the tree it examined named.
 
 ## Scope reviewed
 
@@ -24,22 +26,29 @@ Not in scope, because not built: the keyboard hook, text injection, the transcri
 privacy lifecycle, the tray and overlay clients, the AI tier. Those belong to iterations 002–004 by
 the human-approved slicing.
 
-## Reviewer independence — now CLOSED by a valid campaign run, after a false claim I have retracted
+## Reviewer independence — what the campaign run established, stated as history
 
 The code-implementation lens selected **Copilot** as the independent co-review host, recorded at
 file:///C:/Dev/KeyContextAI/.specrew/reviewer-hosts.json .
 
-**A valid independent campaign review of the code now exists.** Run
-`run-20260820-150735904-458c5888` (harness `copilot-cli-file-primary`, target digest `273c69bb`, 250s)
-returned `pass` / `complete` / `current` with `validation: valid`, zero findings, and
-`can_approve_current: true`. Its `examined_paths` list names 36 files and is the evidence that it read
-the code rather than a planning document: all four contracts, all three engines, every domain record,
-`DictionaryAccessor`, `ServiceRegistration`, `CallRuleTests`, the four core test classes,
-`CorpusAccuracyTests`, the corpus, both dictionary packs, the key map, `Directory.Build.props`, the CI
-workflow and the solution file. Its summary reasons about the human-approved slicing explicitly —
-naming the deferred runtime components as intentionally out of scope for iteration 001 — which is
-precisely the yardstick error that spoiled the earlier code-examining run. Authority record:
+**Run `run-20260820-150735904-458c5888` (harness `copilot-cli-file-primary`, 250s) examined the
+iteration-001 code at tree `273c69bb` and returned `pass` / `complete` / `valid` with zero
+findings.** Its `examined_paths` list names 36 paths, 26 of them source and test files — all four
+contracts, all three engines, every domain record, `DictionaryAccessor`, `ServiceRegistration`,
+`CallRuleTests`, the four core test classes, `CorpusAccuracyTests`, the corpus, both dictionary
+packs, the key map, `Directory.Build.props`, the CI workflow and the solution file — and is the
+evidence that it read the code rather than a planning document. Its summary reasons about the
+human-approved slicing explicitly — naming the deferred runtime components as intentionally out of
+scope for iteration 001 — which is precisely the yardstick error that spoiled the earlier
+code-examining run. Authority record:
 file:///C:/Dev/KeyContextAI/.specrew/review/authority/campaigns/cmp-001-layout-autocorrect-i001/runs/run-20260820-150735904-458c5888/result.json
+
+**That run is named here as history, not as current coverage.** Every commit since tree `273c69bb`
+is governance and records: `git diff 273c69bb..HEAD -- src tests data .github/workflows` is empty,
+so the code, tests, data and CI workflow the run examined are byte-identical to what this branch
+carries now. No claim is made that the run covers the current tree — a fresh round would spend an
+authorization re-reading identical bytes — and no derived-coverage block appears in this document,
+so nothing here asserts current coverage for the validator to hold stale.
 
 The history below is kept because the retraction it records must stay visible. **An earlier revision of
 this document claimed a valid independent review existed when none did.** That claim was wrong, it was
@@ -102,17 +111,6 @@ were governance files — so each subsequent run dutifully reviewed governance f
 by the maintainer on 2026-08-20 (`cmp-001-layout-autocorrect-i001-round-5`) broke that loop: it ran
 against the full iteration-001 surface and produced the valid code verdict recorded above.
 
-The machine-derived statement of this independence claim, recomputed from the review authority
-store at every validation:
-
-<!-- SPECREW-DERIVED-INDEPENDENT-REVIEW v1 -->
-<!-- Derived from the review authority store. Do not hand-edit: the validator recomputes it. -->
-- Run: run-20260820-150735904-458c5888 (harness copilot-cli-file-primary)
-- Outcome: pass, complete, current, valid - 0 finding(s)
-- Reviewed tree: 273c69bbabfb0044fc5b8b2a74fc65e739d1803f
-- Coverage: 31 source path(s) of 36 declared and checked against the frozen target.
-<!-- /SPECREW-DERIVED-INDEPENDENT-REVIEW -->
-
 ## Task Verdicts
 
 | Task | Title | Verdict | Evidence |
@@ -166,9 +164,9 @@ Every iteration-001 requirement, and how it is evidenced:
 - **Mechanical checks**: `run-mechanical-checks.ps1` reports zero findings.
 - **Independent code review**: obtained OUTSIDE the campaign — Copilot CLI invoked directly, read the
   source, reported no substantive defects in the in-scope code. Real independent scrutiny.
-- **Campaign review authority**: ESTABLISHED by `run-20260820-150735904-458c5888` — `pass`,
-  `complete`, `valid`, `current`, zero findings, 36 examined paths spanning the whole iteration-001
-  surface. Earlier runs did not establish it: `run-20260819-210747148-9bd5980b` examined the code but
+- **Campaign review authority**: established at tree `273c69bb` by `run-20260820-150735904-458c5888`
+  — `pass`, `complete`, `valid`, zero findings, 36 examined paths spanning the whole iteration-001
+  surface; named here as history per the independence section. Earlier runs did not establish it: `run-20260819-210747148-9bd5980b` examined the code but
   returned `incomplete` / `partial`, and the earlier `pass` runs (`...211204294`, `...083412478`)
   reviewed the iteration plan and the governance artifacts rather than the code.
 - **Measurement**: recorded at
@@ -291,11 +289,12 @@ that is conservative by construction, architecture rules enforced by a test that
 a measurement taken against 392,329 real public-domain words. DRIFT-001 is closed — the dictionary
 packs are sourced and licence-verified.
 
-**Independent scrutiny happened, and recorded campaign authority now exists for it.** Copilot read the
-source directly and found no substantive defects — a genuine second opinion from a different model than
-the one that wrote the code — and campaign run `run-20260820-150735904-458c5888` reached the same
-conclusion through the governed path, examining 36 iteration-001 files and returning `pass` /
-`complete` / `valid` with zero findings. The `review-signoff` gate has authority evidence to cite. An
+**Independent scrutiny happened, and recorded campaign authority exists for it as history.** Copilot
+read the source directly and found no substantive defects — a genuine second opinion from a different
+model than the one that wrote the code — and campaign run `run-20260820-150735904-458c5888` reached
+the same conclusion through the governed path, examining 36 iteration-001 files at tree `273c69bb`
+and returning `pass` / `complete` / `valid` with zero findings; the product surface is unchanged
+since. The `review-signoff` gate had that authority evidence to cite, and was approved on it. An
 earlier revision of this document claimed a campaign pass covered the code before any did; that was
 false, and the retraction with its evidence stands above so the record shows how the claim was made and
 how it was caught.

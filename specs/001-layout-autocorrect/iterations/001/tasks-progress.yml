@@ -1,7 +1,7 @@
 schema: "v1"
 feature: "001-layout-autocorrect"
 iteration: "001"
-updated_at: "2026-08-21T23:44:49.3735165Z"
+updated_at: "2026-08-22T09:54:34.4142325Z"
 tasks:
   T001:
     title: "Solution skeleton, three projects, .NET 10 posture"

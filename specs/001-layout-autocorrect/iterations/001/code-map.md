@@ -1,13 +1,13 @@
 # Code Map: Iteration 001
 
 **Schema**: v1
-**Reviewed**: 2026-08-19 (independence evidence updated 2026-08-20)
+**Reviewed**: 2026-08-19 (independence evidence updated 2026-08-20; restated as history 2026-08-22)
 **Baseline Ref**: 218be8bc61d26a2b2449332c15afa21a3b59e6af
-**Test-to-Code Ratio**: 15:28
+**Test-to-Code Ratio**: 15:40
 
 > **⚠️ Review Evidence Warning** _(Form-vs-Meaning Gap Detected)_
 >
-> This iteration's task tracking declares **18 completed task(s)**, but the git diff against baseline `218be8bc61d26a2b2449332c15afa21a3b59e6af` contains **220 file(s)**.
+> This iteration's task tracking declares **18 completed task(s)**, but the git diff against baseline `218be8bc61d26a2b2449332c15afa21a3b59e6af` contains **251 file(s)**.
 >
 > **Severity**: WARNING
 > **Implication**: Review evidence may be incomplete or misleading.
@@ -36,16 +36,24 @@
 | .agents/hooks.json | 19 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .github/workflows/ci.yml | 44 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .gitignore | 5 | 32 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specify/extensions/specrew-speckit/.specrew-extension-runtime.json | 851 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specify/extensions/specrew-speckit/scripts/brownfield-merge.ps1 | 4 | 4 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specify/extensions/specrew-speckit/scripts/deploy-speckit-extension.ps1 | 20 | 1 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specify/extensions/specrew-speckit/scripts/intake/helpers/Detect-RepoStack.ps1 | 2 | 2 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specify/extensions/specrew-speckit/scripts/intake/helpers/Read-IntakeYaml.ps1 | 16 | 16 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specify/extensions/specrew-speckit/scripts/resolve-quality-profile.ps1 | 27 | 27 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specify/extensions/specrew-speckit/scripts/scaffold-retro-artifact.ps1 | 40 | 10 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specify/extensions/specrew-speckit/scripts/scaffold-review-artifact.ps1 | 36 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
-| .specify/extensions/specrew-speckit/scripts/shared-governance.ps1 | 308 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
-| .specify/extensions/specrew-speckit/scripts/specrew-conformance-provider.ps1 | 69 | 7 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
-| .specify/extensions/specrew-speckit/scripts/validate-governance.ps1 | 235 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specify/extensions/specrew-speckit/scripts/scaffold-reviewer-artifacts.ps1 | 115 | 20 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specify/extensions/specrew-speckit/scripts/shared-governance.ps1 | 452 | 4 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specify/extensions/specrew-speckit/scripts/specrew-conformance-provider.ps1 | 73 | 7 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specify/extensions/specrew-speckit/scripts/validate-governance.ps1 | 346 | 2 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specify/extensions/specrew-speckit/squad-templates/agents/reviewer/charter.md | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specify/feature.json | 3 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/handoff-evidence.json | 49 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
-| .specrew/handover/session-handover.md | 147 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
-| .specrew/handover/session-handover.md.old | 69 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
-| .specrew/last-start-prompt.md | 386 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specrew/handover/session-handover.md | 83 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specrew/handover/session-handover.md.old | 83 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specrew/last-start-prompt.md | 372 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/last-validator-summary.json | 12 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/review/authority/campaigns/cmp-001-layout-autocorrect-i001/budget-resets/reset-98c5f7bf866da569a94c.json | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/review/authority/campaigns/cmp-001-layout-autocorrect-i001/claims/lin-001-layout-autocorrect/00000001-held.json | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
@@ -135,9 +143,9 @@
 | .specrew/review/signoff-gate/latest.json | 33 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/review/signoff-gate/override-authorizations/override-0ca3df35085f3ace757c1668.json | 17 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/review/signoff-gate/pending-override.json | 9 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
-| .specrew/runtime/bootstrap-journal.jsonl | 4 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specrew/runtime/bootstrap-journal.jsonl | 6 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/runtime/co-review-navigator-journal.jsonl | 50 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
-| .specrew/runtime/conformance-journal.jsonl | 62 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specrew/runtime/conformance-journal.jsonl | 66 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/runtime/conformance-material-owner.json | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/runtime/conformance-sessions/2aaf1b0c0ec4dda078ecdc52bcdc6007a43df39c7a41d8a8ae6114aa2653aa5c/last-fire.json | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/runtime/conformance-sessions/2aaf1b0c0ec4dda078ecdc52bcdc6007a43df39c7a41d8a8ae6114aa2653aa5c/stop-block.json | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
@@ -157,19 +165,30 @@
 | .specrew/runtime/conformance-sessions/a41e47aa2cfe326e4c1d1a8d0050ff7b8eb29c626d4bc8d4a1874ed14f9f0834/material-satisfied.json | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/runtime/conformance-sessions/a41e47aa2cfe326e4c1d1a8d0050ff7b8eb29c626d4bc8d4a1874ed14f9f0834/orientation-rendered.json | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/runtime/conformance-sessions/a41e47aa2cfe326e4c1d1a8d0050ff7b8eb29c626d4bc8d4a1874ed14f9f0834/turn-baseline.json | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specrew/runtime/conformance-sessions/f25cd9242b79ff56164a214f75f48ab187663f640da3446df7a4db610a1ae317/last-fire.json | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specrew/runtime/conformance-sessions/f25cd9242b79ff56164a214f75f48ab187663f640da3446df7a4db610a1ae317/material-nudged.json | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specrew/runtime/conformance-sessions/f25cd9242b79ff56164a214f75f48ab187663f640da3446df7a4db610a1ae317/material-satisfied.json | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specrew/runtime/conformance-sessions/f25cd9242b79ff56164a214f75f48ab187663f640da3446df7a4db610a1ae317/orientation-rendered.json | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specrew/runtime/conformance-sessions/f25cd9242b79ff56164a214f75f48ab187663f640da3446df7a4db610a1ae317/turn-baseline.json | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specrew/runtime/conformance-sessions/f6adcb8d05cc38cd6789e6deae47002a55c739ced410ee205be43db76a03b360/material-nudged.json | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specrew/runtime/conformance-sessions/f6adcb8d05cc38cd6789e6deae47002a55c739ced410ee205be43db76a03b360/turn-baseline.json | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/runtime/hook-bootstrap-render-0603217a-ebbe-492a-bbaf-19a06d16a999-startup.json | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/runtime/hook-bootstrap-render-142a4782-bd93-402e-9aef-56084372c613-startup.json | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/runtime/hook-bootstrap-render-15d32bb7-f620-4bad-9da7-7c10731bbaff-new.json | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specrew/runtime/hook-bootstrap-render-4ed0a797-1a91-4980-81d4-6d864e5dfb9c-startup.json | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specrew/runtime/hook-bootstrap-render-d28bd5f9-00cd-4c1b-a062-5a2611484bc0-startup.json | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/runtime/hook-bootstrap-render-e9c42e87-5f87-44b1-8b2c-9dfc70bfdd46-startup.json | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/runtime/hook-health/claude-cli-sessionstart.json | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/runtime/hook-health/claude-cli-stop.json | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/runtime/hook-health/copilot-cli-agentstop.json | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/runtime/hook-health/copilot-cli-sessionstart.json | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
-| .specrew/runtime/hook-output-authority.jsonl | 55 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specrew/runtime/hook-output-authority.jsonl | 67 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/runtime/refocus-channel1.json | 1 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/runtime/refocus-state-0603217a-ebbe-492a-bbaf-19a06d16a999.json | 16 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/runtime/refocus-state-142a4782-bd93-402e-9aef-56084372c613.json | 24 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/runtime/refocus-state-15d32bb7-f620-4bad-9da7-7c10731bbaff.json | 16 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specrew/runtime/refocus-state-4ed0a797-1a91-4980-81d4-6d864e5dfb9c.json | 16 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| .specrew/runtime/refocus-state-d28bd5f9-00cd-4c1b-a062-5a2611484bc0.json | 16 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/runtime/refocus-state-e9c42e87-5f87-44b1-8b2c-9dfc70bfdd46.json | 56 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/runtime/review-authorship.json | 22 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | .specrew/runtime/session-marker.json | 8 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
@@ -189,25 +208,37 @@
 | data/dictionaries/he-IL/pack.json | 23 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | data/dictionaries/he-IL/words.txt | 22250 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | data/keymaps/en-US_he-IL.json | 52 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
-| scripts/internal/continuous-co-review/.specrew-runtime.json | 7 | 7 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
-| scripts/internal/continuous-co-review/review-authority-core.ps1 | 36 | 2 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
-| scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1 | 107 | 5 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| scripts/internal/continuous-co-review/.specrew-runtime.json | 12 | 12 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1 | 24 | 5 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| scripts/internal/continuous-co-review/review-authority-core.ps1 | 39 | 5 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1 | 115 | 6 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | scripts/internal/continuous-co-review/review-design-context.ps1 | 46 | 4 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | scripts/internal/continuous-co-review/review-result-ingestor.ps1 | 86 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| scripts/internal/continuous-co-review/review-run-index-writer.ps1 | 29 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1 | 1 | 1 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | scripts/internal/continuous-co-review/reviewer-candidate-prompt.md | 9 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| scripts/internal/continuous-co-review/verification-plan-contract.ps1 | 2 | 2 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| scripts/internal/continuous-co-review/verification-plan-runner.ps1 | 11 | 2 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| scripts/internal/continuous-co-review/verification-plan-supplier.ps1 | 2 | 2 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | specs/001-layout-autocorrect/contracts/keycontext-ai.md | 153 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | specs/001-layout-autocorrect/contracts/mechanical-findings.schema.json | 77 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| specs/001-layout-autocorrect/current-architecture.md | 15 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | specs/001-layout-autocorrect/data-model.md | 203 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| specs/001-layout-autocorrect/iterations/001/code-map.md | 297 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| specs/001-layout-autocorrect/iterations/001/coverage-evidence.md | 57 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| specs/001-layout-autocorrect/iterations/001/dashboard.md | 38 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| specs/001-layout-autocorrect/iterations/001/dependency-report.md | 66 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | specs/001-layout-autocorrect/iterations/001/design-analysis.md | 436 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
-| specs/001-layout-autocorrect/iterations/001/drift-log.md | 237 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| specs/001-layout-autocorrect/iterations/001/drift-log.md | 333 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | specs/001-layout-autocorrect/iterations/001/lens-applicability.json | 36 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | specs/001-layout-autocorrect/iterations/001/plan.md | 164 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | specs/001-layout-autocorrect/iterations/001/quality/hardening-gate.md | 59 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | specs/001-layout-autocorrect/iterations/001/quality/mechanical-findings.json | 11 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | specs/001-layout-autocorrect/iterations/001/quality/quality-evidence.md | 129 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | specs/001-layout-autocorrect/iterations/001/retro.md | 205 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| specs/001-layout-autocorrect/iterations/001/review-diagrams.md | 53 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | specs/001-layout-autocorrect/iterations/001/review.md | 306 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
+| specs/001-layout-autocorrect/iterations/001/reviewer-index.md | 63 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | specs/001-layout-autocorrect/iterations/001/state.md | 71 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | specs/001-layout-autocorrect/iterations/001/tasks-progress.yml | 113 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
 | specs/001-layout-autocorrect/plan.md | 245 | 0 | T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025 | Implementer |
@@ -258,6 +289,8 @@
 
 ### Added
 
+- Initialize-SpecrewPreexistingArtifacts (.specify/extensions/specrew-speckit/scripts/scaffold-reviewer-artifacts.ps1)
+- Test-SpecrewFileExistedBeforeThisRun (.specify/extensions/specrew-speckit/scripts/scaffold-reviewer-artifacts.ps1)
 - Get-SpecrewDeployedExtensionMarkerPath (.specify/extensions/specrew-speckit/scripts/shared-governance.ps1)
 - Get-SpecrewDeployedExtensionManifest (.specify/extensions/specrew-speckit/scripts/shared-governance.ps1)
 - Write-SpecrewDeployedExtensionMarker (.specify/extensions/specrew-speckit/scripts/shared-governance.ps1)
@@ -287,11 +320,15 @@
 ## Module Hotspots
 
 - Threshold: 250 changed lines per file
-- .specify/extensions/specrew-speckit/scripts/shared-governance.ps1 (308 changed lines)
-- .specrew/last-start-prompt.md (386 changed lines)
+- .specify/extensions/specrew-speckit/.specrew-extension-runtime.json (851 changed lines)
+- .specify/extensions/specrew-speckit/scripts/shared-governance.ps1 (456 changed lines)
+- .specify/extensions/specrew-speckit/scripts/validate-governance.ps1 (348 changed lines)
+- .specrew/last-start-prompt.md (372 changed lines)
 - data/dictionaries/en-US/words.txt (370079 changed lines)
 - data/dictionaries/he-IL/words.txt (22250 changed lines)
+- specs/001-layout-autocorrect/iterations/001/code-map.md (297 changed lines)
 - specs/001-layout-autocorrect/iterations/001/design-analysis.md (436 changed lines)
+- specs/001-layout-autocorrect/iterations/001/drift-log.md (333 changed lines)
 - specs/001-layout-autocorrect/iterations/001/review.md (306 changed lines)
 - specs/001-layout-autocorrect/tasks.md (270 changed lines)
 - tests/KeyContextAI.Core.Tests/DetectionEngineTests.cs (255 changed lines)

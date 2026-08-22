@@ -1,12 +1,12 @@
 # Coverage Evidence: Iteration 001
 
 **Schema**: v1
-**Reviewed**: 2026-08-19 (independence evidence updated 2026-08-20)
+**Reviewed**: 2026-08-19 (independence evidence updated 2026-08-20; restated as history 2026-08-22)
 **Overall Verdict**: accepted
 
 > **⚠️ Review Evidence Warning** _(Form-vs-Meaning Gap Detected)_
 >
-> This iteration's task tracking declares **18 completed task(s)**, but the git diff against baseline `218be8bc61d26a2b2449332c15afa21a3b59e6af` contains **220 file(s)**.
+> This iteration's task tracking declares **18 completed task(s)**, but the git diff against baseline `218be8bc61d26a2b2449332c15afa21a3b59e6af` contains **251 file(s)**.
 >
 > **Severity**: WARNING
 > **Implication**: Review evidence may be incomplete or misleading.
