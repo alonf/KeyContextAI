@@ -8,6 +8,14 @@
 recorded below as history
 **Overall Verdict**: accepted
 
+<!-- SPECREW-DERIVED-INDEPENDENT-REVIEW v1 -->
+<!-- Derived from the review authority store. Do not hand-edit: the validator recomputes it. -->
+- Run: run-20260820-150735904-458c5888 (harness copilot-cli-file-primary)
+- Outcome: pass, complete, current, valid - 0 finding(s)
+- Reviewed tree: 273c69bbabfb0044fc5b8b2a74fc65e739d1803f
+- Coverage: 31 source path(s) of 36 declared and checked against the frozen target.
+<!-- /SPECREW-DERIVED-INDEPENDENT-REVIEW -->
+
 The `accepted` verdict is this reviewer's assessment of the **implementation**: it does what iteration
 001 promised, with evidence. It is not a claim that the review was independent — see the independence
 section below — and it does not pre-empt the automated co-review, whose findings are recorded
