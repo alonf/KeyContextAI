@@ -2,8 +2,8 @@
 schema: v1
 source: PostToolUse
 from_host: claude
-recorded_at: 2026-08-22T10:33:41.1871063Z
-from_commit: be20cd0
+recorded_at: 2026-08-22T10:34:08.8967096Z
+from_commit: d784829
 active_feature: 001-layout-autocorrect
 active_boundary: iteration-closeout
 last_authorized_boundary: retro
@@ -14,12 +14,12 @@ workshop_done: architecture-core, component-design, requirements-nfr, ui-ux, dat
 
 ## What I just did (last 3-5 turns or last boundary work)
 
+- [2026-08-22T10:34:08Z] (PostToolUse) 0 changed user file(s) [(none)] (+30 Specrew-managed); HEAD d784829 (chore(lint): auto-fix markdownlint violations from boundary-sync gate); 1 new commit(s): d784829 chore(lint): auto-fix markdownlint violations from boundary-sync gate
 - [2026-08-22T10:33:41Z] (PostToolUse) 0 changed user file(s) [(none)] (+32 Specrew-managed); HEAD be20cd0 (boundary(iteration-closeout): withdraw the stale independence claim and refresh the drift record); 1 new commit(s): be20cd0 boundary(iteration-closeout): withdraw the stale independence claim and refresh the drift record
 - [2026-08-22T10:33:25Z] (PostToolUse) 11 changed user file(s) [specs/001-layout-autocorrect/current-architecture.md, specs/001-layout-autocorrect/iterations/001/code-map.md, specs/001-layout-autocorrect/iterations/001/coverage-evidence.md, specs/001-layout-autocorrect/iterations/001/dashboard.md, specs/001-layout-autocorrect/iterations/001/dependency-report.md, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/review-diagrams.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/reviewer-index.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+32 Specrew-managed); HEAD f5ec1e5 (chore(specrew): deploy the Specrew 9424e674 update with its W43 integrity marker)
 - [2026-08-22T10:32:57Z] (PostToolUse) 11 changed user file(s) [specs/001-layout-autocorrect/current-architecture.md, specs/001-layout-autocorrect/iterations/001/code-map.md, specs/001-layout-autocorrect/iterations/001/coverage-evidence.md, specs/001-layout-autocorrect/iterations/001/dashboard.md, specs/001-layout-autocorrect/iterations/001/dependency-report.md, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/review-diagrams.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/reviewer-index.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+32 Specrew-managed); HEAD f5ec1e5 (chore(specrew): deploy the Specrew 9424e674 update with its W43 integrity marker)
 - [2026-08-22T10:32:43Z] (PostToolUse) 11 changed user file(s) [specs/001-layout-autocorrect/current-architecture.md, specs/001-layout-autocorrect/iterations/001/code-map.md, specs/001-layout-autocorrect/iterations/001/coverage-evidence.md, specs/001-layout-autocorrect/iterations/001/dashboard.md, specs/001-layout-autocorrect/iterations/001/dependency-report.md, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/review-diagrams.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/reviewer-index.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+32 Specrew-managed); HEAD f5ec1e5 (chore(specrew): deploy the Specrew 9424e674 update with its W43 integrity marker)
 - [2026-08-22T10:32:32Z] (PostToolUse) 11 changed user file(s) [specs/001-layout-autocorrect/current-architecture.md, specs/001-layout-autocorrect/iterations/001/code-map.md, specs/001-layout-autocorrect/iterations/001/coverage-evidence.md, specs/001-layout-autocorrect/iterations/001/dashboard.md, specs/001-layout-autocorrect/iterations/001/dependency-report.md, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/review-diagrams.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/reviewer-index.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+32 Specrew-managed); HEAD f5ec1e5 (chore(specrew): deploy the Specrew 9424e674 update with its W43 integrity marker)
-- [2026-08-22T10:31:32Z] (PostToolUse) 11 changed user file(s) [specs/001-layout-autocorrect/current-architecture.md, specs/001-layout-autocorrect/iterations/001/code-map.md, specs/001-layout-autocorrect/iterations/001/coverage-evidence.md, specs/001-layout-autocorrect/iterations/001/dashboard.md, specs/001-layout-autocorrect/iterations/001/dependency-report.md, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/review-diagrams.md, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/001/reviewer-index.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+32 Specrew-managed); HEAD f5ec1e5 (chore(specrew): deploy the Specrew 9424e674 update with its W43 integrity marker)
 
 ## Why I'm stopping (the switch trigger)
 
@@ -46,22 +46,22 @@ runtime is out of bounds even to unblock requested work.
 
 ## Recommended next-immediate-step
 
-Resume feature 001-layout-autocorrect at boundary iteration-closeout. Only Specrew-managed scaffolding is uncommitted (32 file(s)) - that is the init baseline; commit it at a boundary.
+Resume feature 001-layout-autocorrect at boundary iteration-closeout. Only Specrew-managed scaffolding is uncommitted (30 file(s)) - that is the init baseline; commit it at a boundary.
 
 ## Context the receiving host needs that artifacts don't carry
 
-branch 001-layout-autocorrect, HEAD be20cd0 (boundary(iteration-closeout): withdraw the stale independence claim and refresh the drift record). Active feature 001-layout-autocorrect, boundary iteration-closeout. No user files changed; 32 Specrew-managed scaffolding file(s) uncommitted.
+branch 001-layout-autocorrect, HEAD d784829 (chore(lint): auto-fix markdownlint violations from boundary-sync gate). Active feature 001-layout-autocorrect, boundary iteration-closeout. No user files changed; 30 Specrew-managed scaffolding file(s) uncommitted.
 
 ## Recent conversation (last few exchanges, hook-captured)
 
-- **assistant:** Item 2 done. Now updating the drift log — DRIFT-005 and DRIFT-006 both got their fixes shipped in 9424e674, and the summary block still counts them open.
-- **assistant:** Now item 4 — regenerating the reviewer artifacts with the shipped scaffold so the drift digest catches up to 6 events.
 - **assistant:** The regenerated index reads drift 6 with the full event set. Folding the five `.pending` files into their accepted artifacts now — that's the fold-in route, no scratchpad detour.
 - **assistant:** Folded in cleanly. Before committing the boundary work, a quick look at what changed in the three files left dirty by the earlier sync, plus the scaffold's update to current-architecture.md.
 - **assistant:** All benign — timestamp refreshes and the full-mode dashboard re-render. Let me check what the previous boundary commit included so this one follows the same pattern.
 - **assistant:** The pattern is clear — boundary commits carry the `specs/` artifacts. Running the validator first (it gates the boundary commit), then committing.
 - **assistant:** Clean — no marker, no block; the run survives in prose only, which W35 treats as narrative. Now recording the deadlock as DRIFT-007:
 - **assistant:** Regenerating the reviewer digest once more so it carries the seventh event, then folding in:
+- **assistant:** Boundary committed as `be20cd0`. Re-syncing the boundary state so the pending crossing points at this commit:
+- **assistant:** The lint gate auto-fixed two hook files and halted — same as last session's pattern. Committing the fixes and re-running the sync:
 
 Full transcript (read on-demand for depth): C:\Users\alon\.claude\projects\C--Dev-KeyContextAI\efc87578-f6d9-4a1e-9f52-49cf054187b7.jsonl
 
