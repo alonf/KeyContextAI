@@ -163,9 +163,12 @@ feature. This section is authoritative for what iteration 002 actually covers.
   commit 6e2ea85. Iteration 002 builds the single-word path Option B assumes; the speculative
   committing-key path itself is T029 in iteration 003.
 - Keep Status: planning until the before-implement gate; the hardening gate at
-  file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/002/quality/hardening-gate.md is
-  scaffolded with placeholder concerns and `Overall Verdict: blocked`, to be filled and flipped before
-  that boundary.
+  file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/002/quality/hardening-gate.md now
+  records concrete controls with `Overall Verdict: ready`, but implementation
+  remains blocked until a recorded human verdict authorizes the boundary.
+- Before-implement preparation evidence is tracked in boundary commits `9e3a396`
+  (hardening controls filled) and the current plan refresh commit; implementation
+  remains blocked pending explicit human verdict `approved for before-implement`.
 - Effort estimates carry no measured history: iteration 001 recorded scope but not per-task actuals,
   so these numbers rest on the task descriptions and the 001 total, not on calibration. That is the
   gap retro action 1 exists to close, and 002 is the iteration that can close it.
