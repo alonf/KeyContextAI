@@ -2,8 +2,8 @@
 schema: v1
 source: PostToolUse
 from_host: claude
-recorded_at: 2026-08-22T23:32:55.9299068Z
-from_commit: 6fb65ca
+recorded_at: 2026-08-22T23:33:19.3166048Z
+from_commit: 8f1bfda
 active_feature: 001-layout-autocorrect
 active_boundary: tasks
 last_authorized_boundary: tasks
@@ -14,12 +14,12 @@ workshop_done: architecture-core, component-design, requirements-nfr, ui-ux, dat
 
 ## What I just did (last 3-5 turns or last boundary work)
 
+- [2026-08-22T23:33:19Z] (PostToolUse) 2 changed user file(s) [specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+90 Specrew-managed); HEAD 8f1bfda (boundary(before-implement): refresh evidence cycle 2)
+- [2026-08-22T23:33:09Z] (PostToolUse) 2 changed user file(s) [specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+90 Specrew-managed); HEAD 8f1bfda (boundary(before-implement): refresh evidence cycle 2)
+- [2026-08-22T23:33:01Z] (PostToolUse) 2 changed user file(s) [specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+89 Specrew-managed); HEAD 8f1bfda (boundary(before-implement): refresh evidence cycle 2); 1 new commit(s): 8f1bfda boundary(before-implement): refresh evidence cycle 2
 - [2026-08-22T23:32:55Z] (PostToolUse) 4 changed user file(s) [specs/001-layout-autocorrect/iterations/002/plan.md, specs/001-layout-autocorrect/iterations/002/quality/hardening-gate.md, specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+90 Specrew-managed); HEAD 6fb65ca (boundary(before-implement): refresh gate evidence set)
 - [2026-08-22T23:32:50Z] (PostToolUse) 3 changed user file(s) [specs/001-layout-autocorrect/iterations/002/quality/hardening-gate.md, specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+90 Specrew-managed); HEAD 6fb65ca (boundary(before-implement): refresh gate evidence set)
 - [2026-08-22T23:32:44Z] (PostToolUse) 2 changed user file(s) [specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+90 Specrew-managed); HEAD 6fb65ca (boundary(before-implement): refresh gate evidence set)
-- [2026-08-22T23:32:26Z] (PostToolUse) 2 changed user file(s) [specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+90 Specrew-managed); HEAD 6fb65ca (boundary(before-implement): refresh gate evidence set)
-- [2026-08-22T23:32:19Z] (PostToolUse) 2 changed user file(s) [specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+89 Specrew-managed); HEAD 6fb65ca (boundary(before-implement): refresh gate evidence set); 1 new commit(s): 6fb65ca boundary(before-implement): refresh gate evidence set
-- [2026-08-22T23:32:13Z] (PostToolUse) 4 changed user file(s) [specs/001-layout-autocorrect/iterations/002/plan.md, specs/001-layout-autocorrect/iterations/002/quality/hardening-gate.md, specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+90 Specrew-managed); HEAD 76982cc (chore(lint): auto-fix markdownlint violations)
 
 ## Why I'm stopping (the switch trigger)
 
@@ -35,11 +35,11 @@ Hook-captured at trigger 'PostToolUse' (the agent did not author a handover this
 
 ## Recommended next-immediate-step
 
-Resume feature 001-layout-autocorrect at boundary tasks. 4 of YOUR file(s) are uncommitted [specs/001-layout-autocorrect/iterations/002/plan.md, specs/001-layout-autocorrect/iterations/002/quality/hardening-gate.md, specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+90 Specrew-managed) - review/commit them before advancing.
+Resume feature 001-layout-autocorrect at boundary tasks. 2 of YOUR file(s) are uncommitted [specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+90 Specrew-managed) - review/commit them before advancing.
 
 ## Context the receiving host needs that artifacts don't carry
 
-branch 001-layout-autocorrect, HEAD 6fb65ca (boundary(before-implement): refresh gate evidence set). Active feature 001-layout-autocorrect, boundary tasks. Your uncommitted work: specs/001-layout-autocorrect/iterations/002/plan.md, specs/001-layout-autocorrect/iterations/002/quality/hardening-gate.md, specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml. (90 Specrew-managed files also uncommitted.)
+branch 001-layout-autocorrect, HEAD 8f1bfda (boundary(before-implement): refresh evidence cycle 2). Active feature 001-layout-autocorrect, boundary tasks. Your uncommitted work: specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml. (90 Specrew-managed files also uncommitted.)
 
 ## Recent conversation (last few exchanges, hook-captured)
 
