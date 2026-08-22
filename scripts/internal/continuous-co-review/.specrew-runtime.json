@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "specrew_version": "0.40.0",
-  "runtime_bundle_sha256": "843f994aed5087a8be2bcfd195f15156158ffeaec87787830f37e2a5cc90c982",
+  "runtime_bundle_sha256": "f7b00392e0dee844340f3085201748841283868330793a6f82866262c7543131",
   "managed_files": [
     {
       "path": "_load.ps1",
@@ -25,7 +25,7 @@
     },
     {
       "path": "continuous-co-review-navigator.ps1",
-      "sha256": "269728df1b69f546b942072051c5b95c4d38cfff678f81e53543f48b9c0203ba"
+      "sha256": "96d490ee93e85a7c5fc453e8e3a108f0280c9614de02c1f406bb5956128db5d7"
     },
     {
       "path": "escalation-latch.ps1",
@@ -61,7 +61,7 @@
     },
     {
       "path": "review-authority-core.ps1",
-      "sha256": "0183cc265718b0eb3c526f5e6dbf0599ee5b86fc9f8dbd1c17da8058f98342e9"
+      "sha256": "f91f5c58f54e1057541cf0da2612a34cef7a276a87cfced2101b1857533c1db7"
     },
     {
       "path": "review-authority-cutover.ps1",
@@ -81,7 +81,7 @@
     },
     {
       "path": "review-campaign-orchestrator.ps1",
-      "sha256": "593363f6a126dd8eafa68216cd978d088638e94f70286ee2baff5bfcbb6f86ac"
+      "sha256": "3ca53eb9d1de4a6f180576ad8c653ba50314512d9d2bc54893dc60415389696f"
     },
     {
       "path": "review-claude-harness-port.ps1",
@@ -157,7 +157,7 @@
     },
     {
       "path": "review-signoff-evidence-gate.ps1",
-      "sha256": "909c6337037ffec05da33f2b4b555f59def3e81255b1045c6ccdc8f31e55ea78"
+      "sha256": "4383c9276f6667ff06b524842b31d4f1966fb07536b7c49da3e1f231c16df3ae"
     },
     {
       "path": "review-target-port.ps1",

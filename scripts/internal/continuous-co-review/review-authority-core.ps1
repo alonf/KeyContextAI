@@ -272,7 +272,7 @@ function Resolve-ReviewCampaignPauseDecision {
             elapsed_minutes        = $ElapsedMinutes
             result_produced        = $false
             recommendation         = $(if ($continuationAvailable) {
-                    'This review did not finish, so it found nothing AND cleared nothing - there is no evidence either way about your files. Do not read this as a clean result. Ask the human to run it again: specrew review --live --approve-round - approving a review round is their decision, and that flag is how Specrew records it'
+                    'This review did not finish, so it found nothing AND cleared nothing - there is no evidence either way about your files. Do not read this as a clean result. Ask the human to approve another round - their typed reply ``approved for review round`` is the approval, and Specrew captures it from the conversation. Once they have typed it, run: specrew review --live --approve-round'
                 } else {
                     'This review did not finish, so it found nothing AND cleared nothing - there is no evidence either way about your files. Do not read this as a clean result. The round budget is spent; reset it explicitly or abandon this campaign.'
                 })
@@ -329,7 +329,7 @@ function Resolve-ReviewCampaignPauseDecision {
     # budget exists to interrupt. Exhaustion has to feel different from an ordinary continuation.
     $options = [Collections.Generic.List[object]]::new()
     if ($continuationAvailable) {
-        $options.Add([pscustomobject]@{ id = 1; choice = 'fix-and-continue'; text = 'Fix these and run another review round' })
+        $options.Add([pscustomobject]@{ id = 1; choice = 'fix-and-continue'; text = 'Fix these and run another review round (approving one round - in a conversation, your typed reply `approved for review round` is this approval, and your agent answers for you)' })
     }
     $options.Add([pscustomobject]@{ id = 2; choice = 'stop-here'; text = 'Stop here - remaining findings are saved as follow-ups, a final check runs on your files exactly as they are now, and review sign-off completes' })
     $options.Add([pscustomobject]@{ id = 3; choice = 'abandon'; text = 'Abandon this review campaign (nothing further runs)' })
