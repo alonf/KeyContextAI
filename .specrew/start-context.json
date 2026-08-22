@@ -3,8 +3,17 @@
   "boundary_enforcement": {
     "enabled": true,
     "last_authorized_boundary": "plan",
-    "pending_next_boundary": null,
-    "pending_crossing": null,
+    "pending_next_boundary": "tasks",
+    "pending_crossing": {
+      "crossing_id": "crossing-02dfc7ea1d6d300d3e6e5d5e1e42d94c35683829e94d3f0382f212d78b74a67e",
+      "from_boundary": "plan",
+      "to_boundary": "tasks",
+      "working_boundary": "tasks",
+      "boundary_commit_hash": "f1959a34df2b3100fa20b2ffee3c51822ae89313",
+      "artifact_state_kind": "git-tree",
+      "artifact_state_id": "586f1a483c09fb979477a04f4a7f511c8af90357",
+      "recorded_at": "2026-08-22T12:06:43Z"
+    },
     "policy_classes": {
       "specify": "human-judgment-required",
       "clarify": "human-judgment-required",
@@ -129,16 +138,16 @@
     "correction_history": [],
     "bypass_history": []
   },
-  "generated_at_utc": "2026-08-22T11:42:18Z",
+  "generated_at_utc": "2026-08-22T12:06:43Z",
   "feature_path": "C:\\Dev\\KeyContextAI\\specs\\001-layout-autocorrect",
   "session_state": {
     "active": true,
-    "boundary_type": "iteration-closeout",
+    "boundary_type": "plan",
     "feature_ref": "001-layout-autocorrect",
     "feature_path": "C:\\Dev\\KeyContextAI\\specs\\001-layout-autocorrect",
-    "iteration_number": "001",
+    "iteration_number": "002",
     "task_id": null,
-    "auth_commit_hash": "aad7d9e53adb7d2772d4899411440eacda5ece86",
-    "recorded_at": "2026-08-22T11:42:18Z"
+    "auth_commit_hash": "f1959a34df2b3100fa20b2ffee3c51822ae89313",
+    "recorded_at": "2026-08-22T12:06:43Z"
   }
 }

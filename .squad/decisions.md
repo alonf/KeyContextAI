@@ -151,3 +151,19 @@ No decisions recorded yet.
 - **Task ID**: (none)
 - **Auth Commit Hash**: aad7d9e53adb7d2772d4899411440eacda5ece86
 - **Recorded At**: 2026-08-22T11:42:18Z
+
+## 2026-08-22T12:06:43Z — Boundary sync warning: plan
+
+- **Boundary Type**: plan
+- **Latest Recorded Boundary**: iteration-closeout
+- **Recorded At**: 2026-08-22T12:06:43Z
+- **Warning**: Expected next boundary 'feature-closeout' but received 'plan'.
+
+## 2026-08-22T12:06:43Z — Boundary sync: plan
+
+- **Boundary Type**: plan
+- **Feature Ref**: 001-layout-autocorrect
+- **Iteration Number**: 002
+- **Task ID**: (none)
+- **Auth Commit Hash**: f1959a34df2b3100fa20b2ffee3c51822ae89313
+- **Recorded At**: 2026-08-22T12:06:43Z
