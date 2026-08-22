@@ -2,11 +2,11 @@
 schema: v1
 source: PostToolUse
 from_host: claude
-recorded_at: 2026-08-22T16:00:00.4879243Z
-from_commit: 4579434
+recorded_at: 2026-08-22T23:27:05.5526256Z
+from_commit: 9e3a396
 active_feature: 001-layout-autocorrect
-active_boundary: plan
-last_authorized_boundary: plan
+active_boundary: tasks
+last_authorized_boundary: tasks
 workshop_done: architecture-core, component-design, requirements-nfr, ui-ux, data-storage, security-compliance, integration-api, observability-resilience, devops-operations, code-implementation, product-domain
 ---
 
@@ -14,34 +14,32 @@ workshop_done: architecture-core, component-design, requirements-nfr, ui-ux, dat
 
 ## What I just did (last 3-5 turns or last boundary work)
 
-- [2026-08-22T16:00:00Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+47 Specrew-managed); HEAD 4579434 (chore(lint): normalize tasks handover); 1 new commit(s): 4579434 chore(lint): normalize tasks handover
-- [2026-08-22T15:59:40Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 17e2283 (chore(lint): normalize tasks handover)
-- [2026-08-22T15:59:32Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 17e2283 (chore(lint): normalize tasks handover)
-- [2026-08-22T15:59:23Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 17e2283 (chore(lint): normalize tasks handover)
-- [2026-08-22T15:59:16Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 17e2283 (chore(lint): normalize tasks handover)
-- [2026-08-22T15:59:09Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 17e2283 (chore(lint): normalize tasks handover)
+- [2026-08-22T23:27:05Z] (PostToolUse) 2 changed user file(s) [specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+91 Specrew-managed); HEAD 9e3a396 (boundary(before-implement): fill hardening gate controls)
+- [2026-08-22T23:26:44Z] (PostToolUse) 2 changed user file(s) [specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+91 Specrew-managed); HEAD 9e3a396 (boundary(before-implement): fill hardening gate controls); 1 new commit(s): 9e3a396 boundary(before-implement): fill hardening gate controls
+- [2026-08-22T23:26:37Z] (PostToolUse) 3 changed user file(s) [specs/001-layout-autocorrect/iterations/002/quality/hardening-gate.md, specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+90 Specrew-managed); HEAD 0837b68 (feat(layout): add focus and keystroke accessors)
+- [2026-08-22T23:26:24Z] (PostToolUse) 2 changed user file(s) [specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+90 Specrew-managed); HEAD 0837b68 (feat(layout): add focus and keystroke accessors)
+- [2026-08-22T23:26:20Z] (PostToolUse) 2 changed user file(s) [specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+90 Specrew-managed); HEAD 0837b68 (feat(layout): add focus and keystroke accessors)
+- [2026-08-22T23:26:14Z] (PostToolUse) 2 changed user file(s) [specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+90 Specrew-managed); HEAD 0837b68 (feat(layout): add focus and keystroke accessors)
 
 ## Why I'm stopping (the switch trigger)
 
-Hook-captured at trigger 'PostToolUse' (the agent did not author a handover this turn). Boundary: plan. Refresh reason: tracked-change.
+Hook-captured at trigger 'PostToolUse' (the agent did not author a handover this turn). Boundary: tasks. Refresh reason: tracked-change.
 
 ## Open questions / pending clarifications
 
-- The five uncommitted script changes predate this task and must not be committed or discarded without confirming ownership and intent.
-- After those changes are resolved and the branch is pushed, rerun tasks boundary sync and investigate the owed plan.md finding if it persists.
-- Before implementation, fill iteration 002 hardening-gate placeholders with concrete controls and reconcile the standing iteration 001 derived independent-review block.
+(placeholder - the agent has not authored this section for tasks yet; the next session falls back to the artifact-derived orientation)
 
 ## Agent's working hypothesis / mental model
 
-The human authorized tasks and the task artifacts are complete and committed, but lifecycle state remains at plan because boundary sync could not mutate state. Product implementation has not started.
+(placeholder - the agent has not authored this section for tasks yet; the next session falls back to the artifact-derived orientation)
 
 ## Recommended next-immediate-step
 
-Resume feature 001-layout-autocorrect at boundary plan. 1 of YOUR file(s) are uncommitted [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+47 Specrew-managed) - review/commit them before advancing.
+Resume feature 001-layout-autocorrect at boundary tasks. 2 of YOUR file(s) are uncommitted [specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+91 Specrew-managed) - review/commit them before advancing.
 
 ## Context the receiving host needs that artifacts don't carry
 
-branch 001-layout-autocorrect, HEAD 4579434 (chore(lint): normalize tasks handover). Active feature 001-layout-autocorrect, boundary plan. Your uncommitted work: specs/001-layout-autocorrect/iterations/002/tasks-progress.yml. (47 Specrew-managed files also uncommitted.)
+branch 001-layout-autocorrect, HEAD 9e3a396 (boundary(before-implement): fill hardening gate controls). Active feature 001-layout-autocorrect, boundary tasks. Your uncommitted work: specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml. (91 Specrew-managed files also uncommitted.)
 
 ## Recent conversation (last few exchanges, hook-captured)
 
@@ -51,24 +49,27 @@ branch 001-layout-autocorrect, HEAD 4579434 (chore(lint): normalize tasks handov
 
 ## What I Just Did
 
-Prepared iteration 002’s privacy-first task breakdown and recorded the approved SC-001a/SC-001b wording in file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/spec.md and file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/tasks.md.
+Confirmed the task artifacts remain committed and pushed. No product code or before-implement artifact changes were made.
 
 ## Why I Stopped
 
-The authoritative lifecycle state still shows **plan → tasks** as unauthorized. The exact pending crossing is `crossing-02dfc7ea1d6d300d3e6e5d5e1e42d94c35683829e94d3f0382f212d78b74a67e` at commit `f1959a34df2b3100fa20b2ffee3c51822ae89313`.
+The authoritative controller at file:///C:/Dev/KeyContextAI/.specrew/runtime/pending-verdict-stop.md still records crossing `crossing-00b5456e895c57e4a71564cea72b32461f90478355ad4daef3419daaf57f9bbe` as **plan → tasks**, not yet authorized.
 
 ## What Needs Your Review
 
-Review the privacy-first sequence and SC-001 split in file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/002/plan.md. The task breakdown is available at file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/tasks.md.
+The approved task scope remains unchanged:
+
+- file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/tasks.md
+- file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/spec.md
+- file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/002/plan.md
 
 ## What Happens Next
 
-Approval authorizes task generation for this exact crossing. After synchronization, work stops at **tasks → before-implement** for hardening review; no product implementation begins automatically.
+Once this exact crossing is captured, I will prepare the concrete hardening evidence and stop at **tasks → before-implement**. No product code starts.
 
 ## Discussion Prompts
 
-1. Default: retain SC-001a as the dictionary-change corpus gate and SC-001b as the pre-release maintainer daily-use gate.
-2. Default: retain privacy-first sequencing, beginning with password-field detection before keystroke capture.
+1. Default remains the SC-001a/SC-001b split and privacy-first sequence already reviewed.
 
 You can answer any prompt that should change direction, or approve with the defaults.
 
@@ -84,3 +85,4 @@ discuss prompt 1
 ```
 
 <!-- SPECREW-VERDICT-BOUNDARY: plan -> tasks -->
+

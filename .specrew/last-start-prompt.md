@@ -11,22 +11,23 @@ User feature request: (not provided yet; gather or confirm during intake)
 - Active feature: 001-layout-autocorrect
 - Feature path: C:\Dev\KeyContextAI\specs\001-layout-autocorrect
 - Worktree: C:\Dev\KeyContextAI
-- Current boundary: plan
+- Current boundary: tasks
 - Current task: (none)
-- Last completed task: (none)
-- Last completed boundary: f1959a34df2b3100fa20b2ffee3c51822ae89313 at 2026-08-22T12:06:43Z
-- Task progress: 0 complete, 0 in-progress, 12 pending, 0 blocked
-- Pending: T033, T017, T018
-- Validator state: 13 warnings: 12 soft, 0 medium, 1 hard
+- Last completed task: T017 at 2026-08-22T21:05:00.0000000Z
+- Last completed boundary: 6628eef82c7af2cfa219218883795256502979c0 at 2026-08-22T16:00:22Z
+- Task progress: 2 complete, 0 in-progress, 10 pending, 0 blocked
+- Complete: T033, T017
+- Pending: T018, T019, T034
+- Validator state: 1 warnings: 0 soft, 0 medium, 1 hard
 
 ### Suggested Next Actions
 
-- Start T033 — FocusAccessor — foreground/control change events, UI Automation password detection (`Yes`/`No`/`Unknown`), caret coordinates
+- Start T018 — InputInjectionAccessor — `SendInput` backspaces plus replacement text as one burst, self-injected event tagging
 - Review validator warnings with: validate-governance
 
 ## Resume Reconciliation (current tree, re-computed now)
 
-Last captured stop: 2026-08-22T12:09:13.5250969Z (boundary plan). Files changed since (re-computed NOW - may post-date the last stop): scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml. READ those files to recover the true current state (the handover snapshot may predate your latest work), THEN continue.
+Last captured stop: 2026-08-22T21:13:15.9288117Z (boundary tasks). Files changed since (re-computed NOW - may post-date the last stop): specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml. READ those files to recover the true current state (the handover snapshot may predate your latest work), THEN continue.
 
 Operational Specrew roster snapshot:
 
@@ -153,9 +154,9 @@ Then follow the formal Specrew + Spec Kit lifecycle end to end:
 25. Derive the quality bar from the current feature and project context. Carry the applicable quality attributes into spec clarifications, plan, tasks, implementation, and review. Focus on production-grade concerns that materially apply, such as robustness, retries, idempotency, error handling, logging, telemetry, security, clean code, SOLID boundaries, and semantic correctness.
 26. Treat mechanisms such as revisions, idempotency keys, retries, conflict detection, locks, or telemetry as incomplete until they have real runtime semantics and review evidence. Flag ceremonial sophistication rather than assuming the presence of fields equals correctness.
 27. Before implementation begins, summarize readiness for the human developer: active feature, clarify outcome, quality focus, and final team composition. If the active slice includes Phase 2 hardening-gate scope, include the hardening-gate verdict and any human-approved deferral status in that readiness summary. Then ask the human developer to explicitly start implementation. Do not invoke speckit.implement until the human approves.
-28. After speckit.specrew-speckit.after-tasks succeeds, treat speckit.specrew-speckit.before-implement as the next automatic lifecycle step once implementation approval is granted. Do not stop at the after-tasks boundary to ask the human to manually trigger hardening review, explain the blocker, or request a deferral decision that belongs to before-implement.
+28. **Until the boundary ledger holds the human's typed `approved for before-implement`, no product source file is created or modified. No other approval substitutes: not the tasks verdict, not after-tasks succeeding, not a relayed go-ahead - implementation approval IS that one recorded verdict, and if it is not on the ledger it has not been granted.** After after-tasks succeeds, proceed without stopping to before-implement PREPARATION - fill the hardening gate, run the boundary sync, present the packet - then stop for the verdict. Do not stall at after-tasks asking the human to manually trigger hardening review; preparation needs no approval, source changes do.
 29. If speckit.specrew-speckit.before-implement blocks, explain the concrete blocking artifact or verdict, why it blocks implementation, and the next valid human action before stopping.
-30. After the explicit implementation go-ahead, run speckit.specrew-speckit.before-implement and continue through implementation, review/demo, and retrospective without asking the human to manually trigger each remaining phase.
+30. After the human's typed `approved for before-implement` is recorded on the boundary ledger, run speckit.specrew-speckit.before-implement and continue through implementation, review/demo, and retrospective without asking the human to manually trigger each remaining phase.
 31. Preserve the canonical artifact chain on disk: specs/<feature>/spec.md, plan.md, tasks.md, and specs/<feature>/iterations/<NNN>/{plan.md,state.md,drift-log.md,review.md,retro.md} as phases progress.
 32. If any lifecycle agent reports a file-write or tool-contract failure, or a required artifact is missing on disk, stop and repair that underlying failure before claiming the phase succeeded or invoking the next governance gate.
 33. At the end of implementation and review, provide a developer-facing implementation briefing covering what was built, requirement coverage, the main happy path and relevant alternative flows, dependency usage including newly introduced packages, the testing strategy, and an explicitly labeled estimate of coverage or confidence.
@@ -180,6 +181,8 @@ Summarize the meaningful past outcome, not just file names. Include artifacts cr
 ## Why I Stopped
 
 Name the exact lifecycle boundary and explain why human judgment is required before the next step. After boundary sync, use `.specrew/runtime/pending-verdict-stop.md` as the authoritative source for the boundary name, approval phrase, and last-line marker; never infer `<from> -> <to>` from the phase you intend to run next. For `clarify -> plan`, say that planning will convert the spec into architecture and task direction, so spec mistakes become downstream work.
+
+**Authority in flight.** If the human's immediately-preceding turn is the bare approval phrase for the pending crossing, that verdict IS given even when the controller still reads un-authorized mid-turn: on some hosts the capture lands only at end-of-turn, so the recording arrives at this very turn's Stop. Do not re-ask — proceed on the typed phrase, and verify the recorded authorization at the START of your next turn. Ask again only if it is still unrecorded then.
 
 ## What Needs Your Review
 
@@ -229,10 +232,10 @@ At `feature-closeout`, copy the `AGENT NEXT ACTION:` and `HUMAN ACTION NEEDED:` 
 48. **Session opening orientation (mandatory FIRST output).** Your very first user-visible output, immediately after reading `.specrew\last-start-prompt.md` + `.specrew\start-context.json`, must be a short friendly orientation block in the host-rendered shape below (8-15 lines, conversational tone, no bullet-list of phases). The visible Specrew version, selected host, runtime class, and lifecycle position in this block are generated from the installed runtime and saved start context; do not substitute, infer, omit, or claim any other host/runtime behavior. **All artifact and directory references in this block MUST use visible bare `file:///` URLs** built from the Project root URL above (see Rule 52):
 
 ```markdown
-Welcome back - resuming feature 001-layout-autocorrect at plan.
+Welcome back - resuming feature 001-layout-autocorrect at tasks.
 Specrew: 0.40.0-beta3
 Host: claude (Claude Code CLI); runtime: non-Squad
-Lifecycle: feature 001-layout-autocorrect at plan.
+Lifecycle: feature 001-layout-autocorrect at tasks.
 
 How this works: Specrew governs the spec -> plan -> implement -> review -> retro
 lifecycle. This session follows the saved lifecycle prompt and structured start
