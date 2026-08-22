@@ -1,0 +1,17 @@
+# Quality Evidence: Iteration 002
+
+**Profile Ref**: `quality-profile.pending`
+**Preset Refs**: (pending preset selection)
+**Findings Ref**: `specs/001-layout-autocorrect/iterations/002/quality/mechanical-findings.json`
+**Reviewed By**: Reviewer (pending)
+**Reviewed At**: 2026-08-22T12:00:51Z
+
+## Gate Matrix
+
+| Gate | Requirement | Evidence Source | Status | Exception |
+| --- | --- | --- | --- | --- |
+| `dead-field` | FR-011, FR-027, FR-030 | `specs/001-layout-autocorrect/iterations/002/quality/mechanical-findings.json` | `planned` | `—` |
+| `anti-pattern` | FR-011, FR-028, FR-030 | `specs/001-layout-autocorrect/iterations/002/quality/mechanical-findings.json` | `planned` | `—` |
+| `test-integrity` | FR-011, FR-029, FR-030 | `specs/001-layout-autocorrect/iterations/002/quality/mechanical-findings.json` | `planned` | `—` |
+| `stack-tooling-evidence` | FR-011 | `specs/001-layout-autocorrect/iterations/002/quality/quality-evidence.md` | `planned` | `—` |
+| `quality-lens-review` | FR-011, FR-012 | `specs/001-layout-autocorrect/iterations/002/quality/quality-evidence.md` | `planned` | `—` |
