@@ -2,8 +2,8 @@
 schema: v1
 source: PostToolUse
 from_host: claude
-recorded_at: 2026-08-22T15:57:54.4724817Z
-from_commit: 4e47ad1
+recorded_at: 2026-08-22T15:59:40.2724913Z
+from_commit: 17e2283
 active_feature: 001-layout-autocorrect
 active_boundary: plan
 last_authorized_boundary: plan
@@ -14,12 +14,12 @@ workshop_done: architecture-core, component-design, requirements-nfr, ui-ux, dat
 
 ## What I just did (last 3-5 turns or last boundary work)
 
-- [2026-08-22T15:57:54Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 4e47ad1 (chore(lint): refresh tasks handover)
-- [2026-08-22T15:57:43Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 4e47ad1 (chore(lint): refresh tasks handover); 1 new commit(s): 4e47ad1 chore(lint): refresh tasks handover
-- [2026-08-22T15:57:29Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 52968fb (chore(specrew): deploy co-review machinery update)
-- [2026-08-22T15:57:15Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 52968fb (chore(specrew): deploy co-review machinery update); 1 new commit(s): 52968fb chore(specrew): deploy co-review machinery update
-- [2026-08-22T15:57:03Z] (PostToolUse) 6 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 7908a75 (chore(lint): refresh handover record)
-- [2026-08-22T15:56:44Z] (PostToolUse) 6 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 7908a75 (chore(lint): refresh handover record)
+- [2026-08-22T15:59:40Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 17e2283 (chore(lint): normalize tasks handover)
+- [2026-08-22T15:59:32Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 17e2283 (chore(lint): normalize tasks handover)
+- [2026-08-22T15:59:23Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 17e2283 (chore(lint): normalize tasks handover)
+- [2026-08-22T15:59:16Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 17e2283 (chore(lint): normalize tasks handover)
+- [2026-08-22T15:59:09Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 17e2283 (chore(lint): normalize tasks handover)
+- [2026-08-22T15:59:01Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 17e2283 (chore(lint): normalize tasks handover)
 
 ## Why I'm stopping (the switch trigger)
 
@@ -41,7 +41,7 @@ Resume feature 001-layout-autocorrect at boundary plan. 1 of YOUR file(s) are un
 
 ## Context the receiving host needs that artifacts don't carry
 
-branch 001-layout-autocorrect, HEAD 4e47ad1 (chore(lint): refresh tasks handover). Active feature 001-layout-autocorrect, boundary plan. Your uncommitted work: specs/001-layout-autocorrect/iterations/002/tasks-progress.yml. (48 Specrew-managed files also uncommitted.)
+branch 001-layout-autocorrect, HEAD 17e2283 (chore(lint): normalize tasks handover). Active feature 001-layout-autocorrect, boundary plan. Your uncommitted work: specs/001-layout-autocorrect/iterations/002/tasks-progress.yml. (48 Specrew-managed files also uncommitted.)
 
 ## Recent conversation (last few exchanges, hook-captured)
 
