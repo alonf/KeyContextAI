@@ -2,8 +2,8 @@
 schema: v1
 source: PostToolUse
 from_host: claude
-recorded_at: 2026-08-22T13:47:32.4940442Z
-from_commit: aa59f80
+recorded_at: 2026-08-22T15:57:29.1245915Z
+from_commit: 52968fb
 active_feature: 001-layout-autocorrect
 active_boundary: plan
 last_authorized_boundary: plan
@@ -14,12 +14,12 @@ workshop_done: architecture-core, component-design, requirements-nfr, ui-ux, dat
 
 ## What I just did (last 3-5 turns or last boundary work)
 
-- [2026-08-22T13:47:32Z] (PostToolUse) 6 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+47 Specrew-managed); HEAD aa59f80 (chore(lint): auto-fix handover record)
-- [2026-08-22T13:47:16Z] (PostToolUse) 6 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+47 Specrew-managed); HEAD aa59f80 (chore(lint): auto-fix handover record)
-- [2026-08-22T13:47:05Z] (PostToolUse) 6 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+46 Specrew-managed); HEAD aa59f80 (chore(lint): auto-fix handover record); 1 new commit(s): aa59f80 chore(lint): auto-fix handover record
-- [2026-08-22T13:46:57Z] (PostToolUse) 6 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+47 Specrew-managed); HEAD 0e09e31 (chore(lint): auto-fix task boundary records); 1 new commit(s): 0e09e31 chore(lint): auto-fix task boundary records
-- [2026-08-22T13:46:44Z] (PostToolUse) 7 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 828907b (boundary(tasks): iteration 002 execution breakdown)
-- [2026-08-22T13:46:41Z] (PostToolUse) 7 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 828907b (boundary(tasks): iteration 002 execution breakdown)
+- [2026-08-22T15:57:29Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 52968fb (chore(specrew): deploy co-review machinery update)
+- [2026-08-22T15:57:15Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 52968fb (chore(specrew): deploy co-review machinery update); 1 new commit(s): 52968fb chore(specrew): deploy co-review machinery update
+- [2026-08-22T15:57:03Z] (PostToolUse) 6 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 7908a75 (chore(lint): refresh handover record)
+- [2026-08-22T15:56:44Z] (PostToolUse) 6 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 7908a75 (chore(lint): refresh handover record)
+- [2026-08-22T15:56:39Z] (PostToolUse) 6 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 7908a75 (chore(lint): refresh handover record)
+- [2026-08-22T15:56:33Z] (PostToolUse) 6 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 7908a75 (chore(lint): refresh handover record)
 
 ## Why I'm stopping (the switch trigger)
 
@@ -27,35 +27,21 @@ Hook-captured at trigger 'PostToolUse' (the agent did not author a handover this
 
 ## Open questions / pending clarifications
 
-- **SC-001's fate (BLOCKING this boundary per retro action 4)**: recommendation recorded in
-  file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/002/plan.md — split into
-  SC-001a (zero false corrections on the golden must-not-correct corpus, re-measured when
-  dictionary data changes; already evidenced by T025) and SC-001b (fewer than 1 in 1,000 applied
-  corrections reversed as wrong across sustained daily use, validated before release). The
-  alternative is growing the corpus to 10,000+ opportunities per language, which competes with
-  the 17.5 SP and still cannot evidence "sustained daily use". Alon decides; then the spec is
-  edited to match before planning closes.
-- **DRIFT-008 (open upstream)**: navigator currency check vs the validator's new source-aware W38.
-  Fix belongs in Specrew: mark the Spec-Kit/Squad-deployed mirrors at deploy, or give the evidence
-  gate the shared source classifier. Do not run a review round on account of it.
-- **Hebrew corpus realism**: still with the maintainer.
+- The five uncommitted script changes predate this task and must not be committed or discarded without confirming ownership and intent.
+- After those changes are resolved and the branch is pushed, rerun tasks boundary sync and investigate the owed plan.md finding if it persists.
+- Before implementation, fill iteration 002 hardening-gate placeholders with concrete controls and reconcile the standing iteration 001 derived independent-review block.
 
 ## Agent's working hypothesis / mental model
 
-Iteration 001 is closed and honest; DRIFT-007 resolved upstream and deployed. Iteration 002 is
-planned but NOT approved for tasks. The one standing validator FAIL is iteration 001's W34-A
-absence arm, kept by choice — re-adding the derived block would re-open the closed record.
-Iteration 002 delivers the first user-visible behaviour: a keystroke hook, injection, layout
-switching, the privacy lifecycle, and feedback. Standing rule unchanged: never edit anything
-under `.specify/` (deploy-only tree).
+The human authorized tasks and the task artifacts are complete and committed, but lifecycle state remains at plan because boundary sync could not mutate state. Product implementation has not started.
 
 ## Recommended next-immediate-step
 
-Resume feature 001-layout-autocorrect at boundary plan. 6 of YOUR file(s) are uncommitted [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+47 Specrew-managed) - review/commit them before advancing.
+Resume feature 001-layout-autocorrect at boundary plan. 1 of YOUR file(s) are uncommitted [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed) - review/commit them before advancing.
 
 ## Context the receiving host needs that artifacts don't carry
 
-branch 001-layout-autocorrect, HEAD aa59f80 (chore(lint): auto-fix handover record). Active feature 001-layout-autocorrect, boundary plan. Your uncommitted work: scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml. (47 Specrew-managed files also uncommitted.)
+branch 001-layout-autocorrect, HEAD 52968fb (chore(specrew): deploy co-review machinery update). Active feature 001-layout-autocorrect, boundary plan. Your uncommitted work: specs/001-layout-autocorrect/iterations/002/tasks-progress.yml. (48 Specrew-managed files also uncommitted.)
 
 ## Recent conversation (last few exchanges, hook-captured)
 
@@ -63,42 +49,26 @@ branch 001-layout-autocorrect, HEAD aa59f80 (chore(lint): auto-fix handover reco
 
 ## Authored boundary packet (captured at stop)
 
-I write down what you want before building, check with you before each major step, and never move past a check without your approval.
-
-Welcome back — resuming feature `001-layout-autocorrect` at **plan**.  
-Specrew: **0.40.0-beta3**  
-Host: **copilot (GitHub Copilot CLI)**; runtime: **non-Squad**  
-Project: **KeyContextAI**, branch `001-layout-autocorrect`  
-Lifecycle: feature `001-layout-autocorrect` at **plan**.
-
-What I know about you: I’ll treat you as mid-level on Product Strategy, mid-level on UX/UI Design, expert on Software Architecture, and mid-level on AI Delivery Planning — correct me if that’s off (`/specrew-user-profile edit`).
-
-Artifacts live under file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/; iteration 002 is at file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/002/. At each approval point, I’ll present a clear review packet and wait for your explicit verdict.
-
-Starting now: resuming the pending **plan → tasks** decision.
-
 ## What I Just Did
 
-Iteration 001 is closed. Iteration 002 is planned privacy-first: 12 tasks totaling 17.5/20 story points, beginning with password-field detection and fail-closed behavior before enabling keystroke capture.
-
-The remaining decision is SC-001: the recommendation in file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/002/plan.md splits it into a corpus gate with zero false corrections and a pre-release daily-use target below one incorrect reversal per 1,000 corrections.
+Prepared iteration 002’s privacy-first task breakdown and recorded the approved SC-001a/SC-001b wording in file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/spec.md and file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/tasks.md.
 
 ## Why I Stopped
 
-The exact pending boundary is **plan → tasks**. Your `continue` resumes the conversation but does not authorize that boundary.
+The authoritative lifecycle state still shows **plan → tasks** as unauthorized. The exact pending crossing is `crossing-02dfc7ea1d6d300d3e6e5d5e1e42d94c35683829e94d3f0382f212d78b74a67e` at commit `f1959a34df2b3100fa20b2ffee3c51822ae89313`.
 
 ## What Needs Your Review
 
-Review the SC-001 recommendation and task sequencing in file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/002/plan.md. The default is to accept the recommended SC-001 split and retain privacy-first sequencing.
+Review the privacy-first sequence and SC-001 split in file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/002/plan.md. The task breakdown is available at file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/tasks.md.
 
 ## What Happens Next
 
-After approval, I will apply the SC-001 decision, complete the task breakdown and traceability work, then stop at **tasks → before-implement**. No product code will be written yet.
+Approval authorizes task generation for this exact crossing. After synchronization, work stops at **tasks → before-implement** for hardening review; no product implementation begins automatically.
 
 ## Discussion Prompts
 
-1. Accept the recommended SC-001 split, or instead fund a substantially larger corpus that still cannot prove “sustained daily use.”
-2. Keep privacy-first sequencing, or prioritize earlier visible input-hook behavior.
+1. Default: retain SC-001a as the dictionary-change corpus gate and SC-001b as the pre-release maintainer daily-use gate.
+2. Default: retain privacy-first sequencing, beginning with password-field detection before keystroke capture.
 
 You can answer any prompt that should change direction, or approve with the defaults.
 
@@ -114,3 +84,4 @@ discuss prompt 1
 ```
 
 <!-- SPECREW-VERDICT-BOUNDARY: plan -> tasks -->
+
