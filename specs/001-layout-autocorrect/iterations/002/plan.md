@@ -171,8 +171,7 @@ feature. This section is authoritative for what iteration 002 actually covers.
   remains blocked pending explicit human verdict `approved for before-implement`.
 - Preflight note: this plan and the hardening gate were refreshed together in the
   latest boundary prep commit to satisfy owed-artifact validation for before-implement.
-- Preflight cycle 2: boundary prep evidence refreshed again to keep plan + hardening
-  gate as the latest authored artifact pair ahead of before-implement sync.
+- Preflight cycle 3: boundary prep evidence refreshed again to keep plan + hardening gate as the latest authored artifact pair ahead of before-implement sync.
 - Effort estimates carry no measured history: iteration 001 recorded scope but not per-task actuals,
   so these numbers rest on the task descriptions and the 001 total, not on calibration. That is the
   gap retro action 1 exists to close, and 002 is the iteration that can close it.
