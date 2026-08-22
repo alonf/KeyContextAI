@@ -11,13 +11,13 @@ User feature request: (not provided yet; gather or confirm during intake)
 - Active feature: 001-layout-autocorrect
 - Feature path: C:\Dev\KeyContextAI\specs\001-layout-autocorrect
 - Worktree: C:\Dev\KeyContextAI
-- Current boundary: retro
+- Current boundary: iteration-closeout
 - Current task: (none)
 - Last completed task: T001 at 2026-08-20T08:40:00.0000000Z
-- Last completed boundary: 66ef51233be701e86d36700086fb0c85bc712a11 at 2026-08-21T16:09:53Z
+- Last completed boundary: 8eb467d07f7774110ff5e01006e13df1d8e24ce3 at 2026-08-22T00:00:38Z
 - Task progress: 18 complete, 0 in-progress, 0 pending, 0 blocked
 - Complete: T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025
-- Validator state: 10 warnings: 9 soft, 0 medium, 1 hard
+- Validator state: 12 warnings: 11 soft, 0 medium, 1 hard
 
 ### Suggested Next Actions
 
@@ -25,7 +25,7 @@ User feature request: (not provided yet; gather or confirm during intake)
 
 ## Resume Reconciliation (current tree, re-computed now)
 
-Last captured stop: 2026-08-21T19:40:40.5365677Z (boundary retro). Files changed since (re-computed NOW - may post-date the last stop): scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-run-index-writer.ps1, scripts/internal/continuous-co-review/verification-plan-contract.ps1, scripts/internal/continuous-co-review/verification-plan-runner.ps1, scripts/internal/continuous-co-review/verification-plan-supplier.ps1, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml, specs/001-layout-autocorrect/current-architecture.md, +more. READ those files to recover the true current state (the handover snapshot may predate your latest work), THEN continue.
+Last captured stop: 2026-08-22T00:04:34.8742999Z (boundary iteration-closeout). Files changed since (re-computed NOW - may post-date the last stop): specs/001-layout-autocorrect/iterations/001/dashboard.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml. READ those files to recover the true current state (the handover snapshot may predate your latest work), THEN continue.
 
 Operational Specrew roster snapshot:
 
@@ -228,10 +228,10 @@ At `feature-closeout`, copy the `AGENT NEXT ACTION:` and `HUMAN ACTION NEEDED:` 
 48. **Session opening orientation (mandatory FIRST output).** Your very first user-visible output, immediately after reading `.specrew\last-start-prompt.md` + `.specrew\start-context.json`, must be a short friendly orientation block in the host-rendered shape below (8-15 lines, conversational tone, no bullet-list of phases). The visible Specrew version, selected host, runtime class, and lifecycle position in this block are generated from the installed runtime and saved start context; do not substitute, infer, omit, or claim any other host/runtime behavior. **All artifact and directory references in this block MUST use visible bare `file:///` URLs** built from the Project root URL above (see Rule 52):
 
 ```markdown
-Welcome back - resuming feature 001-layout-autocorrect at retro.
+Welcome back - resuming feature 001-layout-autocorrect at iteration-closeout.
 Specrew: 0.40.0-beta3
 Host: claude (Claude Code CLI); runtime: non-Squad
-Lifecycle: feature 001-layout-autocorrect at retro.
+Lifecycle: feature 001-layout-autocorrect at iteration-closeout.
 
 How this works: Specrew governs the spec -> plan -> implement -> review -> retro
 lifecycle. This session follows the saved lifecycle prompt and structured start
