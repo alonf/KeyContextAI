@@ -167,3 +167,14 @@ No decisions recorded yet.
 - **Task ID**: (none)
 - **Auth Commit Hash**: f1959a34df2b3100fa20b2ffee3c51822ae89313
 - **Recorded At**: 2026-08-22T12:06:43Z
+
+## 2026-08-22T12:06:51Z — Boundary enforcement: plan
+
+- **Feature**: 001-layout-autocorrect
+- **Boundary Type**: plan
+- **Current Boundary**: tasks
+- **Requested Boundary**: plan
+- **Enforcement Action**: blocked
+- **Launch Mode**: (none)
+- **Agent Response Snippet**: (none)
+- **Reason**: Ratchet refusal: 'tasks' is recorded but not human-approved; a second advance to 'plan' is refused until it is reconciled.
