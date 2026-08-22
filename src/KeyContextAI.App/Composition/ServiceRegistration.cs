@@ -1,6 +1,8 @@
 using KeyContextAI.Core.Contracts;
 using KeyContextAI.Core.Engines;
 using KeyContextAI.Core.Model;
+using KeyContextAI.Platform.Input;
+using KeyContextAI.Platform.System;
 using KeyContextAI.Platform.Storage;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -32,6 +34,8 @@ public static class ServiceRegistration
 
         // Accessors: the only components that touch the outside world.
         services.AddSingleton<IDictionaryAccessor>(_ => new DictionaryAccessor(dataRoot));
+        services.AddSingleton<IKeystrokeAccessor, KeystrokeAccessor>();
+        services.AddSingleton<IFocusAccessor, FocusAccessor>();
 
         // Engines: pure algorithms. The mapping engine is constructed from loaded data rather than
         // loading it itself, because engines make no accessor calls.

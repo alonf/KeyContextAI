@@ -5,15 +5,15 @@ updated_at: "2026-08-22T20:58:27.2555054Z"
 tasks:
   T033:
     title: "FocusAccessor — foreground/control change events, UI Automation password detection (`Yes`/`No`/`Unknown`), caret coordinates"
-    status: "pending"
-    started_at: ""
-    completed_at: ""
+    status: "done"
+    started_at: "2026-08-22T20:58:27Z"
+    completed_at: "2026-08-22T20:59:49Z"
     blocked_reason: ""
   T017:
     title: "KeystrokeAccessor — `WH_KEYBOARD_LL` on a dedicated message-pumping thread, allocation-free callback, self-injection tagging"
-    status: "pending"
-    started_at: ""
-    completed_at: ""
+    status: "done"
+    started_at: "2026-08-22T20:59:49Z"
+    completed_at: "2026-08-22T21:05:00Z"
     blocked_reason: ""
   T018:
     title: "InputInjectionAccessor — `SendInput` backspaces plus replacement text as one burst, self-injected event tagging"

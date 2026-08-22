@@ -1,3 +1,5 @@
+using System.IO;
+using System.Linq;
 using System.Text.Json;
 using KeyContextAI.Core.Contracts;
 using KeyContextAI.Core.Model;
