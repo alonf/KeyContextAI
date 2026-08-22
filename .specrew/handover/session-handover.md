@@ -2,10 +2,10 @@
 schema: v1
 source: PostToolUse
 from_host: claude
-recorded_at: 2026-08-22T12:07:23.3839051Z
-from_commit: 3ce888e
+recorded_at: 2026-08-22T13:46:44.7241241Z
+from_commit: 828907b
 active_feature: 001-layout-autocorrect
-active_boundary: iteration-closeout
+active_boundary: plan
 last_authorized_boundary: plan
 workshop_done: architecture-core, component-design, requirements-nfr, ui-ux, data-storage, security-compliance, integration-api, observability-resilience, devops-operations, code-implementation, product-domain
 ---
@@ -14,90 +14,104 @@ workshop_done: architecture-core, component-design, requirements-nfr, ui-ux, dat
 
 ## What I just did (last 3-5 turns or last boundary work)
 
-- [2026-08-22T12:07:23Z] (PostToolUse) 0 changed user file(s) [(none)] (+5 Specrew-managed); HEAD 3ce888e (chore(lint): auto-fix markdownlint violations from boundary-sync gate)
+- [2026-08-22T13:46:44Z] (PostToolUse) 7 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 828907b (boundary(tasks): iteration 002 execution breakdown)
+- [2026-08-22T13:46:41Z] (PostToolUse) 7 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 828907b (boundary(tasks): iteration 002 execution breakdown)
+- [2026-08-22T13:46:22Z] (PostToolUse) 7 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 828907b (boundary(tasks): iteration 002 execution breakdown)
+- [2026-08-22T13:46:09Z] (PostToolUse) 7 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 828907b (boundary(tasks): iteration 002 execution breakdown); 1 new commit(s): 828907b boundary(tasks): iteration 002 execution breakdown
+- [2026-08-22T13:45:57Z] (PostToolUse) 13 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/001/plan.md, specs/001-layout-autocorrect/iterations/002/plan.md, specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/plan.md, specs/001-layout-autocorrect/quickstart.md, specs/001-layout-autocorrect/spec.md, specs/001-layout-autocorrect/tasks.md, +more] (+49 Specrew-managed); HEAD 243c73b (records(governance): boundary-sync writes for the plan crossing)
+- [2026-08-22T13:45:54Z] (PostToolUse) 13 changed user file(s) [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/001/plan.md, specs/001-layout-autocorrect/iterations/002/plan.md, specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/plan.md, specs/001-layout-autocorrect/quickstart.md, specs/001-layout-autocorrect/spec.md, specs/001-layout-autocorrect/tasks.md, +more] (+49 Specrew-managed); HEAD 243c73b (records(governance): boundary-sync writes for the plan crossing)
 
 ## Why I'm stopping (the switch trigger)
 
-Hook-captured at trigger 'PostToolUse' (the agent did not author a handover this turn). Boundary: plan. Refresh reason: boundary-moved.
+Hook-captured at trigger 'PostToolUse' (the agent did not author a handover this turn). Boundary: plan. Refresh reason: tracked-change.
 
 ## Open questions / pending clarifications
 
-- **The plan verdict**: does Alon want to enter iteration 002 planning now (`approved for plan`)?
-- **SC-001's fate** (retro improvement action 4): owed BEFORE iteration 002 planning closes.
-- **Stop-hook coverage advisory — CONFIRMED still stale post-update; finding diagnosed, owed
-  upstream.** After the b5c84f48 deployment the advisory still says run-…458c5888 "targets a
-  moved or earlier snapshot and cannot authorize the current tree"
-  (reason latest-result-not-current). Cause, read from the installed module: the evidence gate's
-  FR-009 exemption classifies the delta path-by-path via Test-ReviewCampaignDeltaIsRecordsOnly,
-  whose machinery list = core dirs + `.specrew-managed`-marked dirs. The delta since reviewed
-  tree 273c69bb contains host-mirror trees deployed WITHOUT markers — `.github/agents/*.agent.md`,
-  `.github/prompts/*.prompt.md`, `.claude/skills/speckit-*/` (verified: no `.specrew-managed` on
-  disk), `.github/skills/<squad>*/` — written by the Spec-Kit/Squad deployers, not
-  Set-ManagedFile, so no marker. One unclassified path fails the exemption closed → stale. The
-  validator's fix asks a different question (Test-SpecrewReviewAuthorshipSourcePath: dot-dirs,
-  specs/, docs/, .md are not-source) and reads the same tree as current. Fix belongs upstream:
-  either mark the Spec-Kit/Squad-deployed mirrors at deploy time or give the navigator gate the
-  shared source classifier. NO round was run because of it. Record as a drift entry in iteration
-  002's log when 002 opens (001 is closed).
+- **SC-001's fate (BLOCKING this boundary per retro action 4)**: recommendation recorded in
+  file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/002/plan.md — split into
+  SC-001a (zero false corrections on the golden must-not-correct corpus, re-measured when
+  dictionary data changes; already evidenced by T025) and SC-001b (fewer than 1 in 1,000 applied
+  corrections reversed as wrong across sustained daily use, validated before release). The
+  alternative is growing the corpus to 10,000+ opportunities per language, which competes with
+  the 17.5 SP and still cannot evidence "sustained daily use". Alon decides; then the spec is
+  edited to match before planning closes.
+- **DRIFT-008 (open upstream)**: navigator currency check vs the validator's new source-aware W38.
+  Fix belongs in Specrew: mark the Spec-Kit/Squad-deployed mirrors at deploy, or give the evidence
+  gate the shared source classifier. Do not run a review round on account of it.
 - **Hebrew corpus realism**: still with the maintainer.
 
 ## Agent's working hypothesis / mental model
 
-Iteration 001 is closed and honest: independence stated as history, DRIFT-007 documented and now
-RESOLVED upstream (b5c84f48, deployed); the one validator FAIL (W34-A absence arm) rides along by
-choice because re-adding the derived block would re-litigate the closed record. Iteration 002's
-expected scope per the approved slicing: the runtime components deferred from 001 (keyboard hook,
-text injection, transcript journal; privacy lifecycle across iterations 002-004). Standing rule
-unchanged: never edit anything under `.specify/` (deploy-only tree).
+Iteration 001 is closed and honest; DRIFT-007 resolved upstream and deployed. Iteration 002 is
+planned but NOT approved for tasks. The one standing validator FAIL is iteration 001's W34-A
+absence arm, kept by choice — re-adding the derived block would re-open the closed record.
+Iteration 002 delivers the first user-visible behaviour: a keystroke hook, injection, layout
+switching, the privacy lifecycle, and feedback. Standing rule unchanged: never edit anything
+under `.specify/` (deploy-only tree).
 
 ## Recommended next-immediate-step
 
-Resume feature 001-layout-autocorrect at boundary plan. Only Specrew-managed scaffolding is uncommitted (5 file(s)) - that is the init baseline; commit it at a boundary.
+Resume feature 001-layout-autocorrect at boundary plan. 7 of YOUR file(s) are uncommitted [scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed) - review/commit them before advancing.
 
 ## Context the receiving host needs that artifacts don't carry
 
-branch 001-layout-autocorrect, HEAD 3ce888e (chore(lint): auto-fix markdownlint violations from boundary-sync gate). Active feature 001-layout-autocorrect, boundary plan. No user files changed; 5 Specrew-managed scaffolding file(s) uncommitted.
+branch 001-layout-autocorrect, HEAD 828907b (boundary(tasks): iteration 002 execution breakdown). Active feature 001-layout-autocorrect, boundary plan. Your uncommitted work: scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml. (48 Specrew-managed files also uncommitted.)
 
 ## Recent conversation (last few exchanges, hook-captured)
 
-- **assistant:** Now the Notes section, including the SC-001 decision that retro action 4 says is owed before this planning closes:
-- **assistant:** Now updating iteration 002's state.md and recording the carried navigator finding in its drift log:
-- **assistant:** Now running the traceability check and validator before the boundary commit:
-- **assistant:** The only FAIL is the known iteration-001 W34-A one, unchanged and deliberate; iteration 002's new artifacts raise nothing. Committing the plan boundary:
-- **assistant:** Now syncing the plan boundary — using the pattern that works (sync fixes lint, commit, push, sync) in one call:
-- **assistant:** Trailing-newline fixes from the lint gate, plus the dashboard re-render. Committing all of it and re-syncing:
-- **assistant:** Only the hook-rewritten handover file remains — the known cycle. Closing it with the sync-commit-push-sync sequence in one call:
-- **assistant:** The first sync in that pair succeeded — the second was a duplicate. Checking the actual recorded state:
-
-Full transcript (read on-demand for depth): C:\Users\alon\.claude\projects\C--Dev-KeyContextAI\9cb65e38-c5f7-4026-9bbf-865db26b1112.jsonl
+(no conversation transcript exposed by claude this stop - the next session relies on the git delta, the artifact-derived orientation, and the agent-authored sections above.)
 
 ## Authored boundary packet (captured at stop)
 
-Welcome back — resuming feature 001-layout-autocorrect at iteration-closeout.
-Specrew: 0.40.0-beta3
-Host: claude (Claude Code CLI); runtime: non-Squad
-Lifecycle: feature 001-layout-autocorrect at iteration-closeout — the retro → iteration-closeout crossing is committed at `c60df84` and awaits your verdict.
+I write down what you want before building, check with you before each major step, and never move past a check without your approval.
 
-How this works: Specrew writes down what you want before building it, checks with you before each big step instead of running ahead, and nothing moves past one of those checks until you say so. This session follows the saved lifecycle prompt and structured start context directly; a separate role runtime is not active for this launch.
+Welcome back — resuming feature `001-layout-autocorrect` at **plan**.  
+Specrew: **0.40.0-beta3**  
+Host: **copilot (GitHub Copilot CLI)**; runtime: **non-Squad**  
+Project: **KeyContextAI**, branch `001-layout-autocorrect`  
+Lifecycle: feature `001-layout-autocorrect` at **plan**.
 
-What I know about you: I'll treat you as mid-level on Product Strategy, mid-level on UX/UI Design, expert on Software Architecture, mid-level on AI Delivery Planning — correct me if that's off (`/specrew-user-profile edit`), and I'll match how much I ask and explain to it.
+What I know about you: I’ll treat you as mid-level on Product Strategy, mid-level on UX/UI Design, expert on Software Architecture, and mid-level on AI Delivery Planning — correct me if that’s off (`/specrew-user-profile edit`).
 
-What I'll ask from you: clarify questions when something is genuinely ambiguous, and an approve/redirect verdict at each boundary stop — like the one waiting below.
+Artifacts live under file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/; iteration 002 is at file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/002/. At each approval point, I’ll present a clear review packet and wait for your explicit verdict.
 
-What you can browse: artifacts live under file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/ — the spec at file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/spec.md, iteration artifacts under file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/001/, and your closeout dashboard at file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/001/dashboard.md.
+Starting now: resuming the pending **plan → tasks** decision.
 
----
+## What I Just Did
 
-Continuing where this stood: the full six-section closeout packet is in my previous message and stands as rendered. One addition for the record — the review advisory that just fired names the same stale run the packet already puts in front of you: run-20260820-150735904-458c5888 targets the earlier snapshot `273c69bb` and cannot authorize the current tree. Its ask is that you run `specrew review --live --approve-round` for a fresh round — that is exactly the alternative in Discussion Prompt 1, and approving a round is your decision; the default in the packet remains closing with the claim withdrawn as history and DRIFT-007 recorded. The advisory does not decide the approval you still owe.
+Iteration 001 is closed. Iteration 002 is planned privacy-first: 12 tasks totaling 17.5/20 story points, beginning with password-field detection and fail-closed behavior before enabling keystroke capture.
 
-What would you like to do? Type one of these:
+The remaining decision is SC-001: the recommendation in file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/002/plan.md splits it into a corpus gate with zero false corrections and a pre-release daily-use target below one incorrect reversal per 1,000 corrections.
+
+## Why I Stopped
+
+The exact pending boundary is **plan → tasks**. Your `continue` resumes the conversation but does not authorize that boundary.
+
+## What Needs Your Review
+
+Review the SC-001 recommendation and task sequencing in file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/002/plan.md. The default is to accept the recommended SC-001 split and retain privacy-first sequencing.
+
+## What Happens Next
+
+After approval, I will apply the SC-001 decision, complete the task breakdown and traceability work, then stop at **tasks → before-implement**. No product code will be written yet.
+
+## Discussion Prompts
+
+1. Accept the recommended SC-001 split, or instead fund a substantially larger corpus that still cannot prove “sustained daily use.”
+2. Keep privacy-first sequencing, or prioritize earlier visible input-hook behavior.
+
+You can answer any prompt that should change direction, or approve with the defaults.
+
+## What I Need From You
+
+Type one of these:
 
 ```text
-  approved for iteration-closeout
-  approved for iteration-closeout - <your instructions>
-  changes needed: <what to change>
-  discuss prompt 1
+approved for tasks
+approved for tasks - <your instructions>
+changes needed: <what to change>
+discuss prompt 1
 ```
 
-<!-- SPECREW-VERDICT-BOUNDARY: retro -> iteration-closeout -->
+<!-- SPECREW-VERDICT-BOUNDARY: plan -> tasks -->
 

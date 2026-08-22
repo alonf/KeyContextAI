@@ -1,16 +1,3 @@
----
-baseline_commit_hash: f1959a34df2b3100fa20b2ffee3c51822ae89313
-updated_at: 2026-08-22T12:06:43Z
-session_state_active: true
-session_state_boundary: plan
-session_state_feature: 001-layout-autocorrect
-session_state_feature_path: "C:\Dev\KeyContextAI\specs\001-layout-autocorrect"
-session_state_iteration: 002
-session_state_task: "(none)"
-session_state_auth_commit: f1959a34df2b3100fa20b2ffee3c51822ae89313
-session_state_recorded_at: 2026-08-22T12:06:43Z
----
-
 This repository uses Specrew; work here follows the project lifecycle and its human-authorized boundaries.
 
 Project root: C:\Dev\KeyContextAI
@@ -24,21 +11,22 @@ User feature request: (not provided yet; gather or confirm during intake)
 - Active feature: 001-layout-autocorrect
 - Feature path: C:\Dev\KeyContextAI\specs\001-layout-autocorrect
 - Worktree: C:\Dev\KeyContextAI
-- Current boundary: iteration-closeout
+- Current boundary: plan
 - Current task: (none)
-- Last completed task: T001 at 2026-08-20T08:40:00.0000000Z
-- Last completed boundary: c60df8480a6335558572ad816c204830ebb19adf at 2026-08-22T10:37:02Z
-- Task progress: 18 complete, 0 in-progress, 0 pending, 0 blocked
-- Complete: T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025
+- Last completed task: (none)
+- Last completed boundary: f1959a34df2b3100fa20b2ffee3c51822ae89313 at 2026-08-22T12:06:43Z
+- Task progress: 0 complete, 0 in-progress, 12 pending, 0 blocked
+- Pending: T033, T017, T018
 - Validator state: 13 warnings: 12 soft, 0 medium, 1 hard
 
 ### Suggested Next Actions
 
+- Start T033 — FocusAccessor — foreground/control change events, UI Automation password detection (`Yes`/`No`/`Unknown`), caret coordinates
 - Review validator warnings with: validate-governance
 
 ## Resume Reconciliation (current tree, re-computed now)
 
-Last captured stop: 2026-08-22T10:53:19.9828968Z (boundary iteration-closeout). Files changed since (re-computed NOW - may post-date the last stop): specs/001-layout-autocorrect/iterations/001/dashboard.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml. READ those files to recover the true current state (the handover snapshot may predate your latest work), THEN continue.
+Last captured stop: 2026-08-22T12:09:13.5250969Z (boundary plan). Files changed since (re-computed NOW - may post-date the last stop): scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml. READ those files to recover the true current state (the handover snapshot may predate your latest work), THEN continue.
 
 Operational Specrew roster snapshot:
 
@@ -241,10 +229,10 @@ At `feature-closeout`, copy the `AGENT NEXT ACTION:` and `HUMAN ACTION NEEDED:` 
 48. **Session opening orientation (mandatory FIRST output).** Your very first user-visible output, immediately after reading `.specrew\last-start-prompt.md` + `.specrew\start-context.json`, must be a short friendly orientation block in the host-rendered shape below (8-15 lines, conversational tone, no bullet-list of phases). The visible Specrew version, selected host, runtime class, and lifecycle position in this block are generated from the installed runtime and saved start context; do not substitute, infer, omit, or claim any other host/runtime behavior. **All artifact and directory references in this block MUST use visible bare `file:///` URLs** built from the Project root URL above (see Rule 52):
 
 ```markdown
-Welcome back - resuming feature 001-layout-autocorrect at iteration-closeout.
+Welcome back - resuming feature 001-layout-autocorrect at plan.
 Specrew: 0.40.0-beta3
 Host: claude (Claude Code CLI); runtime: non-Squad
-Lifecycle: feature 001-layout-autocorrect at iteration-closeout.
+Lifecycle: feature 001-layout-autocorrect at plan.
 
 How this works: Specrew governs the spec -> plan -> implement -> review -> retro
 lifecycle. This session follows the saved lifecycle prompt and structured start
