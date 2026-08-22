@@ -14,10 +14,10 @@ User feature request: (not provided yet; gather or confirm during intake)
 - Current boundary: iteration-closeout
 - Current task: (none)
 - Last completed task: T001 at 2026-08-20T08:40:00.0000000Z
-- Last completed boundary: 8eb467d07f7774110ff5e01006e13df1d8e24ce3 at 2026-08-22T00:00:38Z
+- Last completed boundary: c60df8480a6335558572ad816c204830ebb19adf at 2026-08-22T10:37:02Z
 - Task progress: 18 complete, 0 in-progress, 0 pending, 0 blocked
 - Complete: T001, T002, T003, T004, T005, T006, T007, T008, T009, T010, T011, T012, T013, T014, T015, T016, T020, T025
-- Validator state: 12 warnings: 11 soft, 0 medium, 1 hard
+- Validator state: 13 warnings: 12 soft, 0 medium, 1 hard
 
 ### Suggested Next Actions
 
@@ -25,7 +25,7 @@ User feature request: (not provided yet; gather or confirm during intake)
 
 ## Resume Reconciliation (current tree, re-computed now)
 
-Last captured stop: 2026-08-22T00:04:34.8742999Z (boundary iteration-closeout). Files changed since (re-computed NOW - may post-date the last stop): specs/001-layout-autocorrect/iterations/001/dashboard.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml. READ those files to recover the true current state (the handover snapshot may predate your latest work), THEN continue.
+Last captured stop: 2026-08-22T10:53:19.9828968Z (boundary iteration-closeout). Files changed since (re-computed NOW - may post-date the last stop): specs/001-layout-autocorrect/iterations/001/dashboard.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml. READ those files to recover the true current state (the handover snapshot may predate your latest work), THEN continue.
 
 Operational Specrew roster snapshot:
 
