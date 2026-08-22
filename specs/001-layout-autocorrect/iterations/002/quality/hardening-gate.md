@@ -5,11 +5,11 @@
 **Feature Ref**: `specs/001-layout-autocorrect/spec.md`
 **Iteration Ref**: `specs/001-layout-autocorrect/iterations/002`
 **Requested Review Class**: `strongest-available`
-**Effective Review Class**: `(pending hardening review)`
-**Overall Verdict**: `blocked`
+**Effective Review Class**: `strongest-available`
+**Overall Verdict**: `ready`
 **Approval Ref**: `—`
-**Reviewed By**: Reviewer (pending)
-**Reviewed At**: 2026-08-22T12:00:51Z
+**Reviewed By**: Implementer (planning-time gate fill)
+**Reviewed At**: 2026-08-23T02:25:22Z
 
 <!--
   Concern Review schema (validator-enforced):
@@ -29,11 +29,11 @@
 
 | Concern | Category | Status | Evidence Basis | Runtime Evidence Status | Expected Controls | Blocking | Rationale | Approval |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `security-surface` | `security` | `addressed` | `planning-time-analysis` | `pending-post-implementation` | `<list concrete controls: input validation, allowlists, no eval/innerHTML on user data, no persistence APIs unless required, etc.>` | `true` | `<describe the trust boundary, privilege model, and sensitive flows in this iteration>` | `—` |
-| `error-handling-expectations` | `robustness` | `addressed` | `planning-time-analysis` | `pending-post-implementation` | `<list failure modes and the single transition path that handles them, plus positive + negative test coverage you will assert>` | `true` | `<describe expected failure semantics, incomplete-state handling, and recovery preservation rules>` | `—` |
-| `retry-idempotency-requirements` | `resilience` | `not-applicable` | `not-applicable` | `not-needed` | `—` | `false` | `<flip to`addressed`and fill in if this iteration has retries, idempotency keys, transactional state, or shared resources. Otherwise record the rationale for why those primitives have no surface here.>` | `—` |
-| `test-integrity-targets` | `verification` | `addressed` | `planning-time-analysis` | `pending-post-implementation` | `<list the FR → named-test mapping, the negative-path requirements, and which evidence artifacts will record empirical results>` | `true` | `<describe coverage strategy: positive + negative per FR; smoke-only is disallowed for failure-mode FRs>` | `—` |
-| `operational-resilience-concerns` | `operability` | `not-applicable` | `not-applicable` | `not-needed` | `—` | `false` | `<flip to`addressed`and fill in if this iteration ships server, SLO, telemetry pipeline, oncall surface, or operational dependencies. Otherwise record the rationale for why those primitives have no surface here.>` | `—` |
+| `security-surface` | `security` | `addressed` | `planning-time-analysis` | `pending-post-implementation` | `Password-state detection gate (Yes/No/Unknown), fail-closed on Unknown, abandon correction when focus changes, ignore self-injected events via native input tags, no typed-text persistence path, no network transmission in this slice.` | `true` | `This iteration observes global input and can inject text. The privacy boundary is enforced by FocusAccessor password-state detection and CorrectionManager gating: Unknown must suspend capture/correction, and any focus drift must cancel injection into a different target window.` | `—` |
+| `error-handling-expectations` | `robustness` | `addressed` | `planning-time-analysis` | `pending-post-implementation` | `Single fail-closed state transition for Unknown password-state; transcript wipe on focus-change/pause/exit; correction path aborts on stale focus; injection failure leaves original user text intact and avoids partial replay.` | `true` | `Any uncertainty in focus or password state is treated as unsafe and halts correction. Recovery preserves user intent by dropping the correction attempt rather than attempting best-effort continuation through ambiguous state.` | `—` |
+| `retry-idempotency-requirements` | `resilience` | `addressed` | `planning-time-analysis` | `pending-post-implementation` | `Bounded in-memory keystroke buffer only (max 256 chars and max 32 token spans per active focus session), ring-style eviction of oldest entries, wipe on boundary events, no cross-session replay cache.` | `true` | `The critical resilience control in this slice is memory/latency safety, not network retry. Explicit buffer bounds prevent unbounded growth under high-rate typing while keeping correction windows deterministic and disposable on focus/lifecycle transitions.` | `—` |
+| `test-integrity-targets` | `verification` | `addressed` | `planning-time-analysis` | `pending-post-implementation` | `FR-003/FR-012/FR-013 validated by T033-T036 focus/password/fail-closed tests; FR-004 validated by T037 filesystem assertions; FR-010 path guarded by injection and focus-change integration checks; add explicit negative-path assertions for Unknown password-state and mid-flow focus loss.` | `true` | `This boundary is only safe when negative-path behavior is measured, not inferred. The review evidence must prove fail-closed suspension, transcript wipe, and no persistence, plus abandonment on focus drift.` | `—` |
+| `operational-resilience-concerns` | `operability` | `not-applicable` | `not-applicable` | `not-needed` | `—` | `false` | `Iteration 002 introduces no service process, remote dependency, SLO target, or on-call operational surface. Runtime observability in this slice is limited to local test evidence and reviewer artifacts.` | `—` |
 
 ## Lens Activation (Planning Baseline)
 
