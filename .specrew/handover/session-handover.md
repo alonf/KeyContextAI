@@ -2,8 +2,8 @@
 schema: v1
 source: PostToolUse
 from_host: claude
-recorded_at: 2026-08-22T15:59:40.2724913Z
-from_commit: 17e2283
+recorded_at: 2026-08-22T16:00:00.4879243Z
+from_commit: 4579434
 active_feature: 001-layout-autocorrect
 active_boundary: plan
 last_authorized_boundary: plan
@@ -14,12 +14,12 @@ workshop_done: architecture-core, component-design, requirements-nfr, ui-ux, dat
 
 ## What I just did (last 3-5 turns or last boundary work)
 
+- [2026-08-22T16:00:00Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+47 Specrew-managed); HEAD 4579434 (chore(lint): normalize tasks handover); 1 new commit(s): 4579434 chore(lint): normalize tasks handover
 - [2026-08-22T15:59:40Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 17e2283 (chore(lint): normalize tasks handover)
 - [2026-08-22T15:59:32Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 17e2283 (chore(lint): normalize tasks handover)
 - [2026-08-22T15:59:23Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 17e2283 (chore(lint): normalize tasks handover)
 - [2026-08-22T15:59:16Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 17e2283 (chore(lint): normalize tasks handover)
 - [2026-08-22T15:59:09Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 17e2283 (chore(lint): normalize tasks handover)
-- [2026-08-22T15:59:01Z] (PostToolUse) 1 changed user file(s) [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed); HEAD 17e2283 (chore(lint): normalize tasks handover)
 
 ## Why I'm stopping (the switch trigger)
 
@@ -37,11 +37,11 @@ The human authorized tasks and the task artifacts are complete and committed, bu
 
 ## Recommended next-immediate-step
 
-Resume feature 001-layout-autocorrect at boundary plan. 1 of YOUR file(s) are uncommitted [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+48 Specrew-managed) - review/commit them before advancing.
+Resume feature 001-layout-autocorrect at boundary plan. 1 of YOUR file(s) are uncommitted [specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+47 Specrew-managed) - review/commit them before advancing.
 
 ## Context the receiving host needs that artifacts don't carry
 
-branch 001-layout-autocorrect, HEAD 17e2283 (chore(lint): normalize tasks handover). Active feature 001-layout-autocorrect, boundary plan. Your uncommitted work: specs/001-layout-autocorrect/iterations/002/tasks-progress.yml. (48 Specrew-managed files also uncommitted.)
+branch 001-layout-autocorrect, HEAD 4579434 (chore(lint): normalize tasks handover). Active feature 001-layout-autocorrect, boundary plan. Your uncommitted work: specs/001-layout-autocorrect/iterations/002/tasks-progress.yml. (47 Specrew-managed files also uncommitted.)
 
 ## Recent conversation (last few exchanges, hook-captured)
 
