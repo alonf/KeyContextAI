@@ -1,3 +1,16 @@
+---
+baseline_commit_hash: aad7d9e53adb7d2772d4899411440eacda5ece86
+updated_at: 2026-08-22T11:42:18Z
+session_state_active: true
+session_state_boundary: iteration-closeout
+session_state_feature: 001-layout-autocorrect
+session_state_feature_path: "C:\Dev\KeyContextAI\specs\001-layout-autocorrect"
+session_state_iteration: 001
+session_state_task: "(none)"
+session_state_auth_commit: aad7d9e53adb7d2772d4899411440eacda5ece86
+session_state_recorded_at: 2026-08-22T11:42:18Z
+---
+
 This repository uses Specrew; work here follows the project lifecycle and its human-authorized boundaries.
 
 Project root: C:\Dev\KeyContextAI

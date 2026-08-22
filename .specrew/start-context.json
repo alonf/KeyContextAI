@@ -2,7 +2,7 @@
   "schema": "v2",
   "boundary_enforcement": {
     "enabled": true,
-    "last_authorized_boundary": "retro",
+    "last_authorized_boundary": "plan",
     "pending_next_boundary": null,
     "pending_crossing": null,
     "policy_classes": {
@@ -100,21 +100,45 @@
         "kind": "standard",
         "out_of_band": false,
         "authorization_id": "auth-c53d6825a298d93ec5b3b797b14c5d67d4098b48954fe51d24cd1669f7049e0f"
+      },
+      {
+        "from_boundary": "retro",
+        "to_boundary": "iteration-closeout",
+        "verdict_text": "approved for iteration-closeout",
+        "authorizing_human": "unattributed",
+        "recorded_at": "2026-08-22T10:50:48Z",
+        "auth_commit_hash": "c60df8480a6335558572ad816c204830ebb19adf",
+        "evidence_source": "hook-captured-from-transcript",
+        "kind": "standard",
+        "out_of_band": false,
+        "authorization_id": "auth-5e475f6d341e1a8974644fc8057b870beb59f289e9a6d5c5806629a13bf66ae2"
+      },
+      {
+        "from_boundary": "iteration-closeout",
+        "to_boundary": "plan",
+        "verdict_text": "approved for plan",
+        "authorizing_human": "unattributed",
+        "recorded_at": "2026-08-22T11:59:23Z",
+        "auth_commit_hash": "aad7d9e53adb7d2772d4899411440eacda5ece86",
+        "evidence_source": "hook-captured-from-transcript",
+        "kind": "standard",
+        "out_of_band": false,
+        "authorization_id": "auth-e1ad66b0658786b97eac212331d1ed434e50959cb73487d0fce0ae02e3ce8133"
       }
     ],
     "correction_history": [],
     "bypass_history": []
   },
-  "generated_at_utc": "2026-08-21T16:09:53Z",
+  "generated_at_utc": "2026-08-22T11:42:18Z",
   "feature_path": "C:\\Dev\\KeyContextAI\\specs\\001-layout-autocorrect",
   "session_state": {
     "active": true,
-    "boundary_type": "retro",
+    "boundary_type": "iteration-closeout",
     "feature_ref": "001-layout-autocorrect",
     "feature_path": "C:\\Dev\\KeyContextAI\\specs\\001-layout-autocorrect",
     "iteration_number": "001",
     "task_id": null,
-    "auth_commit_hash": "66ef51233be701e86d36700086fb0c85bc712a11",
-    "recorded_at": "2026-08-21T16:09:53Z"
+    "auth_commit_hash": "aad7d9e53adb7d2772d4899411440eacda5ece86",
+    "recorded_at": "2026-08-22T11:42:18Z"
   }
 }
