@@ -2,8 +2,8 @@
 schema: v1
 source: PostToolUse
 from_host: claude
-recorded_at: 2026-08-22T23:34:04.1851826Z
-from_commit: 527cdf0
+recorded_at: 2026-08-22T23:34:32.8306474Z
+from_commit: 9b09089
 active_feature: 001-layout-autocorrect
 active_boundary: tasks
 last_authorized_boundary: tasks
@@ -14,12 +14,12 @@ workshop_done: architecture-core, component-design, requirements-nfr, ui-ux, dat
 
 ## What I just did (last 3-5 turns or last boundary work)
 
+- [2026-08-22T23:34:32Z] (PostToolUse) 2 changed user file(s) [specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+89 Specrew-managed); HEAD 9b09089 (boundary(before-implement): refresh evidence cycle 3); 1 new commit(s): 9b09089 boundary(before-implement): refresh evidence cycle 3
 - [2026-08-22T23:34:04Z] (PostToolUse) 2 changed user file(s) [specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+89 Specrew-managed); HEAD 527cdf0 (chore(lint): auto-fix markdownlint violations); 1 new commit(s): 527cdf0 chore(lint): auto-fix markdownlint violations
 - [2026-08-22T23:33:45Z] (PostToolUse) 2 changed user file(s) [specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+90 Specrew-managed); HEAD 6430b37 (chore(lint): auto-fix markdownlint violations)
 - [2026-08-22T23:33:35Z] (PostToolUse) 2 changed user file(s) [specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+89 Specrew-managed); HEAD 6430b37 (chore(lint): auto-fix markdownlint violations); 1 new commit(s): 6430b37 chore(lint): auto-fix markdownlint violations
 - [2026-08-22T23:33:19Z] (PostToolUse) 2 changed user file(s) [specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+90 Specrew-managed); HEAD 8f1bfda (boundary(before-implement): refresh evidence cycle 2)
 - [2026-08-22T23:33:09Z] (PostToolUse) 2 changed user file(s) [specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+90 Specrew-managed); HEAD 8f1bfda (boundary(before-implement): refresh evidence cycle 2)
-- [2026-08-22T23:33:01Z] (PostToolUse) 2 changed user file(s) [specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml] (+89 Specrew-managed); HEAD 8f1bfda (boundary(before-implement): refresh evidence cycle 2); 1 new commit(s): 8f1bfda boundary(before-implement): refresh evidence cycle 2
 
 ## Why I'm stopping (the switch trigger)
 
@@ -39,7 +39,7 @@ Resume feature 001-layout-autocorrect at boundary tasks. 2 of YOUR file(s) are u
 
 ## Context the receiving host needs that artifacts don't carry
 
-branch 001-layout-autocorrect, HEAD 527cdf0 (chore(lint): auto-fix markdownlint violations). Active feature 001-layout-autocorrect, boundary tasks. Your uncommitted work: specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml. (89 Specrew-managed files also uncommitted.)
+branch 001-layout-autocorrect, HEAD 9b09089 (boundary(before-implement): refresh evidence cycle 3). Active feature 001-layout-autocorrect, boundary tasks. Your uncommitted work: specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml. (89 Specrew-managed files also uncommitted.)
 
 ## Recent conversation (last few exchanges, hook-captured)
 
