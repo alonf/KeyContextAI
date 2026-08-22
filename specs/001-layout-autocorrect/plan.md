@@ -15,12 +15,11 @@ KeyContext AI observes keystrokes system-wide, decides whether a word was typed 
 layout, and replaces it in place while switching the layout — conservatively, because a false correction
 is worse than a missed one, and privately, because keystrokes never leave memory.
 
-Iteration 001 delivers the **correcting core**: capture, transcript, mapping, dictionary-tier detection,
-single- and multi-word correction including the trailing remap and the Option B committing-key path,
-layout switching, sound and bubble feedback, the tray surface, the flip hotkey, learning from rejected
-corrections, the privacy lifecycle, and the local diagnostic log. Iteration 002 adds the AI tier and
-release machinery. That split was agreed at the design-analysis stop so the false-correction target can
-be measured against real typing before anything is built on top of it.
+The approved four-iteration slicing delivers: (001) the dictionary detector proven against the golden
+corpus; (002) privacy-first live single-word correction; (003) multi-word and committing-key
+reliability plus diagnostics; and (004) tray, settings, flip/learning, and release evidence. The AI
+tier, telemetry consent, and packaging/signing remain explicit feature deferrals that require a future
+human-authorized task expansion rather than being silently assigned to iteration 002.
 
 The technical approach follows the bindings agreed across the ten-lens intake workshop: strict IDesign
 decomposition with enforced call rules, a single tray-app process, a managed low-level keyboard hook
@@ -32,10 +31,10 @@ correction executor, and .NET 10 with WPF.
 **Language/Version**: C# on .NET 10 LTS, `LangVersion latest`, nullable reference types enabled,
 warnings-as-errors, file-scoped namespaces, records for pipeline messages and DTOs.
 
-**Primary Dependencies** (iteration 001): `Microsoft.Extensions.DependencyInjection` and `Hosting` 10.x
+**Primary Dependencies**: `Microsoft.Extensions.DependencyInjection` and `Hosting` 10.x
 for composition; WPF (.NET 10 Windows Desktop) for the tray and overlay clients. `Microsoft.Agents.AI`
 (MAF 1.0), `Microsoft.Agents.AI.GitHub.Copilot`, and Polly 8.x are recorded in the dependency policy but
-enter in iteration 002 with the AI tier.
+do not enter the approved four-iteration slice because the AI tier remains explicitly deferred.
 
 **UI framework decision — WPF over WinUI (re-examined at the plan boundary, 2026-08-19).** The human
 asked whether WinUI would be better, noting Microsoft's newer React-style offerings. Research at the
@@ -108,13 +107,15 @@ No violations requiring justification. The Complexity Tracking table below is th
 ## Requirement-to-Test Mapping
 
 This table is the plan's spine: review-signoff holds the implementation to it. Requirements marked
-**002** are specified but deferred to iteration 002 by the agreed slicing.
+**deferred** remain specified but require future human-authorized task expansion beyond iterations
+001–004.
 
 | Requirement group | FRs | Component(s) | Test vehicle | SC evidence produced |
 | --- | --- | --- | --- | --- |
 | Keystroke capture | FR-001, FR-013 | `KeystrokeAccessor`, `InputInjectionAccessor` | Integration test with a synthetic input source; benchmark asserting an allocation-free callback | SC-004 (latency indistinguishable), SC-003 |
 | Transcript and privacy lifecycle | FR-002, FR-003, FR-004 | `TranscriptEngine`, `CorrectionManager`, `FocusAccessor` | Unit tests on the engine (no mocks); integration test asserting wipe on focus change and password focus; a filesystem assertion that no typed text is written | SC-007 (nothing persisted) |
-| Detection | FR-005, FR-005a, FR-005b, FR-006, FR-007, FR-008, FR-008a, FR-009, FR-009a, FR-009b | `MappingEngine`, `DetectionEngine`, `WordAssemblyEngine`, `DictionaryAccessor` | Unit tests over a curated corpus of true positives, true negatives, and ambiguous cases; a golden-file corpus test for false-correction rate; a licence-provenance test asserting every shipped pack declares source and licence | SC-001, SC-002, SC-011, SC-012, SC-013 |
+| Detection | FR-005, FR-005a, FR-005b, FR-006, FR-007, FR-008, FR-008a, FR-009, FR-009a, FR-009b | `MappingEngine`, `DetectionEngine`, `WordAssemblyEngine`, `DictionaryAccessor` | Unit tests over a curated corpus of true positives, true negatives, and ambiguous cases; a golden-file corpus test for zero false corrections re-run on dictionary changes; a licence-provenance test asserting every shipped pack declares source and licence | SC-001a, SC-002, SC-011, SC-012, SC-013 |
+| Pre-release dogfooding | — | `CorrectionManager`, iteration-004 evidence record | Maintainer's sustained daily-use reversal record, validated before release by T048 | SC-001b |
 | Correction transaction | FR-010, FR-011, FR-012, FR-014 | `CorrectionManager`, `TranscriptEngine`, `InputInjectionAccessor`, `LayoutAccessor` | Unit tests on span computation and trailing remap; integration tests injecting into a real edit control, including a mid-correction typing case and a focus-change abandon case | SC-006 (multi-word and race correctness) |
 | Committing-key path (Option B) | FR-005b | `KeystrokeAccessor`, `TranscriptEngine`, `CorrectionManager`, `InputInjectionAccessor` | Integration test asserting a suppressed key is always eventually delivered, including on every failure path; a chat-like send target in the manual smoke script | SC-006, SC-003 |
 | Flip and learning | FR-009, FR-009a, FR-009b, FR-015 | `CorrectionManager`, `TranscriptEngine`, `DictionaryAccessor` | Unit tests on the never-correct set; an integration test asserting a flipped-back word survives a restart; a negative test asserting nothing but affirmed words is written | SC-002, SC-013, SC-007 |
@@ -123,13 +124,13 @@ This table is the plan's spine: review-signoff holds the implementation to it. R
 | Data integrity | FR-028, FR-029 | `DictionaryAccessor`, `SettingsAccessor` | Unit tests for unknown `schema_version` rejection; an update-simulation test asserting user words survive | SC-013 |
 | Resilience | FR-030, FR-032 | `KeystrokeAccessor`, `CorrectionManager`, diagnostic log | Integration test forcing hook loss and asserting re-registration; a benchmark asserting the quiet-period flush never runs on the correction path | SC-010 (a full day without intervention) |
 | Diagnostics | FR-031 | diagnostic log ring buffer | Unit tests on the ring buffer and flush trigger; a content assertion that standard mode contains no typed text | SC-007 |
-| AI tier | FR-016 – FR-021 | `LlmAccessor`, `SettingsManager` | **002** | SC-005 |
-| Telemetry consent | FR-033 | `SettingsManager`, `TrayClient` | **002** | — |
-| Packaging and signing | — | CI release lane | **002** | SC-009 |
+| AI tier | FR-016 – FR-021 | `LlmAccessor`, `SettingsManager` | **deferred** | SC-005 |
+| Telemetry consent | FR-033 | `SettingsManager`, `TrayClient` | **deferred** | — |
+| Packaging and signing | — | CI release lane | **deferred** | SC-009 |
 
-Every FR in iteration 001 has at least one test vehicle, and every SC except SC-005 (AI latency) and
-SC-009 (installs without warnings) is evidenced within this iteration. Those two are evidenced in 002,
-which is why they are named here rather than left silent.
+Every FR claimed by iteration 001 has at least one test vehicle. SC-005 (AI latency) and SC-009
+(installs without warnings) are named explicitly but remain deferred beyond the authorized
+four-iteration slice; neither is claimed as evidenced by iteration 002.
 
 ## Project Structure
 
@@ -208,7 +209,7 @@ introduces a global input hook, text injection, and a privacy boundary.
 | --- | --- | --- | --- |
 | `security-baseline@v1.0.0` | required | Input capture, injection, and the privacy boundary are the feature's highest-consequence surfaces. | file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/001/quality/lenses/security-baseline.md |
 | `robustness-baseline@v1.0.0` | required | The suppression path's failure semantics decide whether the tool can damage user text. | file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/001/quality/lenses/robustness-baseline.md |
-| `test-integrity@v1.0.0` | required | SC-001 and SC-002 are measurement claims; the corpus and the diagnostic counters are their evidence. | file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/001/quality/lenses/test-integrity.md |
+| `test-integrity@v1.0.0` | required | SC-001a, SC-001b, and SC-002 are measurement claims; the corpus and sustained-use evidence are their gates. | file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/001/quality/lenses/test-integrity.md |
 
 ## Phase 2 — Hardening Targets
 
@@ -224,17 +225,18 @@ or marked not-applicable:
 4. **Self-injection never re-enters the pipeline.** Otherwise a correction could trigger a correction.
 5. **The hook survives a day.** Loss is detected and re-registered within 2 seconds; repeated failure
    surfaces to the tray rather than failing silently.
-6. **False-correction rate is measured, not claimed.** The corpus test produces a number that can be
-   compared against SC-001 before release.
+6. **False-correction safety is measured, not claimed.** The corpus test is compared against SC-001a
+   whenever dictionary data changes; the maintainer's sustained daily-use record is compared against
+   SC-001b before release.
 
 ## Explicit Deferrals
 
 Recorded so they are visible rather than silently absent:
 
-- The AI tier (FR-016 – FR-021) and telemetry consent (FR-033) move to iteration 002 with the human's
-  agreement at the design-analysis stop. They remain MVP scope.
-- Packaging, signing under ZioNet, and the CI release lane move to iteration 002, after the correcting
-  core is proven.
+- The AI tier (FR-016 – FR-021), telemetry consent (FR-033), and SC-005 remain specified but deferred
+  beyond the approved four-iteration slice. They require future human-authorized tasks before release.
+- Packaging, signing under ZioNet, the CI release lane, and SC-009 likewise require a future
+  human-authorized task expansion; iteration 002 does not claim them.
 - The suppression kill-switch is built in iteration 001 but not surfaced in the settings window, per the
   recorded design-analysis intent.
 - Composition-based input languages, a background service component, and dictionary cloud sync remain

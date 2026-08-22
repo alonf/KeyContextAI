@@ -62,15 +62,15 @@
 | Task | Title | Requirement | Story | Effort | Owner | Owner File Globs | Status | Agent | Actual | Verdict |
 | ---- | ----- | ----------- | ----- | ------ | ----- | ---------------- | ------ | ----- | ------ | ------- |
 | T001 | Solution skeleton, three projects, .NET 10 posture | enabling: all FR | US1 | 1 | Implementer | `src/**`, `KeyContextAI.sln` | done | — | — | — |
-| T002 | Test projects and corpus folder | enabling: SC-001, SC-006, SC-007 | US1 | 0.5 | Implementer | `tests/**` | done | — | — | — |
+| T002 | Test projects and corpus folder | enabling: SC-001a, SC-006, SC-007 | US1 | 0.5 | Implementer | `tests/**` | done | — | — | — |
 | T003 | Directory.Build.props with analyzers | enabling: FR-014 | US1 | 0.5 | Implementer | `Directory.Build.props` | done | — | — | — |
-| T004 | GitHub Actions PR workflow | enabling: SC-001, SC-010 | US1 | 1 | Implementer | `.github/workflows/**` | done | — | — | — |
+| T004 | GitHub Actions PR workflow | enabling: SC-001a, SC-010 | US1 | 1 | Implementer | `.github/workflows/**` | done | — | — | — |
 | T005 | All component interfaces | enabling: all FR | US1 | 1 | Implementer | `src/KeyContextAI.Core/Contracts/**` | done | — | — | — |
 | T006 | Domain records per data model | enabling: FR-002, FR-005, FR-010 | US1 | 1 | Implementer | `src/KeyContextAI.Core/Model/**` | done | — | — | — |
-| T007 | Architecture test for IDesign call rules | enabling: plan structure | US1 | 1 | Implementer | `tests/KeyContextAI.Architecture.Tests/**` | done | — | — | — |
+| T007 | Architecture test for IDesign call rules | enabling: all FR | US1 | 1 | Implementer | `tests/KeyContextAI.Architecture.Tests/**` | done | — | — | — |
 | T008 | IoC composition root | enabling: all FR | US1 | 0.5 | Implementer | `src/KeyContextAI.App/Composition/**` | done | — | — | — |
 | T009 | Key-map format and en-US↔he-IL map | FR-008, SC-011 | US1 | 1 | Implementer | `data/keymaps/**` | done | — | — | — |
-| T010 | Dictionary packs and golden corpus | FR-008a, SC-001 | US1 | 3 | Implementer | `data/dictionaries/**`, `tests/corpus/**` | done | — | — | — |
+| T010 | Dictionary packs and golden corpus | FR-008a, SC-001a | US1 | 3 | Implementer | `data/dictionaries/**`, `tests/corpus/**` | done | — | — | — |
 | T011 | MappingEngine tests | FR-005 | US1 | 0.5 | Implementer | `tests/KeyContextAI.Core.Tests/MappingEngineTests.cs` | done | — | — | — |
 | T012 | DetectionEngine tests | FR-005a, FR-006, FR-009, SC-012 | US1 | 1 | Implementer | `tests/KeyContextAI.Core.Tests/DetectionEngineTests.cs` | done | — | — | — |
 | T013 | WordAssemblyEngine tests | FR-005b | US1 | 0.5 | Implementer | `tests/KeyContextAI.Core.Tests/WordAssemblyEngineTests.cs` | done | — | — | — |
@@ -78,7 +78,7 @@
 | T015 | DetectionEngine | FR-005a, FR-006, SC-012 | US1 | 2 | Implementer | `src/KeyContextAI.Core/Engines/DetectionEngine.cs` | done | — | — | — |
 | T016 | WordAssemblyEngine | FR-005b | US1 | 1 | Implementer | `src/KeyContextAI.Core/Engines/WordAssemblyEngine.cs` | done | — | — | — |
 | T020 | DictionaryAccessor | FR-008, FR-008a, FR-029 | US1 | 1.5 | Implementer | `src/KeyContextAI.Platform/Storage/DictionaryAccessor.cs` | done | — | — | — |
-| T025 | Corpus accuracy test | SC-001 | US1 | 1.5 | Implementer | `tests/KeyContextAI.Platform.Tests/CorpusAccuracyTests.cs` | done | — | — | — |
+| T025 | Corpus accuracy test | SC-001a | US1 | 1.5 | Implementer | `tests/KeyContextAI.Platform.Tests/CorpusAccuracyTests.cs` | done | — | — | — |
 
 ## Effort Model
 
@@ -152,8 +152,8 @@ the work; the work is split across four iterations of at most 20 points each.
 
 **Why this order.** Iteration 001 delivers no user-visible behavior, which is normally the wrong shape
 for an increment. It is right here because it produces the single number the product rests on: a
-measured false-correction rate against a real corpus, evidencing SC-001 before a hook, an overlay, or a
-settings window is built on top of an unproven detector. Iteration 002 pulls the privacy lifecycle
+measured false-correction result against a real corpus, evidencing SC-001a before a hook, an overlay, or
+a settings window is built on top of an unproven detector. Iteration 002 pulls the privacy lifecycle
 forward from its original US-priority position because the password gate is a precondition for
 dogfooding a keystroke-reading tool at all, not a feature of it.
 

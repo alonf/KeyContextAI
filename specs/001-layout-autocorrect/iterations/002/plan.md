@@ -71,7 +71,7 @@
 | T022 | AudioAccessor with the three distinct feedback cues | FR-022, FR-023 | US1 | 0.5 | Implementer | `src/KeyContextAI.Platform/System/AudioAccessor.cs` | planned | — | — | — |
 | T023 | OverlayClient — click-through, caret-anchored, auto-fading bubble with RTL rendering, theme awareness, reduce-motion | FR-022, FR-024 | US1 | 2 | Implementer | `src/KeyContextAI.App/Clients/OverlayClient.cs` | planned | — | — | — |
 | T036 | Integration test — fail-closed suspension when password state is `Unknown`, simulating an unresponsive UI Automation provider | FR-003 | US5 | 0.5 | Implementer | `tests/KeyContextAI.Platform.Tests/PasswordGateTests.cs` | planned | — | — | — |
-| T037 | Filesystem assertion test — exercise the full pipeline, scan every file the process wrote for typed text | FR-004, FR-009b | US5 | 0.5 | Implementer | `tests/KeyContextAI.Platform.Tests/NoTextPersistedTests.cs` | planned | — | — | — |
+| T037 | Filesystem assertion test — exercise the full pipeline, scan every file the process wrote for typed text | FR-004 | US5 | 0.5 | Implementer | `tests/KeyContextAI.Platform.Tests/NoTextPersistedTests.cs` | planned | — | — | — |
 | T024 | End-to-end integration test — inject into a real edit control, assert replacement, layout switch, and feedback | FR-010, FR-022, SC-003 | US1 | 0.5 | Implementer | `tests/KeyContextAI.Platform.Tests/SingleWordCorrectionTests.cs` | planned | — | — | — |
 
 **Sequencing rationale.** The order above is execution order, not id order. T033 leads because the
@@ -139,7 +139,7 @@ it inside capacity for 003.
 The Scope Summary table above is auto-generated from the full specification and lists every FR in the
 feature. This section is authoritative for what iteration 002 actually covers.
 
-- **Requirement scope for iteration 002**: FR-001, FR-003, FR-004, FR-005a, FR-009b, FR-010, FR-012,
+- **Requirement scope for iteration 002**: FR-001, FR-003, FR-004, FR-005a, FR-010, FR-012,
   FR-013, FR-015 (partial — injection side only; the flip hotkey itself is T041 in 004), FR-022,
   FR-023, FR-024, and SC-003 (evidenced by T024).
 - **User stories represented**: User Story 1 (single-word correction) and User Story 5 (privacy).
@@ -152,6 +152,9 @@ feature. This section is authoritative for what iteration 002 actually covers.
   and this iteration executes it unchanged.
 - **Traceability**: every task above cites at least one FR or SC, and every FR claimed in scope has at
   least one covering task. Run specrew-traceability-check before the before-implement gate.
+- **SC-001a/SC-001b split**: SC-001a is already evidenced by completed T025 and is re-run whenever dictionary
+  data changes. SC-001b is a pre-release sustained-daily-use gate assigned to T048 in iteration 004;
+  neither criterion adds work to this 17.5-point iteration-002 slice.
 
 ## Notes
 
@@ -180,9 +183,9 @@ feature. This section is authoritative for what iteration 002 actually covers.
   marker. The validator's W38 now asks the source-aware question; the navigator's gate does not. Owned
   upstream; no review round was run on account of it.
 
-### SC-001's fate — the decision retro action 4 says is owed before this planning closes
+### SC-001a/SC-001b resolution — human-approved at the plan → tasks boundary
 
-**The finding.** SC-001 asks for fewer than 1 in 1,000 applied corrections changing already-correct
+**The finding.** The pre-split criterion asked for fewer than 1 in 1,000 applied corrections changing already-correct
 text, *measured over sustained daily use*. Iteration 001 delivered T025, the corpus accuracy test, and
 recorded the result honestly as **precondition met, criterion not yet evidenced** (review finding
 F-01): zero false corrections across the must-not-correct cases, but a corpus of that size cannot
@@ -195,11 +198,11 @@ evidence a rate of 1-in-1,000 — and a corpus cannot evidence "sustained daily 
    project, it competes directly with the 17.5 points above, and it still would not satisfy "sustained
    daily use" — a corpus is not use.
 2. **Restate the criterion to match what this project intends to measure.** The spec's own assumptions
-   section already says the SC-001 and SC-002 targets are "design targets to be validated by the
-   maintainer's daily use before release, not measurements of an existing system." SC-001's wording
+   section already says the false-correction and reversal targets are "design targets to be validated
+   by the maintainer's daily use before release, not measurements of an existing system." Its wording
    has been out of step with that assumption since it was written.
 
-**Planner recommendation: option 2, restated in two parts** — a corpus-measurable gate that iteration
+**Approved outcome: option 2, restated in two parts** — a corpus-measurable gate that iteration
 001's evidence already speaks to, plus a dogfooding criterion that says plainly what daily use must
 show and when. Concretely: SC-001a, zero false corrections across the golden must-not-correct corpus,
 re-measured whenever dictionary data changes (already evidenced by T025); and SC-001b, fewer than 1
@@ -207,7 +210,7 @@ in 1,000 applied corrections reversed as wrong across the maintainer's sustained
 before release rather than in any iteration. That records what iteration 001 actually proved, keeps
 the product's real bar, and stops the spec asking for a number no iteration was ever going to produce.
 
-**This is a spec change and therefore yours, not mine.** Owner per the retro: Spec Steward with
-Project Owner approval. Nothing in file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/spec.md
-has been edited — the recommendation is recorded here for your decision at this boundary, and the
-approved outcome gets written into the spec before this planning closes.
+**Human authorization.** At the plan → tasks boundary the project owner approved the recommendation,
+the privacy-first sequence, and the existing four-iteration slicing. The feature spec now records
+SC-001a and SC-001b, and the task artifacts map T025 to SC-001a and the pre-release evidence task T048
+to SC-001b without changing iteration 002's 12 tasks or 17.5/20 SP capacity.

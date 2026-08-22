@@ -27,7 +27,7 @@ You need Hebrew and English keyboard layouts installed. Open Notepad.
    second and never takes focus.
 3. **Type a normal English word and press space.**
    *Expected*: nothing happens — no change, no sound, no bubble. A correction you did not need is worse
-   than a correction you did not get (SC-001).
+   than a correction you did not get (SC-001a).
 4. **Double-tap Ctrl within about a third of a second.**
    *Expected*: the correction from step 2 reverts to `akuo`, and that word is not corrected again for
    the rest of the session.

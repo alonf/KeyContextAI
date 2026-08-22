@@ -1,17 +1,40 @@
-# Tasks: KeyContext AI — Keyboard Layout Auto-Correction (Iteration 001)
+# Tasks: KeyContext AI — Keyboard Layout Auto-Correction
 
-**Feature**: 001-layout-autocorrect | **Iteration**: 001 | **Date**: 2026-08-19
+**Feature**: 001-layout-autocorrect | **Active iteration**: 002 | **Date**: 2026-08-22
 **Spec**: file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/spec.md
 **Plan**: file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/plan.md
 **Design**: Option B (speculative pre-decision, then suppress and re-inject), approved at the
 design-analysis stop.
 
-**Scope**: iteration 001 only — the correcting core. The AI tier (FR-016–FR-021) and telemetry consent
-(FR-033) are deferred to iteration 002 by the human-approved slicing and have no tasks here.
+**Scope**: feature-wide task history and the human-approved four-iteration slicing. Completed
+iteration-001 work remains checked below. Iteration 002 executes the 12-task, 17.5/20 SP privacy-first
+slice without renumbering or resetting any task.
 
 **Tests**: requested. The code-implementation workshop bound a test-first posture for the pure engines
 and test-after for the Win32 accessors, plus a mandatory architecture test. Test tasks are therefore
 first-class, not optional.
+
+## Active Iteration 002: Governed Execution Slice
+
+**Goal**: Deliver live single-word correction plus the privacy lifecycle, safe enough to leave running.
+
+**Authoritative order**: `T033 → T017 → T018 → T019 → T034 → T035 → T021 → T022 → T023 → T036 →
+T037 → T024`. This is the execution order from
+`specs/001-layout-autocorrect/iterations/002/plan.md`, not numeric task-ID order. Privacy is first:
+`FocusAccessor` and the privacy/abandon rules must exist before the correction flow is enabled.
+
+**Independent tests**:
+
+- **US5**: Focus a password field and an `Unknown` password-state control, then change windows; verify
+  capture fails closed, retained text is wiped, no correction crosses the focus boundary, and no typed
+  text appears in any file written by the process.
+- **US1**: In a real edit control, type a known wrong-layout word followed by space; verify replacement,
+  layout switch, sound, and overlay feedback.
+
+**Iteration dependencies**: T033 is the privacy gate for T017. T034 and T035 precede T021 so the first
+correction flow is fail-closed. T022 and T023 depend on T021. T036 depends on T033 and T034; T037
+depends on the full capture/privacy/correction pipeline; T024 closes the slice after all accessors,
+manager rules, and feedback surfaces are present.
 
 ---
 
@@ -58,7 +81,7 @@ text is replaced with the intended word, the layout switched, a sound played, an
 - [ ] T022 [P] [US1] Implement `AudioAccessor` with the three distinct feedback cues in `src/KeyContextAI.Platform/System/AudioAccessor.cs`
 - [ ] T023 [US1] Implement `OverlayClient` — the click-through, caret-anchored, auto-fading bubble with RTL rendering, theme awareness, and reduce-motion support — in `src/KeyContextAI.App/Clients/OverlayClient.cs`
 - [ ] T024 [US1] Write the end-to-end integration test injecting into a real edit control and asserting replacement, layout switch, and feedback in `tests/KeyContextAI.Platform.Tests/SingleWordCorrectionTests.cs`
-- [x] T025 [US1] Write the corpus-driven accuracy test producing a measured false-correction rate against the golden files in `tests/KeyContextAI.Core.Tests/CorpusAccuracyTests.cs`
+- [x] T025 [US1] Write the corpus-driven SC-001a accuracy test asserting zero false corrections against the golden must-not-correct files and re-running whenever `data/dictionaries/` changes in `tests/KeyContextAI.Platform.Tests/CorpusAccuracyTests.cs`
 
 ---
 
@@ -117,7 +140,7 @@ verify no correction; re-enable and verify correction resumes.
 - [ ] T045 [P] Implement the diagnostic log — in-memory ring buffer with quiet-period flush, standard mode with no typed text, session-scoped self-deleting verbose mode — in `src/KeyContextAI.Core/Diagnostics/DiagnosticLog.cs`
 - [ ] T046 [P] Implement the hook watchdog — loss detection, re-registration within 2 seconds, tray escalation after repeated failure — in `src/KeyContextAI.Platform/Input/KeystrokeAccessor.cs`
 - [ ] T047 [P] Write the benchmark asserting an allocation-free, sub-millisecond hook callback and that the diagnostic flush never runs on the correction path in `tests/KeyContextAI.Platform.Tests/LatencyBenchmarks.cs`
-- [ ] T048 Run the quickstart script end to end on a real machine, including the chat-send case and a slow-application case, and record the evidence in `specs/001-layout-autocorrect/iterations/001/quality/quality-evidence.md`
+- [ ] T048 Run the quickstart script end to end on a real machine, including the chat-send and slow-application cases, validate SC-001b from the maintainer's sustained daily-use reversal record before release, and record both results in `specs/001-layout-autocorrect/iterations/004/quality/quality-evidence.md`
 
 ---
 
@@ -140,6 +163,8 @@ Phase 2 (Foundational — blocks everything)
   manager concern that does not depend on detection working.
 - **US3's flip and learning (T041, T042)** need US1's correction path; the tray and settings tasks do
   not and can start earlier.
+- **Iteration 002 overrides numeric order** with the privacy-first sequence documented in its active
+  slice above. Do not start T017 before T033 or T021 before T034 and T035.
 
 ## Parallel Opportunities
 
@@ -149,6 +174,9 @@ Phase 2 (Foundational — blocks everything)
   since they are separate accessors in separate files.
 - Phase 5: T036 and T037 in parallel.
 - Phase 7: T045, T046, T047 in parallel.
+- Iteration 002: T036 and T037 remain structurally parallel-safe after their prerequisites, but the
+  authorized execution sequence keeps them ordered. Do not use a parallel opportunity to bypass the
+  privacy-first sequence.
 
 ## Capacity and Iteration Assignment
 
@@ -168,8 +196,9 @@ becomes real by being measured.
 | 004 | Tray, settings, flip hotkey, learning, quickstart evidence — the experience | T038–T044, T048 | 14.5 |
 
 **Why iteration 001 ships no user-visible behavior.** It produces the one number the product rests on.
-If the dictionary tier cannot reach SC-001's false-correction target against a real corpus, that is
-worth discovering before a hook, an overlay, and a settings window are built on top of it.
+If the dictionary tier cannot satisfy SC-001a against the golden must-not-correct corpus, that is worth
+discovering before a hook, an overlay, and a settings window are built on top of it. SC-001b remains a
+pre-release gate measured through the maintainer's sustained daily use.
 
 **Why the privacy lifecycle moves forward** from its US-priority position into 002: the password gate is
 a precondition for dogfooding a keystroke-reading tool at all, not a feature of it.
@@ -193,15 +222,15 @@ A task that could not be traced this way would be scope with no authority and wo
 | Task | Enables | Why it is not deletable |
 | --- | --- | --- |
 | T001 | every FR | Without the solution and target framework nothing else compiles. The .NET 10, nullable, warnings-as-errors settings are the bound stack posture. |
-| T002 | SC-001, SC-006, SC-007 | The test projects are where the accuracy, race-safety, and privacy claims become evidence rather than assertions. |
+| T002 | SC-001a, SC-006, SC-007 | The test projects are where the corpus accuracy, race-safety, and privacy claims become evidence rather than assertions. |
 | T003 | FR-014, and code quality generally | Warnings-as-errors and analyzers are the mechanical half of the bound craft rules. |
-| T004 | SC-001, SC-010 | CI is what keeps the architecture test and the corpus accuracy test running rather than run-once. |
+| T004 | SC-001a, SC-010 | CI is what keeps the architecture test and the corpus accuracy test running rather than run-once. |
 | T005 | every FR | The interfaces are the contract every requirement's behavior is expressed through, and the seam every test uses. |
 | T006 | FR-002, FR-005, FR-010 | The domain records are the data model those requirements operate on. |
-| T007 | the plan's structure decision | Enforces the strict IDesign call rules the architecture depends on. Traced to the plan rather than to an FR, and named here so that is visible rather than hidden. |
+| T007 | every FR | Enforces the strict IDesign call rules that keep all requirement implementations inside the approved component boundaries. |
 | T008 | every FR | Composition with correct lifetimes is how the components the requirements name actually exist at runtime. |
 | T009 | FR-008, SC-011 | The key map is the data that makes language pairs a data concern rather than a code concern. |
-| T010 | FR-008a, SC-001 | The dictionary packs with their licence provenance, and the golden corpus that turns SC-001 into a measured number. |
+| T010 | FR-008a, SC-001a | The dictionary packs with their licence provenance, and the golden corpus that turns SC-001a into a measured gate. |
 
 ### Requirement-to-task map
 
@@ -209,7 +238,7 @@ A task that could not be traced this way would be scope with no authority and wo
 | --- | --- |
 | FR-001 | T017, T047 |
 | FR-002 | T026, T027 |
-| FR-003 | T034, T037 |
+| FR-003 | T033, T034, T036, T037 |
 | FR-004 | T037, T045 |
 | FR-005 | T011, T012, T014, T015 |
 | FR-005a | T012, T015, T019 |
@@ -220,10 +249,10 @@ A task that could not be traced this way would be scope with no authority and wo
 | FR-008a | T010, T020 |
 | FR-009 | T012, T041 |
 | FR-009a | T042, T044 |
-| FR-009b | T042, T037 |
+| FR-009b | T042 |
 | FR-010 | T018, T019, T021, T024 |
 | FR-011 | T027, T030, T032 |
-| FR-012 | T035, T031 |
+| FR-012 | T033, T035, T031 |
 | FR-013 | T017, T018 |
 | FR-014 | T030, T031 |
 | FR-015 | T041, T018 |
@@ -238,7 +267,8 @@ A task that could not be traced this way would be scope with no authority and wo
 | FR-030 | T046 |
 | FR-031 | T045 |
 | FR-032 | T045, T047 |
-| SC-001 | T025, T048 |
+| SC-001a | T025 |
+| SC-001b | T048 |
 | SC-002 | T041, T044 |
 | SC-003 | T024, T047 |
 | SC-004 | T047 |
@@ -250,11 +280,14 @@ A task that could not be traced this way would be scope with no authority and wo
 | SC-012 | T012, T015 |
 | SC-013 | T042, T044 |
 
-**Traceability verdict**: PASS. All 48 tasks trace to authority — 38 directly to a requirement or
-success criterion, and 10 as enabling tasks traced in the table above, of which only T007 traces to the
-plan's structure decision rather than to a requirement. Every iteration-001 requirement and success
-criterion has at least one covering task. SC-005 (AI latency) and SC-009 (installs without warnings)
-have no tasks here because their requirements are deferred to iteration 002 by the approved slicing.
+**Task-authority verdict**: PASS. All 48 tasks trace to a requirement, success criterion, or an enabling
+relationship documented above. Every requirement and success criterion claimed by iterations 001–004
+has task coverage.
+
+**Explicit feature deferrals**: FR-016–FR-021 (AI tier), FR-033 (telemetry consent), SC-005 (AI
+latency), and SC-009 (warning-free installation) remain in the feature specification but are not
+claimed by the approved four-iteration slice and therefore have no task in T001–T048. They require a
+future human-authorized task expansion before release; they are not silently counted as covered.
 
 ## Implementation Strategy
 

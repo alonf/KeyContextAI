@@ -294,8 +294,10 @@ kind; inspect all files the tool writes and confirm no typed text is present.
 
 ### Measurable Outcomes
 
-- **SC-001**: Fewer than 1 in 1,000 applied corrections change text that was already correct, measured
-  over sustained daily use.
+- **SC-001a**: Zero false corrections across the golden must-not-correct corpus, re-measured whenever
+  dictionary data changes.
+- **SC-001b**: Fewer than 1 in 1,000 applied corrections reversed as wrong across the maintainer's
+  sustained daily use, validated before release.
 - **SC-002**: Users reverse fewer than 2% of applied corrections.
 - **SC-003**: A dictionary-tier correction completes within 50 milliseconds of the word ending in 95% of
   cases, so the user perceives it as instantaneous.
@@ -359,8 +361,9 @@ kind; inspect all files the tool writes and confirm no typed text is present.
   the first pair shipped and proven, with the design remaining pair-agnostic and multiple pairs
   supported from v1.
 - Languages requiring composition-based input methods are out of scope for this release.
-- The false-correction and reversal targets in SC-001 and SC-002 are design targets to be validated by
-  the maintainer's daily use before release, not measurements of an existing system.
+- The corpus target in SC-001a is re-measured whenever dictionary data changes. The sustained-use
+  targets in SC-001b and SC-002 are validated through the maintainer's daily use before release, not
+  treated as measurements of an existing system.
 - The tool runs with ordinary user privileges; elevated windows are therefore outside its reach, which
   is the intended behavior.
 - Users who enable the AI tier accept that one sentence of context leaves their machine for their chosen

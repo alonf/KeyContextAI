@@ -4,6 +4,24 @@
 
 No decisions recorded yet.
 
+## 2026-08-22 — Delegated tasks phase: iteration 002
+
+- **Work item**: Generate the iteration 002 task breakdown and apply the approved SC-001a/SC-001b split.
+- **Requested agent**: `speckit.tasks`
+- **Actual agent**: `speckit.tasks`
+- **Model ID**: not exposed by the host runtime
+- **Routing result**: honored; no fallback reported.
+
+## 2026-08-22 — Delegated readiness check: after-tasks
+
+- **Work item**: Verify task-to-requirement traceability and iteration 002 execution readiness.
+- **Requested agent**: `speckit.specrew-speckit.after-tasks`
+- **Actual agent**: `speckit.specrew-speckit.after-tasks`
+- **Model ID**: not exposed by the host runtime
+- **Routing result**: honored; no fallback reported.
+- **Outcome**: Traceability passed. Before-implement readiness remains blocked on iteration 002
+  hardening evidence and the standing iteration 001 generated-review finding.
+
 ## Governance
 
 - All meaningful changes require team consensus
