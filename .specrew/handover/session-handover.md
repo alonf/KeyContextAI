@@ -2,8 +2,8 @@
 schema: v1
 source: PostToolUse
 from_host: claude
-recorded_at: 2026-08-22T11:38:51.4711092Z
-from_commit: 5ea6ac1
+recorded_at: 2026-08-22T11:39:19.1802997Z
+from_commit: ab90012
 active_feature: 001-layout-autocorrect
 active_boundary: iteration-closeout
 last_authorized_boundary: iteration-closeout
@@ -14,12 +14,12 @@ workshop_done: architecture-core, component-design, requirements-nfr, ui-ux, dat
 
 ## What I just did (last 3-5 turns or last boundary work)
 
+- [2026-08-22T11:39:07Z] (PostToolUse) 0 changed user file(s) [(none)] (+37 Specrew-managed); HEAD ab90012 (chore(lint): auto-fix markdownlint violations from boundary-sync gate); 1 new commit(s): ab90012 chore(lint): auto-fix markdownlint violations from boundary-sync gate
 - [2026-08-22T11:38:30Z] (PostToolUse) 0 changed user file(s) [(none)] (+38 Specrew-managed); HEAD 5ea6ac1 (records(drift): DRIFT-007 status note - fix landed upstream in b5c84f48); 1 new commit(s): 5ea6ac1 records(drift): DRIFT-007 status note - fix landed upstream in b5c84f48
 - [2026-08-22T11:38:16Z] (PostToolUse) 4 changed user file(s) [specs/001-layout-autocorrect/iterations/001/dashboard.md, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+39 Specrew-managed); HEAD a36b697 (chore(specrew): deploy b5c84f48 - W38 asks whether source changed, not whether any byte did (DRIFT-007 fix))
 - [2026-08-22T11:38:04Z] (PostToolUse) 4 changed user file(s) [specs/001-layout-autocorrect/iterations/001/dashboard.md, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+39 Specrew-managed); HEAD a36b697 (chore(specrew): deploy b5c84f48 - W38 asks whether source changed, not whether any byte did (DRIFT-007 fix))
 - [2026-08-22T11:37:51Z] (PostToolUse) 4 changed user file(s) [specs/001-layout-autocorrect/iterations/001/dashboard.md, specs/001-layout-autocorrect/iterations/001/drift-log.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+39 Specrew-managed); HEAD a36b697 (chore(specrew): deploy b5c84f48 - W38 asks whether source changed, not whether any byte did (DRIFT-007 fix))
 - [2026-08-22T11:37:03Z] (PostToolUse) 3 changed user file(s) [specs/001-layout-autocorrect/iterations/001/dashboard.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+38 Specrew-managed); HEAD a36b697 (chore(specrew): deploy b5c84f48 - W38 asks whether source changed, not whether any byte did (DRIFT-007 fix)); 1 new commit(s): a36b697 chore(specrew): deploy b5c84f48 - W38 asks whether source changed, not whether any byte did (DRIFT-007 fix)
-- [2026-08-22T11:36:06Z] (PostToolUse) 3 changed user file(s) [specs/001-layout-autocorrect/iterations/001/dashboard.md, specs/001-layout-autocorrect/iterations/001/state.md, specs/001-layout-autocorrect/iterations/001/tasks-progress.yml] (+41 Specrew-managed); HEAD c60df84 (chore(lint): auto-fix markdownlint violations from boundary-sync gate)
 
 ## Why I'm stopping (the switch trigger)
 
@@ -43,11 +43,11 @@ Iteration 002's expected scope per the approved slicing: the runtime components 
 
 ## Recommended next-immediate-step
 
-Resume feature 001-layout-autocorrect at boundary iteration-closeout. Only Specrew-managed scaffolding is uncommitted (38 file(s)) - that is the init baseline; commit it at a boundary.
+Resume feature 001-layout-autocorrect at boundary iteration-closeout. Only Specrew-managed scaffolding is uncommitted (37 file(s)) - that is the init baseline; commit it at a boundary.
 
 ## Context the receiving host needs that artifacts don't carry
 
-branch 001-layout-autocorrect, HEAD 5ea6ac1 (records(drift): DRIFT-007 status note - fix landed upstream in b5c84f48). Active feature 001-layout-autocorrect, boundary iteration-closeout. No user files changed; 38 Specrew-managed scaffolding file(s) uncommitted.
+branch 001-layout-autocorrect, HEAD ab90012 (chore(lint): auto-fix markdownlint violations from boundary-sync gate). Active feature 001-layout-autocorrect, boundary iteration-closeout. No user files changed; 37 Specrew-managed scaffolding file(s) uncommitted.
 
 ## Recent conversation (last few exchanges, hook-captured)
 
@@ -56,6 +56,7 @@ branch 001-layout-autocorrect, HEAD 5ea6ac1 (records(drift): DRIFT-007 status no
 - **assistant:** Context loaded. Now checking what actually changed in the working tree — the deployed scripts and the iteration-001 files — before committing anything.
 - **assistant:** Deployment committed as `a36b697`. Now adding the status-only note to DRIFT-007, following the same update convention DRIFT-006 used:
 - **assistant:** Both commits are in. Now re-minting the plan crossing at the new tree through the boundary sync, as usual:
+- **assistant:** The markdownlint gate auto-fixed two handover/state files and halted the sync until they're committed — the same pattern as the previous `chore(lint)` commits. Committing and re-running:
 
 Full transcript (read on-demand for depth): C:\Users\alon\.claude\projects\C--Dev-KeyContextAI\9cb65e38-c5f7-4026-9bbf-865db26b1112.jsonl
 
@@ -88,4 +89,3 @@ What would you like to do? Type one of these:
 ```
 
 <!-- SPECREW-VERDICT-BOUNDARY: retro -> iteration-closeout -->
-
