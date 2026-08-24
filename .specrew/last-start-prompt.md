@@ -11,14 +11,14 @@ User feature request: (not provided yet; gather or confirm during intake)
 - Active feature: 001-layout-autocorrect
 - Feature path: C:\Dev\KeyContextAI\specs\001-layout-autocorrect
 - Worktree: C:\Dev\KeyContextAI
-- Current boundary: tasks
+- Current boundary: before-implement
 - Current task: (none)
 - Last completed task: T017 at 2026-08-22T21:05:00.0000000Z
-- Last completed boundary: 6628eef82c7af2cfa219218883795256502979c0 at 2026-08-22T16:00:22Z
+- Last completed boundary: 5878b79180522a1698507dbd4580c8a5d01baa7d at 2026-08-22T23:34:55Z
 - Task progress: 2 complete, 0 in-progress, 10 pending, 0 blocked
 - Complete: T033, T017
 - Pending: T018, T019, T034
-- Validator state: 1 warnings: 0 soft, 0 medium, 1 hard
+- Validator state: 15 warnings: 15 soft, 0 medium, 0 hard
 
 ### Suggested Next Actions
 
@@ -27,22 +27,21 @@ User feature request: (not provided yet; gather or confirm during intake)
 
 ## Resume Reconciliation (current tree, re-computed now)
 
-Last captured stop: 2026-08-22T21:13:15.9288117Z (boundary tasks). Files changed since (re-computed NOW - may post-date the last stop): specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml. READ those files to recover the true current state (the handover snapshot may predate your latest work), THEN continue.
+Last captured stop: 2026-08-23T10:11:03.1353149Z (boundary before-implement). Files changed since (re-computed NOW - may post-date the last stop): scripts/internal/continuous-co-review/.specrew-runtime.json, scripts/internal/continuous-co-review/continuous-co-review-navigator.ps1, scripts/internal/continuous-co-review/review-authority-core.ps1, scripts/internal/continuous-co-review/review-campaign-orchestrator.ps1, scripts/internal/continuous-co-review/review-design-context.ps1, scripts/internal/continuous-co-review/review-result-ingestor.ps1, scripts/internal/continuous-co-review/review-signoff-evidence-gate.ps1, specs/001-layout-autocorrect/iterations/001/review.md, specs/001-layout-autocorrect/iterations/002/plan.md, specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml. READ those files to recover the true current state (the handover snapshot may predate your latest work), THEN continue.
+
 
 Operational Specrew roster snapshot:
-
 - Mode: none
 - No Specrew-managed roster snapshot was detected.
 
 Project state snapshot:
-
 - State: active
 - Existing feature directories: (none)
 - Non-bootstrap top-level entries: (none)
 
-Effective delegated agent routing plan:
 
-- Enabled agents:
+Effective delegated agent routing plan:
+- Enabled agents: 
 - No start-time fallback events detected.
 
 ## Resolved Feature-Closeout Delivery
@@ -91,7 +90,7 @@ This is the authoritative map of Specrew's lifecycle and governance machinery as
 | `.specify/extensions/specrew-speckit/scripts/scaffold-reviewer-artifacts.ps1 -IterationDirectory <dir>` | Scaffolds code-map / coverage-evidence / reviewer-index / review-diagrams / dependency-report. **Param is `-IterationDirectory`, NOT `-SpecDirectory`.** | After implement, before /specrew-review |
 | `.specify/extensions/specrew-speckit/scripts/scaffold-feature-closeout-dashboard.ps1 -ProjectPath . -FeatureId <NNN>` | Scaffolds the closeout-dashboard.md at feature-closeout boundary. **Note: auto-render at feature-closeout is now wired into sync-boundary-state.ps1 (F-040 dogfooding Fix B), so you don't normally invoke this directly.** | Rarely; only for manual re-render |
 | `.specify/extensions/specrew-speckit/scripts/validate-governance.ps1 -ProjectPath .` | Runs the full validator; emits PASS/WARN/FAIL findings | Before each boundary commit and at iteration close |
-| `.specify/extensions/specrew-speckit/scripts/sync-boundary-state.ps1` | Advances the boundary cursor in `.specrew/start-context.json`; writes `.specrew/runtime/pending-verdict-stop.md` with the exact pending boundary, approval phrase, and last-line verdict marker whenever the cursor is ahead of human authorization; auto-renders dashboard.md at iteration-closeout + closeout-dashboard.md at feature-closeout. Use this WRAPPER path from downstream projects — it discovers the installed Specrew module and loads the actual implementation from there. | Called by sync-*agents; invoke directly via `pwsh -File` after each boundary commit when the sync-* agents aren't available. After a human-judgment sync, read/render the pending-verdict stop artifact; do not infer the marker from the next phase. |
+| `.specify/extensions/specrew-speckit/scripts/sync-boundary-state.ps1` | Advances the boundary cursor in `.specrew/start-context.json`; writes `.specrew/runtime/pending-verdict-stop.md` with the exact pending boundary, approval phrase, and last-line verdict marker whenever the cursor is ahead of human authorization; auto-renders dashboard.md at iteration-closeout + closeout-dashboard.md at feature-closeout. Use this WRAPPER path from downstream projects — it discovers the installed Specrew module and loads the actual implementation from there. | Called by sync-* agents; invoke directly via `pwsh -File` after each boundary commit when the sync-* agents aren't available. After a human-judgment sync, read/render the pending-verdict stop artifact; do not infer the marker from the next phase. |
 
 **Any other .ps1 file in the deployment is a utility / deploy / library helper invoked automatically by the system. Do NOT explore them during normal lifecycle execution.** Specifically: `shared-governance.ps1`, `common.ps1`, `Test-CopilotInstructionsChangeType.ps1` are libraries (not invokable); `deploy-speckit-extension.ps1`, `deploy-squad-runtime.ps1`, `scaffold-governance.ps1`, `validate-versions.ps1`, `collision-detect.ps1`, `brownfield-merge.ps1` are init/update helpers; `manage-escalation-state.ps1`, `manage-reviewer-regression.ps1`, `sync-squad-model-overrides.ps1`, `drift-diff.ps1`, `resume-iteration.ps1` are internal helpers called by other scripts. If a script isn't in the table above, you do NOT need to invoke or understand it during normal lifecycle execution.
 
@@ -118,7 +117,6 @@ The `crew_runtime_status` field tells you whether the downstream sync-* agents a
 - **Web-feature acceptance evidence:** for browser features, the review-time evidence must include a screenshot or recorded interaction showing the golden-path AND Enter-key behavior — running `Invoke-WebRequest` against the static HTML proves the file deployed, NOT that the feature works. Lighthouse / DOM-inspection MCPs (or manual browser steps documented in quickstart.md) are the canonical evidence layer.
 
 Follow this conversational sequence before implementation work:
-
 1. Preserve the roster snapshot first. Treat the operational roster above as active project state, do not recast it, and defer specialist additions until the spec and clarify outcome are grounded.
 2. Classify the repository using the project-state snapshot above before asking for spec details:
    - "greenfield-new": freshly bootstrapped project with no meaningful app code or active specs yet
@@ -180,7 +178,7 @@ Summarize the meaningful past outcome, not just file names. Include artifacts cr
 
 ## Why I Stopped
 
-Name the exact lifecycle boundary and explain why human judgment is required before the next step. After boundary sync, use `.specrew/runtime/pending-verdict-stop.md` as the authoritative source for the boundary name, approval phrase, and last-line marker; never infer `<from> -> <to>` from the phase you intend to run next. For `clarify -> plan`, say that planning will convert the spec into architecture and task direction, so spec mistakes become downstream work.
+Name the exact lifecycle boundary and explain why human judgment is required before the next step. Include the review-coverage line when the controller provides one (pending-verdict artifact or stop directive) - last delivered review, the tree it covered, source files changed since, rounds remaining - so the human sees coverage drift at every stop they already read. After boundary sync, use `.specrew/runtime/pending-verdict-stop.md` as the authoritative source for the boundary name, approval phrase, and last-line marker; never infer `<from> -> <to>` from the phase you intend to run next. For `clarify -> plan`, say that planning will convert the spec into architecture and task direction, so spec mistakes become downstream work.
 
 **Authority in flight.** If the human's immediately-preceding turn is the bare approval phrase for the pending crossing, that verdict IS given even when the controller still reads un-authorized mid-turn: on some hosts the capture lands only at end-of-turn, so the recording arrives at this very turn's Stop. Do not re-ask — proceed on the typed phrase, and verify the recorded authorization at the START of your next turn. Ask again only if it is still unrecorded then.
 
@@ -232,10 +230,10 @@ At `feature-closeout`, copy the `AGENT NEXT ACTION:` and `HUMAN ACTION NEEDED:` 
 48. **Session opening orientation (mandatory FIRST output).** Your very first user-visible output, immediately after reading `.specrew\last-start-prompt.md` + `.specrew\start-context.json`, must be a short friendly orientation block in the host-rendered shape below (8-15 lines, conversational tone, no bullet-list of phases). The visible Specrew version, selected host, runtime class, and lifecycle position in this block are generated from the installed runtime and saved start context; do not substitute, infer, omit, or claim any other host/runtime behavior. **All artifact and directory references in this block MUST use visible bare `file:///` URLs** built from the Project root URL above (see Rule 52):
 
 ```markdown
-Welcome back - resuming feature 001-layout-autocorrect at tasks.
+Welcome back - resuming feature 001-layout-autocorrect at before-implement.
 Specrew: 0.40.0-beta3
 Host: claude (Claude Code CLI); runtime: non-Squad
-Lifecycle: feature 001-layout-autocorrect at tasks.
+Lifecycle: feature 001-layout-autocorrect at before-implement.
 
 How this works: Specrew governs the spec -> plan -> implement -> review -> retro
 lifecycle. This session follows the saved lifecycle prompt and structured start

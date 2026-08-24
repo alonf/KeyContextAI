@@ -1,0 +1,24 @@
+{
+  "session_id": "f8f55ac2-deee-41dc-a957-f65badd42a20",
+  "last_seen_boundary": "tasks",
+  "context_mtime": "2026-08-22T16:21:05.2849004Z",
+  "breaker": null,
+  "journal": [
+    {
+      "at": "2026-08-22T20:58:18.0273617Z",
+      "trigger": "b2",
+      "scope": "general",
+      "channel": "hook",
+      "tokens": 566,
+      "outcome": "injected"
+    },
+    {
+      "at": "2026-08-22T20:58:25.356205Z",
+      "trigger": "b2",
+      "scope": "general",
+      "channel": "hook",
+      "tokens": 566,
+      "outcome": "injected"
+    }
+  ]
+}

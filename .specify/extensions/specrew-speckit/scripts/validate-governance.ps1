@@ -919,6 +919,34 @@ function Test-ReviewDerivedIndependenceBlock {
     }
 }
 
+function Test-ClosedIterationSeals {
+    # W51 part 3. Closed iterations are SKIPPED from iteration validation - their recorded state is
+    # history - but history refusing silent edits is exactly why they can be skipped safely. This
+    # walks only the iterations that carry a seal, so pre-seal closeouts stay fail-open, and an
+    # active iteration (no seal yet) is never touched.
+    param(
+        [string]$ProjectRoot,
+        [System.Collections.Generic.List[string]]$Errors
+    )
+    if ([string]::IsNullOrWhiteSpace($ProjectRoot)) { return }
+    if (-not (Get-Command -Name 'Test-SpecrewIterationSealIntegrity' -ErrorAction SilentlyContinue)) { return }
+    $specsRoot = Join-Path $ProjectRoot 'specs'
+    if (-not (Test-Path -LiteralPath $specsRoot -PathType Container)) { return }
+    foreach ($seal in @(Get-ChildItem -Path $specsRoot -Filter '.specrew-iteration-seal.json' -Recurse -File -Force -ErrorAction SilentlyContinue)) {
+        $iterationDir = Split-Path -Parent $seal.FullName
+        $state = $null
+        try { $state = Test-SpecrewIterationSealIntegrity -IterationDirectory $iterationDir }
+        catch { continue }
+        if ($null -eq $state -or -not [bool]$state.checked) { continue }
+        $touched = @(@($state.drifted) + @($state.missing) + @($state.added))
+        if ($touched.Count -eq 0) { continue }
+        $shown = @($touched | Select-Object -First 4) -join ', '
+        if ($touched.Count -gt 4) { $shown = "$shown (+$($touched.Count - 4) more)" }
+        $relativeIteration = try { ([IO.Path]::GetRelativePath($ProjectRoot, $iterationDir)).Replace([char]92, [char]47) } catch { $iterationDir }
+        $Errors.Add(("Closed iteration {0} was edited after its closeout seal: {1}. A closed iteration's records are preserved history - the state the human's verdict accepted - and a later edit silently rewrites what was approved. Revert the edit (git checkout -- <file>), or record what needs to change as a drift entry in the ACTIVE iteration's drift-log.md, where new facts belong. Deliberately superseding closed history is the human's act, not a session's: until the governed supersede mechanism ships, their explicit instruction recorded in the active drift log is the path." -f $relativeIteration, $shown)) | Out-Null
+    }
+}
+
 function Test-DeployedExtensionIntegrity {
     # W43. Every guarantee this validator makes assumes IT ran as shipped. A downstream agent
     # hand-patched a deployed scaffold during the 2026-08-21 walk to clear a blocker - its fix was
@@ -1137,7 +1165,41 @@ function Test-ReviewCitedRunEvidence {
         #
         # SCOPED TO THIS RULE ALONE. Completion, verdict, validation and declared coverage are all
         # still enforced during preflight - a preflight is not a licence to cite a bad run.
-        $inReviewPreflight = -not [string]::IsNullOrWhiteSpace([string]$env:SPECREW_REVIEW_PREFLIGHT)
+        #
+        # AND SCOPED TO ONE PROJECT. The marker carries the root of the verification copy whose
+        # preflight is running, because a bare flag disarmed this rule for EVERY project validated
+        # anywhere under that preflight - including the fixture projects the verification suites
+        # build, whose armed-staleness cases then red only inside a live review launch, the most
+        # expensive place to find out (five failed launches). A bare '1' is what a pre-scoping
+        # engine sends; it keeps the old global behavior so pairing this validator with an older
+        # engine cannot resurrect the W38+W36 wedge.
+        $preflightMarker = [string]$env:SPECREW_REVIEW_PREFLIGHT
+        $inReviewPreflight = $false
+        if (-not [string]::IsNullOrWhiteSpace($preflightMarker)) {
+            if ($preflightMarker.Trim() -ceq '1') { $inReviewPreflight = $true }
+            else {
+                try {
+                    $markerFull = [IO.Path]::GetFullPath($preflightMarker.Trim()).TrimEnd('\', '/')
+                    $projectFull = [IO.Path]::GetFullPath([string]$ProjectRoot).TrimEnd('\', '/')
+                    # Case semantics come from the VOLUME via the path-identity primitive, never from
+                    # the OS family - the class-guard lane enforces this structurally. 'distinct' when
+                    # undetermined, and Ordinal when the primitive is unreachable: both err toward NOT
+                    # applying the exemption, which leaves the freshness rule live - the safe side.
+                    if (-not (Get-Command -Name 'Get-ContinuousCoReviewPathComparer' -ErrorAction SilentlyContinue)) {
+                        $pathIdentityHelper = Join-Path $ProjectRoot 'scripts/internal/continuous-co-review/path-identity.ps1'
+                        if (Test-Path -LiteralPath $pathIdentityHelper -PathType Leaf) { . $pathIdentityHelper }
+                    }
+                    if (Get-Command -Name 'Get-ContinuousCoReviewPathComparer' -ErrorAction SilentlyContinue) {
+                        $rootComparer = Get-ContinuousCoReviewPathComparer -Path $projectFull -WhenUndetermined 'distinct'
+                        $inReviewPreflight = $rootComparer.Equals($markerFull, $projectFull)
+                    }
+                    else {
+                        $inReviewPreflight = [string]::Equals($markerFull, $projectFull, [StringComparison]::Ordinal)
+                    }
+                }
+                catch { $inReviewPreflight = $false }
+            }
+        }
         $currentTreeId = ''
         try {
             if (-not (Get-Command -Name 'Get-ContinuousCoReviewReviewedStateDigest' -ErrorAction SilentlyContinue)) {
@@ -1319,7 +1381,7 @@ function Test-ReviewEvidenceTreeIntegrity {
     }
 
     foreach ($missing in @($treeCheck.MissingProduction)) {
-        $Errors.Add(("review.md (FR-022/Pillar 5) cites production evidence file '{0}' that is present in the working tree but absent from the cited Tree Under Review commit '{1}' for {2}. Either stage + commit the file then re-issue the verdict, or remove it from review.md evidence." -f $missing, $treeCheck.TreeHash, $relativeIteration))
+        $Errors.Add(("review.md cites production evidence file '{0}' that is present in the working tree but absent from the cited Tree Under Review commit '{1}' for {2}. Either stage + commit the file then re-issue the verdict, or remove it from review.md evidence." -f $missing, $treeCheck.TreeHash, $relativeIteration))
     }
 
     foreach ($missingTest in @($treeCheck.MissingTest)) {
@@ -2020,6 +2082,41 @@ function Test-BoundaryStateAdvanceVerdict {
     catch {
         Write-TrustHardeningWarning -Category 'skipped-boundary-unreconciled' -Detail ("VALIDATION FAIL: {0}" -f $_.Exception.Message)
     }
+}
+
+function Test-SourceWithoutImplementAuthorization {
+    <#
+    W47 (2026-08-23): THE NO-CODE-WITHOUT-APPROVAL PROMISE GETS MECHANICAL ENFORCEMENT.
+
+    On the KeyContextAI walk a session committed product source (7 files) while
+    last_authorized_boundary was `tasks`, the hardening gate was blocked, and no before-implement
+    crossing had been minted. Nothing fired: Test-BoundaryStateAdvanceVerdict watches the STATE, and
+    the state never advanced - the session wrote code where it stood. Gate checks fire at sync time,
+    and a session that never runs the sync never meets them.
+
+    So this checks the TREE against the LEDGER: product source (the shared classifier's definition)
+    that changed since the last authorized boundary's own commit, while that boundary is still
+    pre-implement, FAILS - an error, not a warning, because code without the verdict is outside the
+    process whatever its quality. The remedy is named: the crossing's verdict, or reverting the
+    source. Detection is shared with the conformance layer (Get-SpecrewUnauthorizedSourceDrift), so
+    the live session and the at-rest validation refuse on the same fact.
+
+    Committed drift only, here: a human's uncommitted scratch edits are not a governance fact yet,
+    and the conformance layer already speaks to the live session about them.
+    #>
+    param([Parameter(Mandatory = $true)][string]$ProjectRoot)
+
+    if (-not (Get-Command -Name 'Get-SpecrewUnauthorizedSourceDrift' -ErrorAction SilentlyContinue)) { return 0 }
+    $drift = $null
+    try { $drift = Get-SpecrewUnauthorizedSourceDrift -ProjectRoot $ProjectRoot } catch { return 0 }
+    if ($null -eq $drift -or -not [bool]$drift.checked -or -not [bool]$drift.pre_implement) { return 0 }
+    $committed = @($drift.committed_source)
+    if ($committed.Count -eq 0) { return 0 }
+
+    $shown = @($committed | Select-Object -First 5) -join ', '
+    if ($committed.Count -gt 5) { $shown = "$shown (+$($committed.Count - 5) more)" }
+    Write-Host ("FAIL [trust-hardening] source-without-implement-authorization: {0} product source file(s) changed since the '{1}' authorization ({2}), but implementation has not been approved - verdict_history holds no 'approved for before-implement'. Code written without that verdict is outside the process this project follows, whoever wrote it and however good it is. Either obtain the verdict - complete the hardening gate, run the boundary sync, present the packet, and record the human's 'approved for before-implement' - or revert the source changes: {3}" -f $committed.Count, [string]$drift.authorized_boundary, ([string]$drift.anchor_commit).Substring(0, [Math]::Min(8, ([string]$drift.anchor_commit).Length)), $shown) -ForegroundColor Red
+    return 1
 }
 
 function Test-ApprovedFeatureStatusVerdictEvidence {
@@ -4478,7 +4575,7 @@ function Test-ReviewerRegressionLedgerInvariants {
 
         # FR-007: Validate soft-warning classification
         if ($null -ne $entry.Severity -and $entry.Severity -ne 'soft-warning') {
-            $issues.Add("$($entry.EventId): Severity must always be 'soft-warning' per FR-007, found '$($entry.Severity)'") | Out-Null
+            $issues.Add("$($entry.EventId): Severity must always be 'soft-warning', found '$($entry.Severity)'") | Out-Null
         }
 
         # FR-015: Validate escalation action consistency
@@ -4499,7 +4596,7 @@ function Test-ReviewerRegressionLedgerInvariants {
 
         # FR-008: Validate withdrawal consistency
         if ($entry.EventStatus -eq 'withdrawn' -and [string]::IsNullOrWhiteSpace($entry.WithdrawalReference)) {
-            $issues.Add("$($entry.EventId): Status 'withdrawn' requires 'Withdrawal Reference' per FR-008") | Out-Null
+            $issues.Add("$($entry.EventId): Status 'withdrawn' requires 'Withdrawal Reference'") | Out-Null
         }
     }
 
@@ -4619,7 +4716,7 @@ function Test-ReviewerRegressionDecisionsEntries {
 
         # FR-011: Lockout-cap decisions must be visible
         if ($entry.Type -eq 'lockout-cap' -and [string]::IsNullOrWhiteSpace($entry.DecisionId)) {
-            $issues.Add("Lockout-cap decision entry must have a Decision ID per FR-011") | Out-Null
+            $issues.Add("Lockout-cap decision entry must have a Decision ID") | Out-Null
         }
     }
 
@@ -5633,25 +5730,35 @@ try {
     # are unaffected — closed iterations naturally aren't in those sets.
     $closedSkippedCount = 0
     if (-not $IncludeClosed -and -not $validatorScoped -and $targets.Count -gt 0) {
+        # W51 part 2 (maintainer ruling): A CLOSED ITERATION'S RECORDED STATE IS HISTORY, NOT A GATE
+        # INPUT FOR THE NEXT ITERATION. The walk's before-implement readiness run blocked iteration
+        # 002's work on iteration 001's deliberately-preserved FAIL, because this filter keyed ONLY on
+        # the index - an iteration whose own state.md says closed but which never made the index was
+        # validated as if live. The index stays the fast path; each unindexed candidate now answers
+        # from its OWN state.md, so closed is closed whether or not the index heard about it.
         $closedIndex = Get-SpecrewClosedIterationIndex -ProjectRoot $resolvedProjectPath
-        if ($closedIndex.Count -gt 0) {
-            $filtered = New-Object System.Collections.Generic.List[string]
-            foreach ($tp in $targets) {
-                $normalized = $tp -replace '\\', '/'
-                if ($normalized -match 'specs/([^/]+)/iterations/([^/]+)$') {
-                    $feature = $Matches[1]
-                    $iteration = $Matches[2]
-                    if ($closedIndex.ContainsKey("$feature/$iteration")) {
-                        $closedSkippedCount++
-                        continue
-                    }
+        $filtered = New-Object System.Collections.Generic.List[string]
+        foreach ($tp in $targets) {
+            $normalized = $tp -replace '\\', '/'
+            if ($normalized -match 'specs/([^/]+)/iterations/([^/]+)$') {
+                $feature = $Matches[1]
+                $iteration = $Matches[2]
+                if ($closedIndex.ContainsKey("$feature/$iteration")) {
+                    $closedSkippedCount++
+                    continue
                 }
-                $null = $filtered.Add($tp)
+                $stateProbe = Join-Path $tp 'state.md'
+                if ((Get-Command -Name 'Get-SpecrewClosedIterationFromStateFile' -ErrorAction SilentlyContinue) -and
+                    ($null -ne (Get-SpecrewClosedIterationFromStateFile -StatePath $stateProbe))) {
+                    $closedSkippedCount++
+                    continue
+                }
             }
-            $targets = @($filtered.ToArray())
-            if ($closedSkippedCount -gt 0) {
-                Write-Host ("[validator-scope] closed-iteration filter: {0} closed iterations skipped (use -IncludeClosed to validate them)" -f $closedSkippedCount)
-            }
+            $null = $filtered.Add($tp)
+        }
+        $targets = @($filtered.ToArray())
+        if ($closedSkippedCount -gt 0) {
+            Write-Host ("[validator-scope] closed-iteration filter: {0} closed iterations skipped (use -IncludeClosed to validate them)" -f $closedSkippedCount)
         }
     }
     Write-Host $scopeBanner
@@ -5661,6 +5768,20 @@ try {
     $teamRoles = Get-TeamRoleMap -ResolvedProjectPath $resolvedProjectPath
 
     $teamValidationErrors = New-Object System.Collections.Generic.List[string]
+    # W51 part 3: sealed history refuses silent edits. Runs BEFORE the team-composition exit for the
+    # same reason as W47: tampering with approved history must not hide behind a config failure.
+    $closedSealErrors = New-Object System.Collections.Generic.List[string]
+    Test-ClosedIterationSeals -ProjectRoot $resolvedProjectPath -Errors $closedSealErrors
+    if ($closedSealErrors.Count -gt 0) {
+        foreach ($sealError in $closedSealErrors) { Write-Host ("FAIL [trust-hardening] closed-iteration-edited: {0}" -f $sealError) -ForegroundColor Red }
+        Write-ValidatorSummaryAndExit -ProjectRoot $resolvedProjectPath -ExitCode 1 -HardWarnings $closedSealErrors.Count
+    }
+    # W47: the tree-vs-ledger cross-check - source written where the state STOOD, not where it moved.
+    # Runs BEFORE the team-composition exit: unauthorized code must not hide behind a config failure.
+    $sourceAuthorizationFailureCount = Test-SourceWithoutImplementAuthorization -ProjectRoot $resolvedProjectPath
+    if ($sourceAuthorizationFailureCount -gt 0) {
+        Write-ValidatorSummaryAndExit -ProjectRoot $resolvedProjectPath -ExitCode 1 -HardWarnings $sourceAuthorizationFailureCount
+    }
     Test-BaselineTeamMembers -TeamRoles $teamRoles -Errors $teamValidationErrors
 
     if ($teamValidationErrors.Count -gt 0) {

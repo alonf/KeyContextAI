@@ -1811,6 +1811,141 @@ function Get-SpecrewBoundaryEnforcementState {
     }
 }
 
+function Select-SpecrewProductSourcePaths {
+    # W48 (2026-08-23): PRODUCT SOURCE IS THE CLASSIFIER'S ANSWER MINUS THE MACHINERY SPECREW ITSELF
+    # DEPLOYS. Found live on the first downstream firing of the no-code guard: the refusal named
+    # `scripts/internal/continuous-co-review/*` - Specrew's own review bundle, refreshed by the human's
+    # own `specrew update` - as "product source written without approval". The shared classifier calls
+    # those paths source because in the Specrew repository they ARE the product; in a DOWNSTREAM
+    # project they are deployed machinery. This is DRIFT-104's blind spot in its fifth consumer, and
+    # the fix is the same: the ONE machinery resolver (Get-ContinuousCoReviewMachineryPaths, ladder-
+    # loaded from the project's own deployed bundle), never a parallel list. In the Specrew source
+    # repository the resolver answers with the source-repo list, so engine code stays product THERE.
+    #
+    # Fail direction: resolver unavailable -> no exclusion, paths stay product. That direction is safe
+    # because deployed-machinery edits are the INTEGRITY markers' jurisdiction, not this filter's -
+    # excluding machinery here loses no coverage, and failing to exclude it merely nags, which the
+    # named-exemption above it can absorb until the resolver loads.
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)][string]$ProjectRoot,
+        [AllowEmptyCollection()][object[]]$Paths = @()
+    )
+
+    $candidates = @($Paths | ForEach-Object { ([string]$_).Replace([char]92, [char]47) } |
+            Where-Object { -not [string]::IsNullOrWhiteSpace($_) -and (Test-SpecrewReviewAuthorshipSourcePath -Path $_) })
+    if ($candidates.Count -eq 0) { return @() }
+
+    if (-not (Get-Command -Name 'Get-ContinuousCoReviewMachineryPaths' -ErrorAction SilentlyContinue)) {
+        $resolverPath = Join-Path $ProjectRoot 'scripts/internal/continuous-co-review/worktree-reviewer.ps1'
+        if (Test-Path -LiteralPath $resolverPath -PathType Leaf) { try { . $resolverPath } catch { $null = $_ } }
+    }
+    $machineryRoots = @()
+    if (Get-Command -Name 'Get-ContinuousCoReviewMachineryPaths' -ErrorAction SilentlyContinue) {
+        try {
+            $machineryRoots = @(Get-ContinuousCoReviewMachineryPaths -RepoRoot $ProjectRoot |
+                    ForEach-Object { (([string]$_).Replace([char]92, [char]47)).Trim('/') } |
+                    Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+        }
+        catch { $machineryRoots = @() }
+    }
+    if ($machineryRoots.Count -eq 0) { return @($candidates) }
+
+    return @($candidates | Where-Object {
+            $path = $_
+            $isMachinery = $false
+            foreach ($root in $machineryRoots) {
+                if ($path -eq $root -or $path.StartsWith($root + '/', [System.StringComparison]::OrdinalIgnoreCase)) { $isMachinery = $true; break }
+            }
+            -not $isMachinery
+        })
+}
+
+function Get-SpecrewUnauthorizedSourceDrift {
+    # W47 (2026-08-23): THE NO-CODE-WITHOUT-APPROVAL PROMISE, ENFORCED RATHER THAN ASSUMED.
+    #
+    # On the 2026-08-23 walk a session committed product source (7 files) while
+    # last_authorized_boundary was `tasks`, the hardening gate was blocked, and no before-implement
+    # crossing had even been minted. Nothing fired: state-advance-without-verdict watches the STATE,
+    # and the state never advanced - the session just wrote code where it stood. The gate checks fire
+    # at sync time, and a session that never runs the sync never meets them. The flagship guarantee
+    # rested on agent compliance alone, and the first weak-model implement walk exposed it.
+    #
+    # The detector: product source (as the shared classifier defines it - the same one W33 coverage,
+    # W34-B authorship, DRIFT-007 staleness and FR-009 records-only already use) that changed since the
+    # last authorized boundary's own commit, while that boundary is still pre-implement. Consumed by
+    # BOTH the validator (FAIL) and the conformance layer (live refusal), so the same fact is checked
+    # at rest and in flight.
+    #
+    # FAIL-OPEN where the anchor is missing: no enforcement state, no verdict history, or an auth
+    # commit git cannot resolve all return checked=$false and claim nothing - "could not tell" must
+    # never manufacture a violation. STATED LIMIT: a history rewrite that discards the auth commit
+    # silences this check; the boundary ledger itself still names the commit, so the rewrite is
+    # visible there.
+    [CmdletBinding()]
+    param([Parameter(Mandatory)][string]$ProjectRoot)
+
+    $result = [pscustomobject]@{
+        checked = $false
+        pre_implement = $false
+        authorized_boundary = $null
+        anchor_commit = $null
+        committed_source = @()
+        uncommitted_source = @()
+        reason = 'not-evaluated'
+    }
+
+    if (-not (Get-Command -Name 'Get-SpecrewBoundaryEnforcementState' -ErrorAction SilentlyContinue)) { $result.reason = 'state-reader-unavailable'; return $result }
+    $enforcement = $null
+    try { $enforcement = Get-SpecrewBoundaryEnforcementState -ProjectRoot $ProjectRoot } catch { $result.reason = 'state-unreadable'; return $result }
+    if ($null -eq $enforcement -or -not [bool]$enforcement.Exists -or $null -eq $enforcement.State) { $result.reason = 'no-enforcement-state'; return $result }
+    $state = $enforcement.State
+    $enabled = if ($state.Contains('enabled')) { [bool]$state['enabled'] } else { $false }
+    if (-not $enabled) { $result.reason = 'enforcement-disabled'; return $result }
+
+    $lastAuthorized = [string]$state['last_authorized_boundary']
+    if ([string]::IsNullOrWhiteSpace($lastAuthorized)) { $result.reason = 'no-authorized-boundary'; return $result }
+    $order = @(Get-SpecrewBoundaryOrder)
+    $authIdx = [Array]::IndexOf($order, (Normalize-SpecrewCanonicalBoundaryType -Boundary $lastAuthorized))
+    $implementIdx = [Array]::IndexOf($order, 'before-implement')
+    if ($authIdx -lt 0 -or $implementIdx -lt 0) { $result.reason = 'boundary-unrecognized'; return $result }
+    $result.authorized_boundary = $lastAuthorized
+    if ($authIdx -ge $implementIdx) {
+        # Implementation is licensed: the before-implement verdict (or a later one) is on the ledger.
+        $result.checked = $true
+        $result.reason = 'implementation-authorized'
+        return $result
+    }
+    $result.pre_implement = $true
+
+    # The anchor: the commit the newest authorization was recorded against. Source that existed AT the
+    # authorization was in front of the human when they approved; source that arrived AFTER it was not.
+    $history = @($state['verdict_history'])
+    if ($history.Count -eq 0) { $result.reason = 'no-verdict-history'; return $result }
+    $newest = $history[-1]
+    $newestMap = if ($newest -is [System.Collections.IDictionary]) { $newest } else { $newest | ConvertTo-Json -Depth 12 | ConvertFrom-Json -AsHashtable -Depth 12 }
+    $anchor = ([string]$newestMap['auth_commit_hash']).Trim()
+    if ([string]::IsNullOrWhiteSpace($anchor)) { $result.reason = 'no-anchor-commit'; return $result }
+    $result.anchor_commit = $anchor
+
+    $null = & git -C $ProjectRoot cat-file -e ("{0}^{{commit}}" -f $anchor) 2>$null
+    if ($LASTEXITCODE -ne 0) { $result.reason = 'anchor-commit-unresolvable'; return $result }
+
+    $committedRaw = @(& git -C $ProjectRoot diff --name-only ("{0}..HEAD" -f $anchor) 2>$null)
+    if ($LASTEXITCODE -ne 0) { $result.reason = 'diff-failed'; return $result }
+    $uncommittedRaw = @(& git -C $ProjectRoot status --porcelain --untracked-files=all 2>$null | ForEach-Object {
+            $line = [string]$_
+            if ($line.Length -gt 3) { $line.Substring(3).Trim('"') } })
+
+    # W48: machinery-aware - a `specrew update` refreshing the deployed bundle is not the project
+    # writing product code, and the first downstream firing proved the difference matters.
+    $result.committed_source = @(Select-SpecrewProductSourcePaths -ProjectRoot $ProjectRoot -Paths $committedRaw)
+    $result.uncommitted_source = @(Select-SpecrewProductSourcePaths -ProjectRoot $ProjectRoot -Paths $uncommittedRaw)
+    $result.checked = $true
+    $result.reason = 'evaluated'
+    return $result
+}
+
 function Get-SpecrewBoundaryStageEvidenceContract {
     <#
     FR-068 (T090). The boundary -> required-evidence contract.
@@ -1863,6 +1998,9 @@ function Get-SpecrewBoundaryStageEvidenceContract {
         [pscustomobject]@{ Boundary = 'clarify'; Kind = 'content'; Paths = @('spec.md'); Markers = @(
                 '(?ms)^##[ \t]+Clarifications[ \t]*\r?$(?:(?!^##[ \t]).)*?^###[ \t]+Session[ \t]+\d{4}-\d{2}-\d{2}',
                 '(?im)^[ \t]*[-*][ \t]+\*\*Clarify Disposition\*\*[ \t]*:[ \t]*skip\b[^\r\n]{20,}'
+            # The Provenance field is maintainer-facing rule-table data (who ruled what, when);
+            # no consumer surface renders it.
+            # specrew-internal-id-ok: maintainer-facing rule-table provenance data
             ); MarkerMatch = 'any'; Provenance = 'MAINTAINER-RULED 2026-08-06 - session block OR recorded skip-with-rationale; STRICT forms ruled 2026-08-06 after DRIFT-198-I011-006' }
 
         # plan / tasks: the iteration plan. `tasks` records its breakdown in the SAME plan.md table in
@@ -3377,7 +3515,11 @@ function Add-SpecrewBoundaryAuthorization {
     $effectiveEvidenceSource = if ([string]::IsNullOrWhiteSpace($EvidenceSource)) { 'unspecified' } else { $EvidenceSource.Trim() }
 
     # The sources the capture path actually emits, read from HandoverStore.ps1 rather than composed.
-    $capturedEvidenceSources = @('hook-captured-from-transcript', 'hook-captured-from-transcript-pending-artifact')
+    # W45 added 'hook-captured-user-prompt': the prompt-entry event's own text, on hosts whose prompt
+    # event carries no transcript path - the same channel and label the partial-signoff, workshop-repair
+    # and round-approval writers use. It is captured provenance, not out-of-band: the hook saw the
+    # human's typed turn at the moment they submitted it.
+    $capturedEvidenceSources = @('hook-captured-from-transcript', 'hook-captured-from-transcript-pending-artifact', 'hook-captured-user-prompt')
     $isCapturedProvenance = $capturedEvidenceSources -ccontains $effectiveEvidenceSource
     $isOutOfBand = -not $isCapturedProvenance
     if ($isOutOfBand -and [string]::IsNullOrWhiteSpace($OutOfBandReason)) {
@@ -6685,6 +6827,390 @@ function Test-SpecrewDerivedCoverageSourcePath {
     return (Test-SpecrewReviewAuthorshipSourcePath -Path $Path)
 }
 
+# ---------------------------------------------------------------------------------------------------
+# W51 part 3 (2026-08-24): A CLOSED ITERATION'S RECORDS ARE PRESERVED HISTORY, AND HISTORY REFUSES
+# SILENT EDITS. Second live instance on the walk: a session reopened a closed iteration's review.md to
+# chase a green validator, undoing the maintainer's explicit preserved-state ruling - and nothing
+# noticed. The W43 shape applied: a seal written at iteration-closeout, after the records have landed,
+# verified at validation, refusing on drift with the reachable paths named. Fail-open on absence -
+# iterations closed before the seal existed have none, and refusing history for a check it never had
+# would wedge every existing project.
+#
+# HONEST LIMIT, same as W43: a self-check. It catches every accidental or single-file edit - which is
+# what happened - and turns a silent edit into three coordinated ones. The governed REOPEN mechanism
+# (supersede) is the beta4 item this incident is the second live argument for; until it exists, the
+# refusal names the paths that exist today.
+# ---------------------------------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------------------------------
+# W52 (2026-08-24, maintainer ruling): EXHAUSTION IS A DECISION, NOT A CONDITION. The human must know
+# when they need to replenish or authorize - and there is NO situation of no-review without the human
+# saying so. Chosen absence is honest; accumulated absence is the thing this release exists to
+# prevent. Two halves: a one-time decision stop when the allowance is exhausted AND source drift
+# exists (the moment coverage is actually falling behind), and a standing coverage line in every
+# re-entry packet, so the number climbing is its own alarm without any new interruption.
+# ---------------------------------------------------------------------------------------------------
+
+function Get-SpecrewReviewCoverageState {
+    # The one coverage question, answered from the store and the tree: what was last DELIVERED, what
+    # tree it covered, what product source has moved since, and how many rounds remain. Fail-open
+    # everywhere - a project with no campaigns, no digest, or no loadable engine answers
+    # available=$false and nothing downstream fires.
+    [CmdletBinding()]
+    param([Parameter(Mandatory)][string]$ProjectRoot)
+
+    $state = [pscustomobject]@{
+        available = $false
+        campaign_id = $null
+        last_delivered_run = $null
+        covered_tree = $null
+        source_drift = @()
+        source_drift_count = 0
+        rounds_used = $null
+        budget_total = $null
+        exhausted = $false
+        reason = 'not-evaluated'
+    }
+    $campaignsRoot = Join-Path $ProjectRoot '.specrew/review/authority/campaigns'
+    if (-not (Test-Path -LiteralPath $campaignsRoot -PathType Container)) { $state.reason = 'no-campaigns'; return $state }
+
+    # Latest DELIVERED run (completion complete) across campaigns - the same all-campaign walk the
+    # derived-independence reader uses, keyed on DELIVERY per the W50 entitlement rule.
+    $delivered = $null
+    foreach ($campaign in @(Get-ChildItem -LiteralPath $campaignsRoot -Directory -ErrorAction SilentlyContinue)) {
+        $runsRoot = Join-Path $campaign.FullName 'runs'
+        if (-not (Test-Path -LiteralPath $runsRoot -PathType Container)) { continue }
+        foreach ($run in @(Get-ChildItem -LiteralPath $runsRoot -Directory -ErrorAction SilentlyContinue)) {
+            $resultPath = Join-Path $run.FullName 'result.json'
+            if (-not (Test-Path -LiteralPath $resultPath -PathType Leaf)) { continue }
+            $result = $null
+            try { $result = Get-Content -LiteralPath $resultPath -Raw -Encoding UTF8 | ConvertFrom-Json -Depth 20 } catch { continue }
+            if ($null -eq $result -or [string]$result.completion -cne 'complete') { continue }
+            if ($null -eq $delivered -or ([string]$result.run_id -cgt [string]$delivered.run_id)) { $delivered = $result }
+        }
+    }
+    if ($null -eq $delivered) { $state.reason = 'no-delivered-review'; return $state }
+    $state.last_delivered_run = [string]$delivered.run_id
+    $state.covered_tree = [string]$delivered.target_digest
+    $state.campaign_id = [string]$delivered.campaign_id
+
+    # Source drift since the covered tree, on the ONE refined classification (machinery-aware,
+    # execution-records-quiet, standard-artifacts-stale).
+    if (-not (Get-Command -Name 'Get-ContinuousCoReviewReviewedStateDigest' -ErrorAction SilentlyContinue)) {
+        $digestHelper = Join-Path $ProjectRoot 'scripts/internal/continuous-co-review/reviewed-state-digest.ps1'
+        if (Test-Path -LiteralPath $digestHelper -PathType Leaf) { try { . $digestHelper } catch { $null = $_ } }
+    }
+    if (Get-Command -Name 'Get-ContinuousCoReviewReviewedStateDigest' -ErrorAction SilentlyContinue) {
+        try {
+            $digest = Get-ContinuousCoReviewReviewedStateDigest -RepoRoot $ProjectRoot
+            if ($null -ne $digest -and [bool]$digest.ok -and -not [string]::IsNullOrWhiteSpace([string]$state.covered_tree)) {
+                $drift = Get-SpecrewReviewedTreeSourceDrift -ProjectRoot $ProjectRoot -CitedTreeId $state.covered_tree -CurrentTreeId ([string]$digest.tree_id)
+                if ([bool]$drift.comparable) {
+                    $state.source_drift = @($drift.source)
+                    $state.source_drift_count = @($drift.source).Count
+                }
+            }
+        }
+        catch { $null = $_ }
+    }
+
+    # Rounds remaining, from the ONE production counter - never a parallel reimplementation. The
+    # engine ladder-loads from the project's own deployed bundle (or this repository's source).
+    if (-not (Get-Command -Name 'Get-ReviewCampaignRoundBudgetState' -ErrorAction SilentlyContinue)) {
+        $engineLoad = Join-Path $ProjectRoot 'scripts/internal/continuous-co-review/_load.ps1'
+        if (Test-Path -LiteralPath $engineLoad -PathType Leaf) { try { . $engineLoad } catch { $null = $_ } }
+    }
+    if (Get-Command -Name 'Get-ReviewCampaignRoundBudgetState' -ErrorAction SilentlyContinue) {
+        try {
+            $budget = Get-ReviewCampaignRoundBudgetState -StoreRoot (Join-Path $ProjectRoot '.specrew/review/authority') `
+                -CampaignId $state.campaign_id -RepoRoot $ProjectRoot
+            $state.rounds_used = [int]$budget.rounds_used
+            $state.budget_total = [int]$budget.budget_total
+            $state.exhausted = [bool]$budget.budget_exhausted
+        }
+        catch { $null = $_ }
+    }
+    $state.available = $true
+    $state.reason = 'evaluated'
+    return $state
+}
+
+function Get-SpecrewReviewCoverageLine {
+    # W52 part 2: THE STANDING COVERAGE LINE, one sentence for every re-entry packet. The human sees
+    # coverage drift at every stop they already read; the number climbing is its own alarm.
+    # Deviation from the ruling's wording, stated: it counts source FILES changed, not commits - the
+    # covered identity is a digest TREE, which has no commit ancestry to count along.
+    [CmdletBinding()]
+    [OutputType([string])]
+    param([Parameter(Mandatory)][string]$ProjectRoot)
+    $state = $null
+    try { $state = Get-SpecrewReviewCoverageState -ProjectRoot $ProjectRoot } catch { return '' }
+    if ($null -eq $state -or -not [bool]$state.available) { return '' }
+    $roundsText = if ($null -ne $state.rounds_used -and $null -ne $state.budget_total) {
+        ('{0} of {1} rounds remaining' -f ([Math]::Max(0, [int]$state.budget_total - [int]$state.rounds_used)), [int]$state.budget_total)
+    } else { 'rounds remaining unknown' }
+    $shortTree = ([string]$state.covered_tree)
+    if ($shortTree.Length -gt 8) { $shortTree = $shortTree.Substring(0, 8) }
+    return ('Review coverage: last delivered review {0} covered tree {1}; {2} source file(s) changed since; {3}.' -f `
+            [string]$state.last_delivered_run, $shortTree, [int]$state.source_drift_count, $roundsText)
+}
+
+# ---------------------------------------------------------------------------------------------------
+# The chosen-absence disposition: `continue without coverage until the review phase`, the human's own
+# words, recorded so the signoff gate can later distinguish deliberate deferral from nobody noticing.
+# ---------------------------------------------------------------------------------------------------
+
+function Get-SpecrewCoverageAuthorityHash {
+    # Same algorithm as the bootstrap authority store's hash; defined here so the READER works in any
+    # process that loads shared-governance alone (the validator), not only under the hook co-load.
+    param([AllowEmptyString()][string]$Text)
+    return ([Convert]::ToHexString([Security.Cryptography.SHA256]::HashData([Text.Encoding]::UTF8.GetBytes([string]$Text)))).ToLowerInvariant()
+}
+
+function Get-SpecrewCoverageDeferralRoot {
+    param([Parameter(Mandatory)][string]$ProjectRoot)
+    return Join-Path ([IO.Path]::GetFullPath($ProjectRoot)) '.specrew/review/coverage-disposition'
+}
+
+function Test-SpecrewCoverageDeferralPhrase {
+    [OutputType([pscustomobject])]
+    param([AllowNull()][AllowEmptyString()][string]$Text)
+    $r = [pscustomobject]@{ Matched = $false; Phrase = $null }
+    if ([string]::IsNullOrWhiteSpace($Text)) { return $r }
+    $trimmed = $Text.Trim()
+    if ($trimmed -match '(?is)^\s*<(?:hook_prompt\b|task-notification\b|turn_aborted\b|system-reminder\b|environment_context\b|command-name\b|local-command\b|bash-stdout\b)') { return $r }
+    if ($trimmed.EndsWith('?')) { return $r }
+    $lower = ($trimmed -replace '\s+', ' ').ToLowerInvariant()
+    $anchor = [regex]::Match($lower, '^\s*(?:(?:yes|confirmed)\s*[,;:\-]\s*)?continue\s+without\s+coverage(?:\s+until\s+the\s+review\s+phase)?\b')
+    if (-not $anchor.Success) { return $r }
+    $tail = $lower.Substring($anchor.Length)
+    if (-not ([string]::IsNullOrWhiteSpace($tail) -or $tail -match '^\s*[-,.;:]')) { return $r }
+    if ($lower -match '^\s*(?:do\s*not|never|not)\b') { return $r }
+    $r.Matched = $true; $r.Phrase = $trimmed
+    return $r
+}
+
+function Write-SpecrewCoverageDeferralAuthorization {
+    # SPECREW-AUTHORITY-CONTROL: coverage-deferral
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)][string]$ProjectRoot,
+        [Parameter(Mandatory)][string]$Response,
+        [AllowNull()][string]$HostKind,
+        [AllowNull()][string]$SourceEvent,
+        [string]$NowUtc = ([DateTimeOffset]::UtcNow.ToString('o'))
+    )
+    if (-not (Get-Command -Name 'ConvertTo-SpecrewHumanAuthoritySourceEvent' -ErrorAction SilentlyContinue)) { return $null }
+    $event = ConvertTo-SpecrewHumanAuthoritySourceEvent -SourceEvent $SourceEvent
+    $evidenceSource = 'hook-captured-user-prompt'
+    if ($null -eq $event) {
+        if (([string]$SourceEvent).Trim().ToLowerInvariant() -in @('stop', 'stop-transcript')) { $event = 'Stop'; $evidenceSource = 'hook-captured-from-transcript' }
+        else { return $null }
+    }
+    $recognized = Test-SpecrewCoverageDeferralPhrase -Text $Response
+    if (-not [bool]$recognized.Matched) { return $null }
+    $root = Get-SpecrewCoverageDeferralRoot -ProjectRoot $ProjectRoot
+    [IO.Directory]::CreateDirectory($root) | Out-Null
+    $path = Join-Path $root 'coverage-deferral.json'
+    $coverage = $null
+    try { $coverage = Get-SpecrewReviewCoverageState -ProjectRoot $ProjectRoot } catch { $coverage = $null }
+    $fact = [pscustomobject][ordered]@{
+        schema_version = '1.0'; fact_type = 'coverage-deferral'; authority_kind = 'human'
+        authorized_by = 'unattributed-human'; verdict_text = [string]$recognized.Phrase
+        response_hash = Get-SpecrewCoverageAuthorityHash -Text ([string]$recognized.Phrase)
+        evidence_source = $evidenceSource; source_event = $event; host_kind = [string]$HostKind
+        campaign_id = $(if ($null -ne $coverage) { [string]$coverage.campaign_id } else { '' })
+        covered_tree_at_deferral = $(if ($null -ne $coverage) { [string]$coverage.covered_tree } else { '' })
+        source_drift_at_deferral = $(if ($null -ne $coverage) { [int]$coverage.source_drift_count } else { 0 })
+        observed_at = $NowUtc
+    }
+    $json = $fact | ConvertTo-Json -Depth 8
+    if (Get-Command Write-SpecrewFileAtomic -ErrorAction SilentlyContinue) { Write-SpecrewFileAtomic -Path $path -Content $json }
+    else { [IO.File]::WriteAllText($path, $json, [Text.UTF8Encoding]::new($false)) }
+    return $fact
+}
+
+function Get-SpecrewCoverageDeferralAuthorization {
+    # The standing deferral, or $null. A deferral is SUPERSEDED by a review delivered after it - a
+    # fresh delivered review resets coverage, so the old choice no longer describes the state.
+    [CmdletBinding()]
+    param([Parameter(Mandatory)][string]$ProjectRoot)
+    $path = Join-Path (Get-SpecrewCoverageDeferralRoot -ProjectRoot $ProjectRoot) 'coverage-deferral.json'
+    if (-not [IO.File]::Exists($path)) { return $null }
+    $fact = $null
+    try { $fact = Get-Content -LiteralPath $path -Raw -Encoding UTF8 | ConvertFrom-Json -Depth 8 -ErrorAction Stop } catch { return $null }
+    foreach ($name in @('schema_version', 'fact_type', 'authority_kind', 'verdict_text', 'response_hash', 'observed_at')) {
+        $property = $fact.PSObject.Properties[$name]
+        if (-not $property -or [string]::IsNullOrWhiteSpace([string]$property.Value)) { return $null }
+    }
+    if ([string]$fact.fact_type -cne 'coverage-deferral' -or [string]$fact.authority_kind -cne 'human') { return $null }
+    if ([string]$fact.response_hash -cne (Get-SpecrewCoverageAuthorityHash -Text ([string]$fact.verdict_text))) { return $null }
+    if (-not [bool](Test-SpecrewCoverageDeferralPhrase -Text ([string]$fact.verdict_text)).Matched) { return $null }
+    return $fact
+}
+
+function Get-SpecrewIterationSealPath {
+    param([Parameter(Mandatory)][string]$IterationDirectory)
+    return Join-Path $IterationDirectory '.specrew-iteration-seal.json'
+}
+
+function Get-SpecrewIterationSealManifest {
+    # Line-ending-normalised hashes (the W43 lesson, learned once already: a CRLF/LF checkout
+    # difference must never read as tampering). Files with a NUL byte hash whole.
+    param([Parameter(Mandatory)][string]$IterationDirectory)
+    $root = (Resolve-Path -LiteralPath $IterationDirectory -ErrorAction Stop).Path
+    $sha = [System.Security.Cryptography.SHA256]::Create()
+    try {
+        $entries = [System.Collections.Generic.List[object]]::new()
+        $files = @(Get-ChildItem -LiteralPath $root -File -Recurse -Force -ErrorAction Stop |
+                Where-Object { $_.Name -cne '.specrew-iteration-seal.json' } |
+                Sort-Object { ([IO.Path]::GetRelativePath($root, $_.FullName)) -replace '\\', '/' })
+        foreach ($file in $files) {
+            $relative = ([IO.Path]::GetRelativePath($root, $file.FullName)) -replace '\\', '/'
+            $bytes = [IO.File]::ReadAllBytes($file.FullName)
+            if ([Array]::IndexOf($bytes, [byte]0) -lt 0) {
+                $text = [Text.Encoding]::UTF8.GetString($bytes).Replace("`r`n", "`n")
+                $bytes = [Text.Encoding]::UTF8.GetBytes($text)
+            }
+            $hash = ([BitConverter]::ToString($sha.ComputeHash($bytes)) -replace '-', '').ToLowerInvariant()
+            [void]$entries.Add([pscustomobject][ordered]@{ path = $relative; sha256 = $hash })
+        }
+        return @($entries)
+    }
+    finally { $sha.Dispose() }
+}
+
+function Write-SpecrewIterationSeal {
+    # Written LAST at iteration-closeout, after every record has landed, so the seal describes what is
+    # actually on disk - the closed truth the human's verdict accepted.
+    param(
+        [Parameter(Mandatory)][string]$IterationDirectory,
+        [AllowNull()][string]$Feature,
+        [AllowNull()][string]$Iteration
+    )
+    if (-not (Test-Path -LiteralPath $IterationDirectory -PathType Container)) { return $null }
+    $manifest = @(Get-SpecrewIterationSealManifest -IterationDirectory $IterationDirectory)
+    $payload = [ordered]@{
+        schema_version = '1.0'
+        feature = [string]$Feature
+        iteration = [string]$Iteration
+        sealed_at = ([DateTimeOffset]::UtcNow.ToString('o'))
+        sealed_files = @($manifest)
+        source = 'iteration-closeout'
+    } | ConvertTo-Json -Depth 12
+    $sealPath = Get-SpecrewIterationSealPath -IterationDirectory $IterationDirectory
+    [IO.File]::WriteAllText($sealPath, ($payload + [Environment]::NewLine), [Text.UTF8Encoding]::new($false))
+    return $sealPath
+}
+
+function Test-SpecrewIterationSealIntegrity {
+    # Returns drifted/missing relative paths. FAIL-OPEN on absence: an iteration closed before the
+    # seal existed has none. New files ADDED after the seal are also drift - history does not grow.
+    param([Parameter(Mandatory)][string]$IterationDirectory)
+    $result = [pscustomobject]@{ checked = $false; drifted = @(); missing = @(); added = @(); seal = $null }
+    $sealPath = Get-SpecrewIterationSealPath -IterationDirectory $IterationDirectory
+    if (-not (Test-Path -LiteralPath $sealPath -PathType Leaf)) { return $result }
+    $seal = $null
+    try { $seal = Get-Content -LiteralPath $sealPath -Raw -Encoding UTF8 | ConvertFrom-Json -Depth 12 }
+    catch { return $result }
+    if ($null -eq $seal -or -not $seal.PSObject.Properties['sealed_files']) { return $result }
+    if (-not (Test-Path -LiteralPath $IterationDirectory -PathType Container)) { return $result }
+
+    $actual = @{}
+    foreach ($entry in (Get-SpecrewIterationSealManifest -IterationDirectory $IterationDirectory)) { $actual[[string]$entry.path] = [string]$entry.sha256 }
+    $sealed = @{}
+    foreach ($entry in @($seal.sealed_files)) { $sealed[[string]$entry.path] = [string]$entry.sha256 }
+
+    $drifted = [System.Collections.Generic.List[string]]::new()
+    $missing = [System.Collections.Generic.List[string]]::new()
+    $added = [System.Collections.Generic.List[string]]::new()
+    foreach ($path in $sealed.Keys) {
+        if (-not $actual.ContainsKey($path)) { [void]$missing.Add($path); continue }
+        if ($actual[$path] -cne $sealed[$path]) { [void]$drifted.Add($path) }
+    }
+    foreach ($path in $actual.Keys) {
+        if (-not $sealed.ContainsKey($path)) { [void]$added.Add($path) }
+    }
+    return [pscustomobject]@{ checked = $true; drifted = @($drifted); missing = @($missing); added = @($added); seal = $sealPath }
+}
+
+function Resolve-SpecrewActiveFeatureRef {
+    # The active feature, resolved from lifecycle state rather than required from the caller - the
+    # same resolve-don't-require rule the campaign identity resolver already follows. Empty when the
+    # project genuinely has no active feature.
+    [CmdletBinding()]
+    [OutputType([string])]
+    param([Parameter(Mandatory)][string]$ProjectRoot)
+    foreach ($probe in @(
+            @{ Path = '.specrew/start-context.json'; Read = { param($t) [string](($t | ConvertFrom-Json).session_state.feature_ref) } },
+            @{ Path = '.specify/feature.json'; Read = { param($t) [string](($t | ConvertFrom-Json).feature) } }
+        )) {
+        $probePath = Join-Path $ProjectRoot $probe.Path
+        if (-not (Test-Path -LiteralPath $probePath -PathType Leaf)) { continue }
+        try {
+            $candidate = ([string](& $probe.Read (Get-Content -LiteralPath $probePath -Raw -Encoding UTF8))).Trim()
+            if (-not [string]::IsNullOrWhiteSpace($candidate)) { return (Split-Path -Leaf $candidate) }
+        }
+        catch { $null = $_ }
+    }
+    return ''
+}
+
+function Test-SpecrewLifecycleExecutionRecordPath {
+    # W51 (2026-08-24, maintainer ruling): THE ONE CLASSIFICATION OF THE specs/ TREE, refined at the
+    # FR-009 boundary INSIDE it. The standard artifacts - spec.md, plan design content, tasks.md
+    # definitions, the workshop records - are the standard the code is judged against: change one and
+    # what a review concluded changes, so they STALE. The execution records - state.md,
+    # tasks-progress.yml, review.md, drift-log.md, the reviewer closeout set - are OUTPUT of executing
+    # and reviewing: recording them cannot invalidate the review that produced them.
+    #
+    # ONE classification, BOTH consumers - the signoff gate's records-only exemption and the
+    # validator's citation-staleness check - because the walk measured what a split costs: the
+    # validator ruled that recording a review cannot invalidate it while the gate staled on the very
+    # records the review had just measured, and every loop around that disagreement cost a human
+    # approval.
+    #
+    # Scoped to the ACTIVE feature (FR-009's earlier narrowing, kept): another feature's records tree
+    # is ordinary content. An unmatched path returns $false, which STALES - the allowlist fails toward
+    # nagging, never toward silencing.
+    [CmdletBinding()]
+    [OutputType([bool])]
+    param(
+        [Parameter(Mandatory)][AllowEmptyString()][string]$Path,
+        [AllowNull()][AllowEmptyString()][string]$FeatureId
+    )
+    if ([string]::IsNullOrWhiteSpace($Path) -or [string]::IsNullOrWhiteSpace($FeatureId)) { return $false }
+    $normalized = ([string]$Path).Replace([char]92, [char]47).Trim().Trim('/')
+    $featurePrefix = 'specs/' + $FeatureId.Trim().Trim('/') + '/'
+    if (-not $normalized.StartsWith($featurePrefix, [System.StringComparison]::OrdinalIgnoreCase)) { return $false }
+
+    $relative = $normalized.Substring($featurePrefix.Length)
+    $iteration = [regex]::Match($relative, '^iterations/[^/]+/(?<rest>.*)$')
+    if ($iteration.Success) { $relative = [string]$iteration.Groups['rest'].Value }
+    if ([string]::IsNullOrWhiteSpace($relative)) { return $false }
+
+    # Process records and review OUTPUT. The review-evidence names are the same set the finalization
+    # envelope allowlists, so the two cannot disagree about what counts as review evidence.
+    $recordFiles = @(
+        'drift-log.md', 'state.md', 'tasks-progress.yml',
+        'review.md', 'reviewer-index.md', 'code-map.md', 'coverage-evidence.md', 'dependency-report.md', 'review-diagrams.md',
+        'review-signoff.md', 'retro.md'
+    )
+    $comparison = [System.StringComparison]::OrdinalIgnoreCase
+    foreach ($name in $recordFiles) {
+        if ($relative.Equals($name, $comparison)) { return $true }
+    }
+    if ($relative.StartsWith('closeout', $comparison) -and $relative -notmatch '/') { return $true }
+
+    # workshop/ IS DELIBERATELY ABSENT (maintainer ruling, 2026-08-11): the workshop holds the binding
+    # standard the implementation is judged against - INPUT by the ruling's own test. An allowlist is
+    # safe because omissions nag; that safety is void for any entry wrongly included.
+    foreach ($directory in @('quality/', 'checklists/', 'dashboards/', 'gates/')) {
+        if ($relative.StartsWith($directory, $comparison)) { return $true }
+    }
+    return $false
+}
+
 function Get-SpecrewReviewedTreeSourceDrift {
     # DRIFT-007 (2026-08-22): WHETHER THE REVIEWED SURFACE MOVED, NOT WHETHER ANY BYTE MOVED.
     #
@@ -6734,7 +7260,30 @@ function Get-SpecrewReviewedTreeSourceDrift {
         return [pscustomobject]@{ comparable = $false; changed = @(); source = @(); reason = 'diff-failed' }
     }
 
-    $source = @($changed | Where-Object { Test-SpecrewReviewAuthorshipSourcePath -Path $_ })
+    # W48 note, measured rather than assumed: this detector needs NO machinery overlay. Both tree-ids
+    # are reviewed-state DIGEST trees, and the digest's own machinery strip removes the deployed
+    # bundle from both sides before this diff exists - a mutation proof against the overlay stayed
+    # green here, which is how the difference was found.
+    #
+    # W51 refines the specs/ half of the DRIFT-007 known limit: the shared classifier calls the whole
+    # specs/ tree non-source, but the STANDARD artifacts inside the active feature - spec.md, plan
+    # design content, tasks.md, the workshop records - are the standard the code was judged against,
+    # and changing one changes what the review concluded. They stale now. Execution records still do
+    # not, which is the validator's original ruling kept: recording a review cannot invalidate it.
+    # One classification, shared with the signoff gate's records-only exemption, so the two consumers
+    # cannot disagree - the walk measured a human approval per loop when they did. Fail-open when no
+    # active feature resolves: everything under specs/ stays quiet, the pre-W51 behavior.
+    $activeFeature = Resolve-SpecrewActiveFeatureRef -ProjectRoot $ProjectRoot
+    $activeFeaturePrefix = if ([string]::IsNullOrWhiteSpace($activeFeature)) { $null } else { 'specs/' + $activeFeature + '/' }
+    $source = @($changed | Where-Object {
+            $path = $_
+            if (Test-SpecrewReviewAuthorshipSourcePath -Path $path) { return $true }
+            if ($null -ne $activeFeaturePrefix -and
+                ([string]$path).Replace([char]92, [char]47).StartsWith($activeFeaturePrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+                return (-not (Test-SpecrewLifecycleExecutionRecordPath -Path $path -FeatureId $activeFeature))
+            }
+            return $false
+        })
     return [pscustomobject]@{ comparable = $true; changed = @($changed); source = @($source); reason = 'compared' }
 }
 

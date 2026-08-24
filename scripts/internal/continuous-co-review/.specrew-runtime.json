@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "specrew_version": "0.40.0",
-  "runtime_bundle_sha256": "e2658c7796820fc90199e573792dddf13a67afc50c91c2d8fc9f51651d9e3a29",
+  "runtime_bundle_sha256": "65266100dacfd1fe9cd3992d2753cb661fca7c14a77faa0e708060cb0941b72c",
   "managed_files": [
     {
       "path": "_load.ps1",
@@ -25,7 +25,7 @@
     },
     {
       "path": "continuous-co-review-navigator.ps1",
-      "sha256": "96d490ee93e85a7c5fc453e8e3a108f0280c9614de02c1f406bb5956128db5d7"
+      "sha256": "c8d93119ec6e193951711d2e8690974400ae7e23491f9e29ff6821b0a35392f0"
     },
     {
       "path": "escalation-latch.ps1",
@@ -61,7 +61,7 @@
     },
     {
       "path": "review-authority-core.ps1",
-      "sha256": "f91f5c58f54e1057541cf0da2612a34cef7a276a87cfced2101b1857533c1db7"
+      "sha256": "4dde0227142a3fbb483b04216072da53191f683c9346b5fe02f8566b016be1c0"
     },
     {
       "path": "review-authority-cutover.ps1",
@@ -81,7 +81,7 @@
     },
     {
       "path": "review-campaign-orchestrator.ps1",
-      "sha256": "3ca53eb9d1de4a6f180576ad8c653ba50314512d9d2bc54893dc60415389696f"
+      "sha256": "c38f53a2ebc2aa8d48232dcc179b42a2c74d37523a1f6fded3a00115cc5cdcf7"
     },
     {
       "path": "review-claude-harness-port.ps1",
@@ -101,7 +101,7 @@
     },
     {
       "path": "review-design-context.ps1",
-      "sha256": "5ecbb5043b20c6491524cc4e75e7f8d5b5d1ea6186de2f06cad0afbd0cd5f9e3"
+      "sha256": "678999705058870f3149cf42960cf5f4c5b12d875a7af28fdd7017e745ba8ece"
     },
     {
       "path": "review-harness-contract.ps1",
@@ -133,7 +133,7 @@
     },
     {
       "path": "review-result-ingestor.ps1",
-      "sha256": "17ca3f1f6878eb1b9ccdb1c0e86dc9ab0c18e1f53180225347ff92f95f5de928"
+      "sha256": "929cb8cf7ef8702ec9536ca475d200cff1e469f99d62db478765af82cea3b412"
     },
     {
       "path": "review-retro-projection.ps1",
@@ -157,7 +157,7 @@
     },
     {
       "path": "review-signoff-evidence-gate.ps1",
-      "sha256": "4383c9276f6667ff06b524842b31d4f1966fb07536b7c49da3e1f231c16df3ae"
+      "sha256": "04fe5ab8a2211e35c6ae87b48d8586663ca1c905a125f1374912028148cd5099"
     },
     {
       "path": "review-target-port.ps1",

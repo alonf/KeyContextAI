@@ -2,18 +2,9 @@
   "schema": "v2",
   "boundary_enforcement": {
     "enabled": true,
-    "last_authorized_boundary": "plan",
-    "pending_next_boundary": "tasks",
-    "pending_crossing": {
-      "crossing_id": "crossing-02dfc7ea1d6d300d3e6e5d5e1e42d94c35683829e94d3f0382f212d78b74a67e",
-      "from_boundary": "plan",
-      "to_boundary": "tasks",
-      "working_boundary": "tasks",
-      "boundary_commit_hash": "f1959a34df2b3100fa20b2ffee3c51822ae89313",
-      "artifact_state_kind": "git-tree",
-      "artifact_state_id": "586f1a483c09fb979477a04f4a7f511c8af90357",
-      "recorded_at": "2026-08-22T12:06:43Z"
-    },
+    "last_authorized_boundary": "before-implement",
+    "pending_next_boundary": null,
+    "pending_crossing": null,
     "policy_classes": {
       "specify": "human-judgment-required",
       "clarify": "human-judgment-required",
@@ -133,21 +124,45 @@
         "kind": "standard",
         "out_of_band": false,
         "authorization_id": "auth-e1ad66b0658786b97eac212331d1ed434e50959cb73487d0fce0ae02e3ce8133"
+      },
+      {
+        "from_boundary": "plan",
+        "to_boundary": "tasks",
+        "verdict_text": "approved for tasks",
+        "authorizing_human": "unattributed",
+        "recorded_at": "2026-08-22T16:21:05Z",
+        "auth_commit_hash": "6628eef82c7af2cfa219218883795256502979c0",
+        "evidence_source": "hook-captured-from-transcript",
+        "kind": "standard",
+        "out_of_band": false,
+        "authorization_id": "auth-4c0c4abf70c3425f775eb55c2267e7c20dd445dbbd2265535075be380c24771c"
+      },
+      {
+        "from_boundary": "tasks",
+        "to_boundary": "before-implement",
+        "verdict_text": "approved for before-implement",
+        "authorizing_human": "unattributed",
+        "recorded_at": "2026-08-22T23:36:53Z",
+        "auth_commit_hash": "5878b79180522a1698507dbd4580c8a5d01baa7d",
+        "evidence_source": "hook-captured-user-prompt",
+        "kind": "standard",
+        "out_of_band": false,
+        "authorization_id": "auth-cbd15288e4968819a1e7480ab35e1db9faa9fe90433c57f513ddea3cb40b4e40"
       }
     ],
     "correction_history": [],
     "bypass_history": []
   },
-  "generated_at_utc": "2026-08-22T12:06:43Z",
+  "generated_at_utc": "2026-08-22T23:34:55Z",
   "feature_path": "C:\\Dev\\KeyContextAI\\specs\\001-layout-autocorrect",
   "session_state": {
     "active": true,
-    "boundary_type": "plan",
+    "boundary_type": "before-implement",
     "feature_ref": "001-layout-autocorrect",
     "feature_path": "C:\\Dev\\KeyContextAI\\specs\\001-layout-autocorrect",
     "iteration_number": "002",
     "task_id": null,
-    "auth_commit_hash": "f1959a34df2b3100fa20b2ffee3c51822ae89313",
-    "recorded_at": "2026-08-22T12:06:43Z"
+    "auth_commit_hash": "5878b79180522a1698507dbd4580c8a5d01baa7d",
+    "recorded_at": "2026-08-22T23:34:55Z"
   }
 }

@@ -376,7 +376,11 @@ function Invoke-ReviewCampaignFrozenVerification {
     # cited run, so gating its own preflight on cited-run freshness makes the fix unreachable by the
     # only thing that can apply it. Set narrowly around this call and always cleared.
     $priorPreflightMarker = $env:SPECREW_REVIEW_PREFLIGHT
-    $env:SPECREW_REVIEW_PREFLIGHT = '1'
+    # DRIFT-199-I001-117: the marker names the ONE project this preflight is for - the verification
+    # copy's root - not a bare flag. The validator's W39 exemption compares roots, so the fixture
+    # projects the verification suites build stay ARMED while this copy's own governance run skips
+    # the freshness rule the round exists to satisfy.
+    $env:SPECREW_REVIEW_PREFLIGHT = $snapshotPath
     try {
         $support = Add-ReviewCampaignVerificationSupport -Snapshot $Snapshot
         $execution = Invoke-ContinuousCoReviewVerificationPlan -RepoRoot $snapshotPath -Plan $selected.plan
@@ -1105,7 +1109,12 @@ function Invoke-ReviewCampaignStopHereLanding {
             ' ({0} command{1}: {2})' -f $labels.Count, $(if ($labels.Count -eq 1) { '' } else { 's' }), ($labels -join ', ')
         }
         else { '' }
-        ('Review is signed off. Any remaining minor findings are saved as follow-ups, and the final check ran on your files exactly as they were{0}.' -f $ran)
+        # Round-11 finding (DRIFT-199-I001-118): the stop-here precondition DELIBERATELY accepts major
+        # residuals when the pause record proves the human saw their count - so a completion sentence
+        # naming only "minor findings" told a human who had just accepted two majors that nothing
+        # above minor remained. The severity-neutral phrase is honest for both shapes; the accepted
+        # counts themselves live in the pause record and the result, not in this scope.
+        ('Review is signed off. Any remaining findings are saved as follow-ups, and the final check ran on your files exactly as they were{0}.' -f $ran)
     }
     else {
         $whatFailed = switch ($failedStep) {
@@ -1415,7 +1424,9 @@ function Invoke-ReviewCampaignCommand {
     # T034b: reject every invalid explicit ref before grant persistence, harness selection,
     # reservation, snapshot creation, or provider spend. Omitted refs use the same auto resolver
     # as legacy review and carry an explicit bounded partial-evidence degrade when none resolve.
-    $designContext = Resolve-ContinuousCoReviewDesignContextSelection -RepoRoot $root -DesignContextFiles $DesignContextRefs -FeatureId $FeatureId
+    # W50: the RESOLVED feature, not the raw parameter - resolution in two places is how the walk's
+    # invocation minted an approval and then crashed on the unresolved copy of the same value.
+    $designContext = Resolve-ContinuousCoReviewDesignContextSelection -RepoRoot $root -DesignContextFiles $DesignContextRefs -FeatureId ([string]$identity.feature_id)
     if (-not $designContext.valid) {
         return [pscustomobject][ordered]@{
             status = 'not-started'; reason = [string]$designContext.reason; invoked = $false; result = $null

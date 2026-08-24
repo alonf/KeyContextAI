@@ -196,3 +196,32 @@ No decisions recorded yet.
 - **Launch Mode**: (none)
 - **Agent Response Snippet**: (none)
 - **Reason**: Ratchet refusal: 'tasks' is recorded but not human-approved; a second advance to 'plan' is refused until it is reconciled.
+
+## 2026-08-22T16:00:22Z — Boundary sync: tasks
+
+- **Boundary Type**: tasks
+- **Feature Ref**: 001-layout-autocorrect
+- **Iteration Number**: 002
+- **Task ID**: (none)
+- **Auth Commit Hash**: 6628eef82c7af2cfa219218883795256502979c0
+- **Recorded At**: 2026-08-22T16:00:22Z
+
+## 2026-08-22T23:34:56Z — Boundary sync: before-implement
+
+- **Boundary Type**: before-implement
+- **Feature Ref**: 001-layout-autocorrect
+- **Iteration Number**: 002
+- **Task ID**: (none)
+- **Auth Commit Hash**: 5878b79180522a1698507dbd4580c8a5d01baa7d
+- **Recorded At**: 2026-08-22T23:34:55Z
+
+## 2026-08-22T23:38:40Z — Boundary enforcement: before-implement
+
+- **Feature**: 001-layout-autocorrect
+- **Boundary Type**: before-implement
+- **Current Boundary**: tasks
+- **Requested Boundary**: before-implement
+- **Enforcement Action**: authorized
+- **Launch Mode**: (none)
+- **Agent Response Snippet**: (none)
+- **Reason**: Persisted authorization matched the requested boundary.

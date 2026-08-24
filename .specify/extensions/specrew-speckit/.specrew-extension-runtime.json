@@ -204,7 +204,7 @@
     },
     {
       "path": "commands/speckit.specrew-speckit.before-implement.md",
-      "sha256": "d50135d1298100337d2711d9c1bed3b5a14e088e22e0dfd776c7316e6e6514c8"
+      "sha256": "d773696a1ab58fc0efbfac157397e97a4917d45a97b5bcc1049dfab7d94d50cc"
     },
     {
       "path": "commands/speckit.specrew-speckit.before-plan.md",
@@ -436,7 +436,7 @@
     },
     {
       "path": "scripts/collision-detect.ps1",
-      "sha256": "b153e5441460424486e185fd349a362c6a1ae8bf0f4fedc3ad5c9bf02608c151"
+      "sha256": "c68536ff02929759142ff651df4d2b634ff1f5d500b8ab157bf38b129dfb902c"
     },
     {
       "path": "scripts/confirm-workshop-agenda.ps1",
@@ -452,7 +452,7 @@
     },
     {
       "path": "scripts/deploy-refocus-hooks.ps1",
-      "sha256": "5cd4e8bf05bf4df371923e52633e503056772ce77360d4cad92e348f2d921003"
+      "sha256": "49e68652e8c7db9fc4f65e065441bc8d6ce2093bb29746defb5586c8731e04c9"
     },
     {
       "path": "scripts/deploy-speckit-extension.ps1",
@@ -508,15 +508,15 @@
     },
     {
       "path": "scripts/manage-escalation-state.ps1",
-      "sha256": "d65cb37779e1db5e6a9d484631e159ce4fd8ba612f28a2d0e287e966c5384067"
+      "sha256": "eff62b8df745aa35880aa74c7d4aea1c2a81371f1257d7ca0ce4a18e5890bc80"
     },
     {
       "path": "scripts/manage-reviewer-regression.ps1",
-      "sha256": "6d1140f62f8f6bd052382984f6d52a90116b6bed90307acbc40b903593456563"
+      "sha256": "2413eabf2a894644c25f52c339c02ac2ad9727274667ce70dc9e09698e45f4c0"
     },
     {
       "path": "scripts/provider-adapter.ps1",
-      "sha256": "63ea0dde21a02b854439b581c2cc35c4aa267d6d410471f210d9dbe85b849f89"
+      "sha256": "7567515e7655eb5881648148ddbfb3ddac03cec49ca7c622e8edecda5f598f3c"
     },
     {
       "path": "scripts/provider-generic.ps1",
@@ -536,7 +536,7 @@
     },
     {
       "path": "scripts/resolve-quality-profile.ps1",
-      "sha256": "d1c47035d27d433d871e48c5d950a9e399a5516048ee653a53bc2f5b4ef0ba34"
+      "sha256": "30a95e93e0cd7f4fd16e60d6b23267b4c17adccb0c4f4cec2f2e03e0ea2d63be"
     },
     {
       "path": "scripts/resume-iteration.ps1",
@@ -548,7 +548,7 @@
     },
     {
       "path": "scripts/run-mechanical-checks.ps1",
-      "sha256": "f38914c5b12d8e54156436b1ba83866197f126e840c0a45f07c709b5c89434aa"
+      "sha256": "723617b8487a2c55e8d1bdf7bf1f76f5f0dabb6dee2156961dca88c362b5b305"
     },
     {
       "path": "scripts/scaffold-feature-closeout-dashboard.ps1",
@@ -560,7 +560,7 @@
     },
     {
       "path": "scripts/scaffold-iteration-artifacts.ps1",
-      "sha256": "087b203d11c0d49d071fc743dd087b047b35d7b1b21a48793e96867423fa7b10"
+      "sha256": "ec7cc3af742e185a3e85a8be973acdadd3277ef74d58c44c22e0a7b06c1c53db"
     },
     {
       "path": "scripts/scaffold-iteration-plan.ps1",
@@ -576,15 +576,15 @@
     },
     {
       "path": "scripts/scaffold-reviewer-artifacts.ps1",
-      "sha256": "be9de72e2ce4d6aae8479ab955cf089872df2073c54bd4e5303ce2a0e212fcfd"
+      "sha256": "35eeba762c020043ebe91db9dfeab7b2b848b884f7b27676b2ff7a9095d23dd3"
     },
     {
       "path": "scripts/shared-governance.ps1",
-      "sha256": "74319209ccfc8eff104ddcfe92c289539a24a4790d26291ff936748d6bbb41f8"
+      "sha256": "6f7fdebceb685a955795cc8f1801f405e4e1e21906723a5eedc8e0c78865b81b"
     },
     {
       "path": "scripts/specrew-bootstrap-provider.ps1",
-      "sha256": "f6f5eaae200107665cf012fbdf66ab5e42b4681eadcfa96699a579747c46b83a"
+      "sha256": "6407926476bb0938f2880def5f0575bd5e7ba27b51a8988f21030d98c2794b4e"
     },
     {
       "path": "scripts/specrew-co-review-navigator-provider.ps1",
@@ -592,7 +592,7 @@
     },
     {
       "path": "scripts/specrew-conformance-provider.ps1",
-      "sha256": "7d0acd2624b625b5b0008273dcb27b7a02e510b599481b4a8e3b956a44e2a2e6"
+      "sha256": "9a00e6f8aa006762da9d52d18fc8e2f17c08bb5aec0ba3b45139a4a9077b2107"
     },
     {
       "path": "scripts/specrew-handover-provider.ps1",
@@ -604,7 +604,7 @@
     },
     {
       "path": "scripts/sync-boundary-state.ps1",
-      "sha256": "8506691f7ba4e571028422c687179a7f98586741422dae5a23460bb2d3e7cf3e"
+      "sha256": "460c1ed702d992f5cb48e4cbb83de47724ba7867a7f648d4d9a98ca775a85900"
     },
     {
       "path": "scripts/sync-squad-model-overrides.ps1",
@@ -620,7 +620,7 @@
     },
     {
       "path": "scripts/validate-governance.ps1",
-      "sha256": "4f04ce6956cc6ad4e3812eee63671f3560f5e9789035dfd1e746ce0f5430d9b4"
+      "sha256": "e6ddb371122d0d569b6f783730dfdc8483f678ae2eb4608fa6318a9475abfd6e"
     },
     {
       "path": "scripts/validate-versions.ps1",

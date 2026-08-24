@@ -1,0 +1,32 @@
+{
+  "session_id": "280fb541-bf3a-4948-b9da-a9afd464c0d2",
+  "last_seen_boundary": "before-implement",
+  "context_mtime": "2026-08-22T23:36:53.4699871Z",
+  "breaker": null,
+  "journal": [
+    {
+      "at": "2026-08-22T23:22:09.1457973Z",
+      "trigger": "b2",
+      "scope": "general",
+      "channel": "hook",
+      "tokens": 566,
+      "outcome": "injected"
+    },
+    {
+      "at": "2026-08-22T23:22:17.7987175Z",
+      "trigger": "b2",
+      "scope": "general",
+      "channel": "hook",
+      "tokens": 566,
+      "outcome": "injected"
+    },
+    {
+      "at": "2026-08-22T23:34:58.0215965Z",
+      "trigger": "b3",
+      "scope": "general+boundary.next",
+      "channel": "hook",
+      "tokens": 0,
+      "outcome": "deduped"
+    }
+  ]
+}
