@@ -22,11 +22,34 @@
 
 ## Summary
 
-**Total drift events**: 4 (0 in this project, 4 Specrew-side findings)
-**Resolution rate**: no in-project drift detected yet (0/0); all four tooling findings are open upstream
+**Total drift events**: 5 (0 in this project, 5 Specrew-side findings)
+**Resolution rate**: no in-project drift detected yet (0/0); all five tooling findings are open upstream
 **Specification drift**: None detected
 
 ## Events
+
+### DRIFT-012: refusals that report a failed comparison name neither side of it
+
+**Detected**: 2026-08-27, iteration 002 — the second instance in one day.
+**Class**: defect pattern (diagnostic completeness) across Specrew's refusal surfaces, generalizing
+DRIFT-009 and DRIFT-011. Not spec, plan, or implementation drift in KeyContextAI.
+**Requirement**: none. No FR or SC of this feature is affected.
+**Status**: open upstream.
+
+**The pattern**: two refusals in one day withheld the one fact that would have made them actionable.
+`verification-target-digest-mismatch-before-execution` (DRIFT-011) names that a comparison failed and
+neither side of it — both movers were two lines of `git status` away. Earlier the same day, the
+governance seal reported `diagnostics-require-command-scoped-disclosure` (DRIFT-009) for what turned
+out to be a one-line canonical-value error. In each case the machinery owned both compared values and
+the delta between them, and the message carried the reason token alone.
+
+**Consequence if unfixed**: every comparison-shaped gate in the toolchain fails opaque-by-default,
+and the cost repeats per gate as it did twice today — spent attempts, misdiagnosis, and human
+interrupts on failures whose diagnosis the machinery already held.
+
+- **Class closure**: NONE — the rule belongs in the Specrew repository, applied across refusal
+  surfaces rather than per message: a refusal reporting a failed comparison must name both sides and
+  what changed between them. Handed to the maintainer.
 
 ### DRIFT-011: the preflight digest-mismatch failure names neither the paths that moved nor how to see them
 
@@ -63,6 +86,20 @@ one-line `git status` diagnosis.
 - **Class closure**: NONE — the fix belongs in the Specrew repository: have the preflight failure
   carry the paths that differ between the pinned and live reviewed-state digests (facts the
   controller already owns) beside the unchanged reason token. Handed to the maintainer.
+
+**Correction (2026-08-27, recorded after reconciling the killed run)**: the clause above claiming
+none of the three attempts could have succeeded is false for the third. By its run
+(run-20260827-141057773-43f224b7, requested 14:10:57Z) the records' content had stabilized at digest
+`29720be4` — the same content later committed in `bb7cec1` — so it passed target verification,
+invoked the codex reviewer under containment and spent the round. It died because the maintainer's
+"stop retrying" instruction was executed against it. Both halves of that error belong in the record:
+the executor killed the background task without reading its interim output first, and the
+instruction was underspecified — "stop retrying" is safe when every attempt is doomed and
+destructive when one is not, and it named no condition to check before killing. A correction that
+assigns the whole error to the executor is as inaccurate as one that assigns none. The killed run
+was reconciled to terminal (verdict=incomplete, completion=none, runtime_outcome=abandoned) rather
+than reset over, so the store carries what happened rather than a topped-up counter over an
+unfinished fact.
 
 ### DRIFT-010: the demotion rule understates invariant-inversion findings, and the summary line reports the demoted grade as if it were the reviewer's
 
