@@ -66,7 +66,8 @@ public sealed class CorrectionManagerFailClosedTests
     }
 
     private static FocusContext Context(int handle, PasswordState state) =>
-        new((nint)handle, handle, handle, null, null, null, null, null, true, true, state, null);
+        new((nint)handle, handle + 1000, handle, handle, null, null, null, null, null, true, true,
+            state, null);
 
     private static KeyEvent Character(char value) =>
         new(30, 65, value, new LayoutId("en-US"), KeyEventKind.Character, false, 0);
@@ -96,6 +97,8 @@ public sealed class CorrectionManagerFailClosedTests
 
     private sealed class FakeFocus : IFocusAccessor
     {
+        private FocusContext? _current;
+
         public PasswordState State { get; set; }
 
         public event Action<FocusContext>? FocusChanged;
@@ -111,7 +114,16 @@ public sealed class CorrectionManagerFailClosedTests
         public void Publish(FocusContext context)
         {
             State = context.PasswordState;
+            _current = context;
             FocusChanged?.Invoke(context);
+        }
+
+        public void PublishCurrentFocus()
+        {
+            if (_current is { } current)
+            {
+                FocusChanged?.Invoke(current);
+            }
         }
     }
 }

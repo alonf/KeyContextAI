@@ -15,6 +15,15 @@ public interface IFocusAccessor
     /// <summary>Published whenever the foreground window or focused control changes.</summary>
     event Action<FocusContext> FocusChanged;
 
+    /// <summary>Publishes a snapshot of whatever currently has focus.</summary>
+    /// <remarks>
+    /// Focus notifications describe <em>changes</em>. Without an explicit initial snapshot, an
+    /// application started while the user is already typing has no focus context at all, so every
+    /// key is rejected as unattributable and capture stays dead until the user happens to switch
+    /// windows. Called once at startup, before capture is declared ready.
+    /// </remarks>
+    void PublishCurrentFocus();
+
     /// <summary>Determines whether the current focused control is a password field.</summary>
     /// <returns><see cref="PasswordState.Yes"/>, <see cref="PasswordState.No"/>, or
     /// <see cref="PasswordState.Unknown"/>. Never throws.</returns>

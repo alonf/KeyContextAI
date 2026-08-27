@@ -27,15 +27,13 @@ public sealed class CorrectionManagerPrivacyTests
         var keystrokes = new FakeKeystrokes();
         var focus = new FakeFocus { State = PasswordState.No };
         using var manager = new CorrectionManager(keystrokes, focus, new WordAssemblyEngine());
-        focus.Publish(new FocusContext((nint)1, 1, 1, null, null, null, null, null, true, true,
-            PasswordState.No, null));
+        focus.Publish(Context(1, PasswordState.No));
 
         keystrokes.Publish(Character('a'));
         keystrokes.Publish(Separator());
         Assert.Equal(1, manager.TranscriptCount);
 
-        focus.Publish(new FocusContext((nint)2, 2, 2, null, null, null, null, null, true, true,
-            PasswordState.No, null));
+        focus.Publish(Context(2, PasswordState.No));
 
         Assert.Equal(0, manager.TranscriptCount);
     }
@@ -46,14 +44,23 @@ public sealed class CorrectionManagerPrivacyTests
         var keystrokes = new FakeKeystrokes();
         var focus = new FakeFocus { State = PasswordState.No };
         using var manager = new CorrectionManager(keystrokes, focus, new WordAssemblyEngine());
+        focus.Publish(Context(1, PasswordState.No));
 
+        // The transcript must hold text before the pause, or the wipe assertion below passes
+        // vacuously and the pause-boundary privacy control goes unexercised.
         keystrokes.Publish(Character('a'));
         keystrokes.Publish(Separator());
+        Assert.Equal(1, manager.TranscriptCount);
+
         manager.Pause();
 
         Assert.True(manager.IsSuspended);
         Assert.Equal(0, manager.TranscriptCount);
     }
+
+    private static FocusContext Context(int handle, PasswordState state) =>
+        new((nint)handle, handle + 1000, handle, handle, null, null, null, null, null, true, true,
+            state, null);
 
     private static KeyEvent Character(char value) =>
         new(30, 65, value, new LayoutId("en-US"), KeyEventKind.Character, false, 0);
@@ -83,6 +90,8 @@ public sealed class CorrectionManagerPrivacyTests
 
     private sealed class FakeFocus : IFocusAccessor
     {
+        private FocusContext? _current;
+
         public PasswordState State { get; set; }
 
         public event Action<FocusContext>? FocusChanged;
@@ -98,7 +107,16 @@ public sealed class CorrectionManagerPrivacyTests
         public void Publish(FocusContext context)
         {
             State = context.PasswordState;
+            _current = context;
             FocusChanged?.Invoke(context);
+        }
+
+        public void PublishCurrentFocus()
+        {
+            if (_current is { } current)
+            {
+                FocusChanged?.Invoke(current);
+            }
         }
     }
 }

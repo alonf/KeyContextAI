@@ -27,7 +27,7 @@ public sealed class CorrectionManagerFocusTests
     }
 
     private static FocusContext Context(nint window, int process) =>
-        new(window, process, process, null, null, null, null, null, true, true,
+        new(window, window + 1000, process, process, null, null, null, null, null, true, true,
             PasswordState.No, null);
 
     private sealed class FakeKeystrokes : IKeystrokeAccessor
@@ -47,6 +47,8 @@ public sealed class CorrectionManagerFocusTests
 
     private sealed class FakeFocus : IFocusAccessor
     {
+        private FocusContext? _current;
+
         public event Action<FocusContext>? FocusChanged;
         public PasswordState IsPasswordContext() => PasswordState.No;
         public bool TryGetCaretPosition(out System.Drawing.Point p)
@@ -55,6 +57,18 @@ public sealed class CorrectionManagerFocusTests
             return false;
         }
 
-        public void Publish(FocusContext context) => FocusChanged?.Invoke(context);
+        public void Publish(FocusContext context)
+        {
+            _current = context;
+            FocusChanged?.Invoke(context);
+        }
+
+        public void PublishCurrentFocus()
+        {
+            if (_current is { } current)
+            {
+                FocusChanged?.Invoke(current);
+            }
+        }
     }
 }

@@ -57,6 +57,24 @@ public sealed class CorrectionManagerKeyOriginTests
     }
 
     [Fact]
+    public async Task ManagerStartedAfterFocusSettled_RetainsTheFirstWord()
+    {
+        var keystrokes = new FakeKeystrokes();
+        var focus = new FakeFocus { State = PasswordState.No };
+        // Focus settled before the manager existed, so no change event will ever announce it;
+        // only the startup snapshot can seed the context.
+        focus.Publish(Context(1, PasswordState.No));
+        using var manager = new CorrectionManager(keystrokes, focus, new WordAssemblyEngine());
+
+        await manager.StartAsync();
+
+        keystrokes.Publish(Character('a', sourceWindow: 1));
+        keystrokes.Publish(Separator(sourceWindow: 1));
+
+        Assert.Equal(1, manager.TranscriptCount);
+    }
+
+    [Fact]
     public void SequenceGap_InvalidatesTheEpochAndWipesTheTranscript()
     {
         var keystrokes = new FakeKeystrokes();
@@ -101,7 +119,8 @@ public sealed class CorrectionManagerKeyOriginTests
     }
 
     private static FocusContext Context(int handle, PasswordState state) =>
-        new((nint)handle, handle, handle, null, null, null, null, null, true, true, state, null);
+        new((nint)handle, handle + 1000, handle, handle, null, null, null, null, null, true, true,
+            state, null);
 
     private static KeyEvent Character(char value, int sourceWindow) =>
         new(30, 65, value, new LayoutId("en-US"), KeyEventKind.Character, false, 0, (nint)sourceWindow);
@@ -130,6 +149,8 @@ public sealed class CorrectionManagerKeyOriginTests
 
     private sealed class FakeFocus : IFocusAccessor
     {
+        private FocusContext? _current;
+
         public PasswordState State { get; set; }
 
         public event Action<FocusContext>? FocusChanged;
@@ -145,7 +166,16 @@ public sealed class CorrectionManagerKeyOriginTests
         public void Publish(FocusContext context)
         {
             State = context.PasswordState;
+            _current = context;
             FocusChanged?.Invoke(context);
+        }
+
+        public void PublishCurrentFocus()
+        {
+            if (_current is { } current)
+            {
+                FocusChanged?.Invoke(current);
+            }
         }
     }
 }

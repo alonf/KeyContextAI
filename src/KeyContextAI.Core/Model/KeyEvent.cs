@@ -20,6 +20,12 @@ namespace KeyContextAI.Core.Model;
 /// (FR-003).</param>
 /// <param name="SuppressedToken">Set when this key was suppressed by an armed transaction, so the
 /// correction path can correlate the suppression with the transaction that armed it.</param>
+/// <param name="SourceControlHandle">The focused control at the moment of capture. Within one
+/// top-level window an ordinary field and a password field share the correlation identity, so the
+/// control identity is what separates them (FR-003).</param>
+/// <param name="Modifiers">The modifier chord held when the key was pressed. A suppressed key is
+/// re-delivered after the correction, by which time the user may have released the modifier, so the
+/// chord must be replayed from what was captured rather than from current keyboard state.</param>
 /// <remarks>
 /// Transient by requirement: a key event exists only in memory and is never written to disk or
 /// transmitted (FR-004).
@@ -33,4 +39,6 @@ public sealed record KeyEvent(
     bool IsSelfInjected,
     long TimestampTicks,
     nint SourceWindowHandle = 0,
-    SuppressionToken? SuppressedToken = null);
+    SuppressionToken? SuppressedToken = null,
+    KeyModifiers Modifiers = KeyModifiers.None,
+    nint SourceControlHandle = 0);

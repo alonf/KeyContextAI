@@ -15,4 +15,8 @@ public enum InjectionFailureKind
     /// <summary>Some events were applied before the burst failed. The user's text has already been
     /// mutated and the caller must compensate for the applied prefix.</summary>
     PartiallyApplied,
+
+    /// <summary>Focus left the transaction's target window before any event was sent, so the
+    /// correction was abandoned with the user's text untouched (FR-012).</summary>
+    TargetLost,
 }

@@ -28,6 +28,12 @@ public sealed record InjectionResult(
         new(false, errorMessage, InjectionFailureKind.NothingApplied);
 
     /// <summary>
+    /// An abandoned injection that never reached the target, so the user's text is untouched.
+    /// </summary>
+    public static InjectionResult Abandoned(string errorMessage) =>
+        new(false, errorMessage, InjectionFailureKind.TargetLost);
+
+    /// <summary>
     /// A failed injection that had already mutated the target text. The caller must compensate
     /// for the applied prefix rather than assume the document is unchanged.
     /// </summary>

@@ -11,6 +11,11 @@ namespace KeyContextAI.Platform.Input;
 public sealed class InputInjectionAccessor : IInputInjectionAccessor
 {
     private const ushort VkBack = 0x08;
+    private const ushort VkShift = 0x10;
+    private const ushort VkControl = 0x11;
+    private const ushort VkMenu = 0x12;
+    private const ushort VkLwin = 0x5B;
+    private const uint GaRoot = 2;
     private const uint MapVkToVsc = 0;
     private const uint InputKeyboard = 1;
     private const uint KeyeventfExtendedkey = 0x0001;
@@ -33,9 +38,22 @@ public sealed class InputInjectionAccessor : IInputInjectionAccessor
             return InjectionResult.Failure("ReplacementText must be non-empty.");
         }
 
-        var correction = SendCorrectionBurst(tx.BackspaceCount, tx.ReplacementText);
+        // SendInput delivers to whatever window is foreground at the instant it is called, not to
+        // the window this transaction was built for. The manager's applicability check ran earlier
+        // and on another thread, so focus can have moved since. The target is therefore
+        // revalidated inside the send path, immediately before SendInput, which is what stops a
+        // burst of backspaces from deleting text in an unrelated application (FR-012).
+        var correction = SendCorrectionBurst(tx.BackspaceCount, tx.ReplacementText, tx.TargetWindowHandle);
         if (!correction.Succeeded)
         {
+            // The target was lost before anything mutated. Re-delivering the suppressed key now
+            // would type it into whichever window took focus, so the whole transaction is
+            // abandoned with the user's text untouched.
+            if (correction.FailureKind == InjectionFailureKind.TargetLost)
+            {
+                return correction;
+            }
+
             // A partial burst has already mutated the user's document. Restoring the original span
             // takes priority over re-delivering the suppressed key: the documented control is that
             // an injection failure leaves the text as it was.
@@ -64,6 +82,18 @@ public sealed class InputInjectionAccessor : IInputInjectionAccessor
 
     /// <inheritdoc />
     public Task ReinjectKeyAsync(KeyEvent key) => ReinjectKeyInternalAsync(key);
+
+    private static bool IsStillTargeting(nint targetWindow)
+    {
+        var foreground = GetForegroundWindow();
+        if (foreground == nint.Zero)
+        {
+            return false;
+        }
+
+        var root = GetAncestor(foreground, GaRoot);
+        return (root != nint.Zero ? root : foreground) == targetWindow;
+    }
 
     internal static IReadOnlyList<InjectionStep> BuildCorrectionSteps(int backspaceCount, string replacementText)
     {
@@ -105,14 +135,60 @@ public sealed class InputInjectionAccessor : IInputInjectionAccessor
 
     internal static IReadOnlyList<InjectionStep> BuildReinjectSteps(KeyEvent key)
     {
-        var steps = new List<InjectionStep>(2);
+        // The suppressed key is re-delivered as the gesture the user made, not as a bare keypress.
+        // The user is free to release Shift or Ctrl while the correction runs, so replaying only
+        // the key would turn Shift+Enter into Enter — which in a chat client sends the message the
+        // user meant to break a line in. The chord is rebuilt from what was captured with the key.
+        var modifiers = ModifierKeys(key.Modifiers);
+        var steps = new List<InjectionStep>(2 + modifiers.Count * 2);
+
+        foreach (var modifier in modifiers)
+        {
+            AddVirtualKeyDown(steps, modifier, GetVirtualKeyScanCode(modifier));
+        }
+
         AddKeyPress(steps, key);
+
+        for (var i = modifiers.Count - 1; i >= 0; i--)
+        {
+            AddVirtualKeyUp(steps, modifiers[i], GetVirtualKeyScanCode(modifiers[i]));
+        }
+
         return steps;
+    }
+
+    private static List<ushort> ModifierKeys(KeyModifiers modifiers)
+    {
+        var keys = new List<ushort>(4);
+        if (modifiers.HasFlag(KeyModifiers.Control))
+        {
+            keys.Add(VkControl);
+        }
+
+        if (modifiers.HasFlag(KeyModifiers.Alt))
+        {
+            keys.Add(VkMenu);
+        }
+
+        if (modifiers.HasFlag(KeyModifiers.Shift))
+        {
+            keys.Add(VkShift);
+        }
+
+        if (modifiers.HasFlag(KeyModifiers.Windows))
+        {
+            keys.Add(VkLwin);
+        }
+
+        return keys;
     }
 
     private static async Task<InjectionResult> ReinjectKeyInternalAsync(KeyEvent key)
     {
-        var result = SendBurst(BuildReinjectSteps(key));
+        // The suppressed key is re-delivered only into the window it was typed in, for the same
+        // FR-012 reason the correction burst revalidates: a focus change between suppression and
+        // re-delivery would otherwise type the key into an unrelated application.
+        var result = SendBurst(BuildReinjectSteps(key), key.SourceWindowHandle);
         return await Task.FromResult(result).ConfigureAwait(false);
     }
 
@@ -120,15 +196,22 @@ public sealed class InputInjectionAccessor : IInputInjectionAccessor
         int backspaceCount,
         string replacementText,
         Func<INPUT[], int> sender) =>
-        SendCorrectionBurst(backspaceCount, replacementText, sender);
+        SendCorrectionBurst(backspaceCount, replacementText, nint.Zero, sender);
 
     private static InjectionResult SendCorrectionBurst(
         int backspaceCount,
         string replacementText,
+        nint targetWindow = 0,
         Func<INPUT[], int>? sender = null)
     {
         var steps = BuildCorrectionSteps(backspaceCount, replacementText);
-        var sent = SendSteps(steps, out var error, sender);
+        var sent = SendSteps(steps, targetWindow, out var error, out var targetLost, sender);
+        if (targetLost)
+        {
+            return InjectionResult.Abandoned(
+                "Focus left the target window before injection; the correction was abandoned.");
+        }
+
         if (sent == steps.Count)
         {
             return InjectionResult.Success();
@@ -179,7 +262,17 @@ public sealed class InputInjectionAccessor : IInputInjectionAccessor
             return partial;
         }
 
-        var sent = SendSteps(steps, out var error);
+        var sent = SendSteps(steps, tx.TargetWindowHandle, out var error, out var targetLost);
+        if (targetLost)
+        {
+            // Compensating into whichever window took focus would damage a second application on
+            // top of the first, so the restoration is abandoned and the damage reported instead.
+            return partial with
+            {
+                ErrorMessage = $"{partial.ErrorMessage} Focus left the target window before compensation; the target text is left modified.",
+            };
+        }
+
         return sent == steps.Count
             ? partial with
             {
@@ -213,10 +306,13 @@ public sealed class InputInjectionAccessor : IInputInjectionAccessor
 
     private static int SendSteps(
         IReadOnlyList<InjectionStep> steps,
+        nint targetWindow,
         out int win32Error,
+        out bool targetLost,
         Func<INPUT[], int>? sender = null)
     {
         win32Error = 0;
+        targetLost = false;
         if (steps.Count == 0)
         {
             return 0;
@@ -226,6 +322,15 @@ public sealed class InputInjectionAccessor : IInputInjectionAccessor
         for (var i = 0; i < steps.Count; i++)
         {
             inputs[i] = steps[i].ToInput();
+        }
+
+        // The foreground is read here, after every step has been built and marshalled, so nothing
+        // but this comparison sits between the read and the SendInput call. Checking any earlier
+        // widens the window in which focus can move after the check and before the burst.
+        if (targetWindow != nint.Zero && !IsStillTargeting(targetWindow))
+        {
+            targetLost = true;
+            return 0;
         }
 
         var sent = sender is null
@@ -240,14 +345,20 @@ public sealed class InputInjectionAccessor : IInputInjectionAccessor
         return sent;
     }
 
-    private static InjectionResult SendBurst(IReadOnlyList<InjectionStep> steps)
+    private static InjectionResult SendBurst(IReadOnlyList<InjectionStep> steps, nint targetWindow)
     {
         if (steps.Count == 0)
         {
             return InjectionResult.Success();
         }
 
-        var sent = SendSteps(steps, out var error);
+        var sent = SendSteps(steps, targetWindow, out var error, out var targetLost);
+        if (targetLost)
+        {
+            return InjectionResult.Abandoned(
+                "Focus left the source window before the suppressed key could be re-delivered; the key was dropped.");
+        }
+
         return sent == steps.Count
             ? InjectionResult.Success()
             : InjectionResult.Failure(
@@ -267,6 +378,12 @@ public sealed class InputInjectionAccessor : IInputInjectionAccessor
         steps.Add(new InjectionStep(InjectionStepKind.KeyUp, virtualKey, scanCode, null, isExtended, NativeInputTags.SelfInjectionTag));
     }
 
+    private static void AddVirtualKeyDown(List<InjectionStep> steps, ushort virtualKey, ushort scanCode, bool isExtended = false) =>
+        steps.Add(new InjectionStep(InjectionStepKind.KeyDown, virtualKey, scanCode, null, isExtended, NativeInputTags.SelfInjectionTag));
+
+    private static void AddVirtualKeyUp(List<InjectionStep> steps, ushort virtualKey, ushort scanCode, bool isExtended = false) =>
+        steps.Add(new InjectionStep(InjectionStepKind.KeyUp, virtualKey, scanCode, null, isExtended, NativeInputTags.SelfInjectionTag));
+
     private static void AddUnicodePress(List<InjectionStep> steps, char ch)
     {
         steps.Add(new InjectionStep(InjectionStepKind.UnicodeDown, 0, ch, ch, false, NativeInputTags.SelfInjectionTag));
@@ -282,6 +399,12 @@ public sealed class InputInjectionAccessor : IInputInjectionAccessor
 
     [DllImport("user32.dll", SetLastError = true)]
     private static extern uint SendInput(uint cInputs, INPUT[] pInputs, int cbSize);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    private static extern nint GetForegroundWindow();
+
+    [DllImport("user32.dll", SetLastError = true)]
+    private static extern nint GetAncestor(nint hwnd, uint flags);
 
     [DllImport("user32.dll", SetLastError = true)]
     private static extern uint MapVirtualKey(uint uCode, uint uMapType);

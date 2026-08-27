@@ -21,6 +21,7 @@ public sealed class KeystrokeAccessor : IKeystrokeAccessor, IDisposable
     private const int WmSyskeyup = 0x0105;
 
     private const uint VkSpace = 0x20;
+    private const uint GaRoot = 2;
     private const uint VkTab = 0x09;
     private const uint VkReturn = 0x0D;
     private const uint VkBack = 0x08;
@@ -225,9 +226,26 @@ public sealed class KeystrokeAccessor : IKeystrokeAccessor, IDisposable
         // consumer runs later and on a different thread; sampling there would attribute the key to
         // whatever window happens to be focused by then, which is how a password-field keystroke
         // could be evaluated against an ordinary field's context (FR-003).
-        var sourceWindow = GetForegroundWindow();
+        // Normalized to the top-level window with GA_ROOT so it names the same identity the focus
+        // stream publishes. GetForegroundWindow already returns a top-level window, but the
+        // normalization is explicit so the correlation identity is established the same way on
+        // both sides rather than by coincidence of which API each happens to call.
+        var rawWindow = GetForegroundWindow();
+        var sourceWindow = rawWindow == nint.Zero ? nint.Zero : NormalizeToRoot(rawWindow);
         var sourceThread = sourceWindow == nint.Zero ? 0 : GetWindowThreadProcessId(sourceWindow, out _);
         var layout = GetKeyboardLayout(sourceThread);
+
+        // The focused control is captured alongside the window because within one top-level window
+        // an ordinary field and a password field are indistinguishable by window identity alone.
+        var sourceControl = TryGetFocusedControl(sourceThread);
+
+        // Modifier and toggle state must be sampled HERE. GetKeyboardState reads the calling
+        // thread's input state, and the consumer thread does not process the target application's
+        // keyboard messages, so reading it there returns state that is stale or simply absent —
+        // Shift+1 would translate as '1' rather than '!', losing the word boundary and making the
+        // transcript diverge from the text on screen.
+        var keyboardState = new byte[256];
+        _ = GetKeyboardState(keyboardState);
 
         // Suppression consumes the armed state only for the key it was armed for, and only once.
         // Anything else is passed through, so ordinary characters are never swallowed while armed.
@@ -254,7 +272,9 @@ public sealed class KeystrokeAccessor : IKeystrokeAccessor, IDisposable
             sourceThread,
             layout,
             Interlocked.Increment(ref _sequence),
-            consumedToken);
+            consumedToken,
+            keyboardState,
+            sourceControl);
 
         if (!_pending.Writer.TryWrite(pending))
         {
@@ -325,7 +345,55 @@ public sealed class KeystrokeAccessor : IKeystrokeAccessor, IDisposable
             false,
             data.Time,
             data.SourceWindow,
-            data.SuppressedToken);
+            data.SuppressedToken,
+            ReadModifiers(data.KeyboardState),
+            data.SourceControl);
+    }
+
+    private static nint TryGetFocusedControl(uint threadId)
+    {
+        var info = new GuiThreadInfo
+        {
+            CbSize = (uint)Marshal.SizeOf<GuiThreadInfo>(),
+        };
+
+        return GetGUIThreadInfo(threadId, ref info) ? info.HwndFocus : nint.Zero;
+    }
+
+    private static KeyModifiers ReadModifiers(byte[] keyboardState)
+    {
+        var modifiers = KeyModifiers.None;
+        if (IsDown(keyboardState, VkShift))
+        {
+            modifiers |= KeyModifiers.Shift;
+        }
+
+        if (IsDown(keyboardState, VkControl))
+        {
+            modifiers |= KeyModifiers.Control;
+        }
+
+        if (IsDown(keyboardState, VkMenu))
+        {
+            modifiers |= KeyModifiers.Alt;
+        }
+
+        if (IsDown(keyboardState, VkLwin) || IsDown(keyboardState, VkRwin))
+        {
+            modifiers |= KeyModifiers.Windows;
+        }
+
+        return modifiers;
+    }
+
+    // The high bit is the held bit; the low bit is the toggle state, which is not a chord.
+    private static bool IsDown(byte[] keyboardState, uint virtualKey) =>
+        (keyboardState[virtualKey] & 0x80) != 0;
+
+    private static nint NormalizeToRoot(nint hwnd)
+    {
+        var root = GetAncestor(hwnd, GaRoot);
+        return root != nint.Zero ? root : hwnd;
     }
 
     private static LayoutId LayoutIdFromKeyboardLayout(nint hkl)
@@ -343,17 +411,14 @@ public sealed class KeystrokeAccessor : IKeystrokeAccessor, IDisposable
 
     private static char? TryTranslateCharacter(PendingKey data)
     {
-        Span<byte> keyboardState = stackalloc byte[256];
-        if (!GetKeyboardState(keyboardState))
-        {
-            return null;
-        }
-
+        // The state was captured on the hook callback and travels with the key. Calling
+        // GetKeyboardState here instead would read this consumer thread's own input state, which
+        // never sees the target application's modifier keys.
         Span<char> buffer = stackalloc char[8];
         var translated = ToUnicodeEx(
             data.VirtualKeyCode,
             data.ScanCode,
-            keyboardState,
+            data.KeyboardState,
             buffer,
             buffer.Length,
             0,
@@ -456,6 +521,36 @@ public sealed class KeystrokeAccessor : IKeystrokeAccessor, IDisposable
         nint dwhkl);
 
     [DllImport("user32.dll", SetLastError = true)]
+    private static extern nint GetAncestor(nint hwnd, uint flags);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool GetGUIThreadInfo(uint idThread, ref GuiThreadInfo lpgui);
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct GuiThreadInfo
+    {
+        public uint CbSize;
+        public uint Flags;
+        public nint HwndActive;
+        public nint HwndFocus;
+        public nint HwndCapture;
+        public nint HwndMenuOwner;
+        public nint HwndMoveSize;
+        public nint HwndCaret;
+        public GuiRect CaretRect;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct GuiRect
+    {
+        public int Left;
+        public int Top;
+        public int Right;
+        public int Bottom;
+    }
+
+    [DllImport("user32.dll", SetLastError = true)]
     private static extern uint GetCurrentThreadId();
 
     [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
@@ -519,7 +614,9 @@ public sealed class KeystrokeAccessor : IKeystrokeAccessor, IDisposable
         uint SourceThread,
         nint KeyboardLayout,
         long Sequence,
-        SuppressionToken? SuppressedToken);
+        SuppressionToken? SuppressedToken,
+        byte[] KeyboardState,
+        nint SourceControl);
 
     private delegate nint HookProc(int code, nint wParam, nint lParam);
 }

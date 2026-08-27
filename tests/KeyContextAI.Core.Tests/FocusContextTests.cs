@@ -18,6 +18,7 @@ public sealed class FocusContextTests
 
         var context = new FocusContext(
             (nint)1234,
+            (nint)2345,
             5678,
             9012,
             "Editor",
@@ -31,6 +32,7 @@ public sealed class FocusContextTests
             caret);
 
         Assert.Equal((nint)1234, context.WindowHandle);
+        Assert.Equal((nint)2345, context.ControlHandle);
         Assert.Equal(5678, context.ProcessId);
         Assert.Equal(9012, context.ThreadId);
         Assert.Equal("Editor", context.WindowTitle);

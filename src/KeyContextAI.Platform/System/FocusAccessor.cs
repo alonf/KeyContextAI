@@ -14,6 +14,7 @@ public sealed class FocusAccessor : IFocusAccessor, IDisposable
     private const uint EventSystemForeground = 0x0003;
     private const uint EventObjectFocus = 0x8005;
     private const uint WinEventOutOfContext = 0x0000;
+    private const uint GaRoot = 2;
 
     private readonly WinEventDelegate _callback;
     private readonly nint _foregroundHook;
@@ -130,19 +131,67 @@ public sealed class FocusAccessor : IFocusAccessor, IDisposable
             return;
         }
 
-        var windowHandle = hwnd != nint.Zero ? hwnd : GetForegroundWindow();
-        if (windowHandle == nint.Zero)
+        var reported = hwnd != nint.Zero ? hwnd : GetForegroundWindow();
+        if (reported == nint.Zero)
         {
             return;
         }
+
+        // EVENT_OBJECT_FOCUS reports the focused CONTROL, which in most applications is a child of
+        // the top-level window. The keystroke stream can only ever observe the top-level window, so
+        // publishing the raw handle as the correlation identity makes the two streams disagree for
+        // every ordinary control and discards all typing. Both identities are carried: the root for
+        // correlation, the reported handle for the password gate.
+        var windowHandle = GetAncestor(reported, GaRoot) is var root && root != nint.Zero ? root : reported;
+        var controlHandle = reported != windowHandle ? reported : (nint?)null;
 
         // The boundary is announced before the UI Automation probe runs. A probe can stall for as
         // long as the focused application's automation provider takes to answer, and until it
         // returns the consumer would otherwise still be holding the previous control's password
         // state. Announcing PasswordState.Unknown first fails the consumer closed for the whole
         // duration of the probe; the resolved state is published when the probe returns.
-        Publish(BuildProvisionalContext(windowHandle, eventType));
-        Publish(BuildResolvedContext(windowHandle, eventType));
+        Publish(BuildProvisionalContext(windowHandle, controlHandle, eventType));
+        Publish(BuildResolvedContext(windowHandle, controlHandle, eventType));
+    }
+
+    /// <summary>
+    /// Publishes a fail-closed snapshot of whatever currently has focus.
+    /// </summary>
+    /// <remarks>
+    /// WinEvents only fire on a <em>change</em>. Without this, an application started while the user
+    /// is already typing into an existing window holds no focus context at all, and every keystroke
+    /// is discarded until the user happens to switch windows. Seeding at startup makes the current
+    /// window observable; the probe then resolves its password state as usual.
+    /// </remarks>
+    public void PublishCurrentFocus()
+    {
+        if (_disposed)
+        {
+            return;
+        }
+
+        var foreground = GetForegroundWindow();
+        if (foreground == nint.Zero)
+        {
+            return;
+        }
+
+        var focused = TryGetFocusedControl(foreground);
+        var controlHandle = focused != nint.Zero && focused != foreground ? focused : (nint?)null;
+
+        Publish(BuildProvisionalContext(foreground, controlHandle, EventObjectFocus));
+        Publish(BuildResolvedContext(foreground, controlHandle, EventObjectFocus));
+    }
+
+    private static nint TryGetFocusedControl(nint foreground)
+    {
+        var info = new GuiThreadInfo
+        {
+            CbSize = (uint)Marshal.SizeOf<GuiThreadInfo>(),
+        };
+
+        var threadId = GetWindowThreadProcessId(foreground, out _);
+        return GetGUIThreadInfo(threadId, ref info) ? info.HwndFocus : nint.Zero;
     }
 
     private void Publish(FocusContext context)
@@ -156,12 +205,13 @@ public sealed class FocusAccessor : IFocusAccessor, IDisposable
         FocusChanged?.Invoke(context);
     }
 
-    private static FocusContext BuildProvisionalContext(nint windowHandle, uint eventType)
+    private static FocusContext BuildProvisionalContext(nint windowHandle, nint? controlHandle, uint eventType)
     {
         var threadId = GetWindowThreadProcessId(windowHandle, out var processId);
 
         return new FocusContext(
             windowHandle,
+            controlHandle,
             (int)processId,
             (int)threadId,
             null,
@@ -175,7 +225,7 @@ public sealed class FocusAccessor : IFocusAccessor, IDisposable
             null);
     }
 
-    private FocusContext BuildResolvedContext(nint windowHandle, uint eventType)
+    private FocusContext BuildResolvedContext(nint windowHandle, nint? controlHandle, uint eventType)
     {
         var threadId = GetWindowThreadProcessId(windowHandle, out var processId);
 
@@ -188,6 +238,7 @@ public sealed class FocusAccessor : IFocusAccessor, IDisposable
 
         return new FocusContext(
             windowHandle,
+            controlHandle,
             (int)processId,
             (int)threadId,
             title,
@@ -298,6 +349,9 @@ public sealed class FocusAccessor : IFocusAccessor, IDisposable
 
     [DllImport("user32.dll", SetLastError = true)]
     private static extern int GetWindowTextLength(nint hWnd);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    private static extern nint GetAncestor(nint hwnd, uint flags);
 
     [DllImport("user32.dll", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
