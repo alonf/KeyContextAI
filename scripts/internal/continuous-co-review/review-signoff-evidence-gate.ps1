@@ -801,7 +801,7 @@ function Resolve-ReviewCampaignVerdictPacketDecision {
             }
             catch { $null = $_ }
         }
-        return New-ReviewCampaignVerdictPacketDecision -Route 'review-required' -Reason 'no-authoritative-campaign-result' -Message ('No completed review covers your files as they are now. Approving a review round is the human''s decision and costs one of their rounds, so ASK them for it: their typed reply `approved for review round` is the approval, and Specrew captures it from the conversation. Once they have typed it, run specrew review --live --approve-round yourself. If they prefer not to spend a round, they can review the artifacts themselves and say what they conclude.' + $w52DeferralNote) -CampaignId $CampaignId -TargetDigest $CurrentDigest -ImplementerAction 'request-authorized-review'
+        return New-ReviewCampaignVerdictPacketDecision -Route 'review-required' -Reason 'no-authoritative-campaign-result' -Message ('No completed review covers your files as they are now. Approving a review round is the human''s decision and costs one of their rounds, so ASK them for it: their typed reply `approved for review round` (as a normal chat message - a reply inside a question UI or picker is not captured) is the approval, and Specrew captures it from the conversation. Once they have typed it, run specrew review --live --approve-round yourself. If they prefer not to spend a round, they can review the artifacts themselves and say what they conclude.' + $w52DeferralNote) -CampaignId $CampaignId -TargetDigest $CurrentDigest -ImplementerAction 'request-authorized-review'
     }
 
     # A newer claimed invocation supersedes every older result, including an older clean result.
@@ -841,11 +841,30 @@ function Resolve-ReviewCampaignVerdictPacketDecision {
             #
             # So the allow is conditional on the result being one that authorizes on its own terms. When
             # it is not, this falls through to the ordinary handling, which stales - the safe direction.
+            # W74 / round-30 finding, graded BLOCKING: NOT `can_approve_current` - IT CARRIES CURRENTNESS.
+            #
+            # That flag is composed at ingest as (complete AND currentness='current' AND verdict='pass'
+            # AND termination verified). Currentness is stamped SNAPSHOT-EXACT, so a records-only commit
+            # landing WHILE the reviewer runs makes it false for a complete, valid, passing, contained
+            # result - and this branch then refused to preserve the very pass it exists to preserve.
+            # Governance requires records commits; each one could invalidate the round that was running,
+            # and so could the next retry.
+            #
+            # The currentness half is already supplied here, and better: the records-only delta above is
+            # a VERIFIED SOURCE-AWARE comparison, not a frozen flag. So this asks only the other half -
+            # does the result authorize on its own terms - spelled out rather than borrowed:
+            # complete, valid, passing, contained. The round-5 rule is untouched: this preserves an
+            # authorizing result and still cannot promote one.
+            #
+            # THE SIBLING OF THE READER FIXED ONE COMMIT EARLIER (W72), missed under method rule 10 in
+            # the same commit that recorded it.
             $recordsOnlyAuthorizes = (
                 [string](Get-ReviewAuthorityProperty -Object $latest -Name 'runtime_outcome') -ceq 'completed' -and
                 [string](Get-ReviewAuthorityProperty -Object $latest -Name 'completion') -ceq 'complete' -and
                 [string](Get-ReviewAuthorityProperty -Object $latest -Name 'validation') -ceq 'valid' -and
-                [bool](Get-ReviewAuthorityProperty -Object $latest -Name 'can_approve_current')
+                [string](Get-ReviewAuthorityProperty -Object $latest -Name 'verdict') -ceq 'pass' -and
+                [string](Get-ReviewAuthorityProperty -Object $latest -Name 'containment') -ceq 'verified' -and
+                [bool](Get-ReviewAuthorityProperty -Object $latest -Name 'termination_verified')
             )
             if (-not $recordsOnlyAuthorizes) {
                 return New-ReviewCampaignVerdictPacketDecision -Route 'review-stale' -Reason 'records-only-delta-over-non-authorizing-result' -Message 'Only governance and records files changed since your last review, but that review did not finish with a result that can sign anything off. Run a fresh review of your files as they are now: specrew review --live' -CampaignId $CampaignId -RunId $latestRunId -TargetDigest $CurrentDigest -ImplementerAction 'request-current-digest-review'

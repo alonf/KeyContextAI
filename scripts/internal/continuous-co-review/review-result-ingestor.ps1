@@ -7,6 +7,9 @@ Set-StrictMode -Version Latest
 
 if (-not (Get-Command -Name 'Resolve-ReviewResultClassification' -ErrorAction SilentlyContinue)) { . (Join-Path $PSScriptRoot 'review-authority-core.ps1') }
 if (-not (Get-Command -Name 'Publish-ReviewRunResultFact' -ErrorAction SilentlyContinue)) { . (Join-Path $PSScriptRoot 'review-authority-store.ps1') }
+# Round-19 (DRIFT-199-I001-130): declared-coverage containment asks the VOLUME about case, so the
+# path-identity primitive must be loadable here. Guarded on the exact function used, not a sibling.
+if (-not (Get-Command -Name 'Get-ContinuousCoReviewPathComparer' -ErrorAction SilentlyContinue)) { . (Join-Path $PSScriptRoot 'path-identity.ps1') }
 
 function Get-ReviewRunStagingPaths {
     [CmdletBinding()]
@@ -230,7 +233,15 @@ function Test-ReviewExaminedPathIsSource {
     while ($p.StartsWith('./')) { $p = $p.Substring(2) }
     if ([string]::IsNullOrWhiteSpace($p)) { return $false }
     if ($p -match '(?i)^(specs|docs)/') { return $false }
-    if ($p -match '(?i)^\.(specrew|squad|specify|github|agents|cursor|copilot|claude)/') { return $false }
+    # Round-16 finding (DRIFT-199-I001-126): .github/ was non-source WHOLESALE, so a commit
+    # touching only .github/workflows/publish.yml read as records-only and signoff reused a review
+    # of a tree that never held the executable change - while reviewed-state-digest already treated
+    # workflows as reviewable, so the two consumers disagreed. The exemption now names the
+    # GOVERNANCE RECORDS and host mirrors it was always about; everything else under .github,
+    # workflows and composite actions included, is reviewable source.
+    if ($p -match '(?i)^(?:\.specrew|\.squad|\.specify|\.agents|\.cursor|\.copilot|\.claude)/') { return $false }
+    if ($p -match '(?i)^\.github/(?:skills|agents|prompts|instructions|chatmodes|ISSUE_TEMPLATE)/') { return $false }
+    if ($p -match '(?i)^\.github/[^/]+\.md$') { return $false }
     if ($p -match '(?i)\.(md|markdown|txt|rst|adoc)$') { return $false }
     return $true
 }
@@ -244,17 +255,58 @@ function Resolve-ReviewDeclaredCoverage {
     # complete/pass candidate that opened no files stay approval authority over a source-bearing
     # target. Only ABSENCE of the field keeps the legacy fail-open, for reviewers that predate the
     # declared-coverage contract.
-    param([object]$Candidate)
+    #
+    # Round-17 finding (DRIFT-199-I001-127): A CLAIM ABOUT THE FROZEN TREE IS CHECKED AGAINST IT.
+    # Nothing ever resolved a declared path: `examined_paths: ["src/nonexistent.cs"]` classified as
+    # source BY NAME, skipped the no-source degrade, and let a complete/pass result authorize a
+    # snapshot whose code was never opened - the hollow review W33 exists to catch, reachable by
+    # naming a file that does not exist. With -TargetRoot supplied, a path counts as source only when
+    # it resolves to a file INSIDE that root; without it the classifier keeps its by-name behavior,
+    # the same fail-open default W33's -TargetHasSource uses for callers that cannot supply it.
+    param([object]$Candidate, [AllowNull()][string]$TargetRoot)
     $empty = [pscustomobject]@{ declared = $false; paths = @(); source_paths = @() }
     if ($null -eq $Candidate) { return $empty }
     if (-not ($Candidate.PSObject.Properties.Name -contains 'examined_paths')) { return $empty }
     $paths = @(@($Candidate.examined_paths) |
             ForEach-Object { [string]$_ } |
             Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+    $rootFull = ''
+    if (-not [string]::IsNullOrWhiteSpace($TargetRoot)) {
+        try { $rootFull = [IO.Path]::GetFullPath($TargetRoot).TrimEnd([char]92, [char]47) } catch { $rootFull = '' }
+    }
+    $sourcePaths = @($paths | Where-Object {
+            if (-not (Test-ReviewExaminedPathIsSource -Path $_)) { return $false }
+            if ([string]::IsNullOrWhiteSpace($rootFull)) { return $true }
+            $rel = ([string]$_).Trim().Replace([char]92, [char]47)
+            while ($rel.StartsWith('./')) { $rel = $rel.Substring(2) }
+            if ([string]::IsNullOrWhiteSpace($rel)) { return $false }
+            # Round-19 finding (DRIFT-199-I001-130): REJECT, do not normalize. A declared path must
+            # be genuinely repo-relative and traversal-free - `..` anywhere, a rooted path, or a
+            # drive qualifier is not a claim about the frozen tree, whatever it resolves to on this
+            # disk. Checked BEFORE resolution so the containment test is never the only guard.
+            if (@($rel -split '/') -contains '..') { return $false }
+            if ($rel.StartsWith('/') -or $rel -match '^[A-Za-z]:') { return $false }
+            $full = ''
+            try { $full = [IO.Path]::GetFullPath((Join-Path $rootFull $rel)) } catch { return $false }
+            # Containment on the VOLUME's own case rule, never a hard-coded one: a case-sensitive
+            # volume can hold a sibling root differing only in case, and folding case there let a
+            # path outside the frozen tree pass as coverage of it. 'distinct' when undetermined
+            # keeps the two roots apart rather than merging them.
+            $prefix = $rootFull + [IO.Path]::DirectorySeparatorChar
+            $containmentComparison = [StringComparison]::Ordinal
+            if (Get-Command -Name 'Get-ContinuousCoReviewPathComparer' -ErrorAction SilentlyContinue) {
+                $volumeComparer = Get-ContinuousCoReviewPathComparer -Path $rootFull -WhenUndetermined 'distinct'
+                if ($volumeComparer.Equals(($rootFull.ToUpperInvariant()), ($rootFull.ToLowerInvariant()))) {
+                    $containmentComparison = [StringComparison]::OrdinalIgnoreCase
+                }
+            }
+            if (-not $full.StartsWith($prefix, $containmentComparison)) { return $false }
+            return [IO.File]::Exists($full)
+        })
     return [pscustomobject]@{
         declared     = $true
         paths        = @($paths)
-        source_paths = @($paths | Where-Object { Test-ReviewExaminedPathIsSource -Path $_ })
+        source_paths = @($sourcePaths)
     }
 }
 
@@ -282,6 +334,10 @@ function Invoke-ReviewResultIngress {
         # caller - fixtures included - on exactly today's behaviour: with no claim that the target
         # held code, a declared docs-only review is not evidence of anything being missed.
         [bool]$TargetHasSource = $false,
+        # Round-17 (DRIFT-199-I001-127): the frozen snapshot root, so a declared path can be RESOLVED
+        # rather than trusted by name. Same supplier as TargetHasSource - only the orchestrator holds
+        # the snapshot - and same fail-open default: absent means today's by-name classification.
+        [AllowNull()][string]$TargetRoot,
         [object[]]$PriorFindings = @()
     )
     $paths = Get-ReviewRunStagingPaths -StagingRoot $StagingRoot -CampaignId $CampaignId -RunId $RunId
@@ -345,7 +401,7 @@ function Invoke-ReviewResultIngress {
     # controller knows holds source, has not reviewed the code - whatever its verdict says. Routed
     # through the SAME degrade the design-context rule uses, so it cannot approve the current target
     # and cannot become the baseline a later round advances from.
-    $coverage = Resolve-ReviewDeclaredCoverage -Candidate $candidateRead.candidate
+    $coverage = Resolve-ReviewDeclaredCoverage -Candidate $candidateRead.candidate -TargetRoot $TargetRoot
     if ($candidateRead.valid -and $TargetHasSource -and $coverage.declared -and
         @($coverage.source_paths).Count -eq 0) {
         $coverageDegrade = if (@($coverage.paths).Count -eq 0) {
