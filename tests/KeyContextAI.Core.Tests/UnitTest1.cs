@@ -1,4 +1,4 @@
-﻿namespace KeyContextAI.Core.Tests;
+namespace KeyContextAI.Core.Tests;
 
 public class UnitTest1
 {

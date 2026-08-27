@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using System.Text;
 using KeyContextAI.Core.Contracts;
 using KeyContextAI.Core.Model;
 
@@ -115,10 +116,19 @@ public sealed class InputInjectionAccessor : IInputInjectionAccessor
         return await Task.FromResult(result).ConfigureAwait(false);
     }
 
-    private static InjectionResult SendCorrectionBurst(int backspaceCount, string replacementText)
+    internal static InjectionResult SendCorrectionBurstForTest(
+        int backspaceCount,
+        string replacementText,
+        Func<INPUT[], int> sender) =>
+        SendCorrectionBurst(backspaceCount, replacementText, sender);
+
+    private static InjectionResult SendCorrectionBurst(
+        int backspaceCount,
+        string replacementText,
+        Func<INPUT[], int>? sender = null)
     {
         var steps = BuildCorrectionSteps(backspaceCount, replacementText);
-        var sent = SendSteps(steps, out var error);
+        var sent = SendSteps(steps, out var error, sender);
         if (sent == steps.Count)
         {
             return InjectionResult.Success();
@@ -130,15 +140,30 @@ public sealed class InputInjectionAccessor : IInputInjectionAccessor
             return InjectionResult.Failure(message);
         }
 
-        // Steps are emitted as down/up pairs: backspaceCount pairs first, then one pair per
-        // replacement character. Halving the applied count gives the completed pairs, which is
-        // what actually changed the document. A trailing lone keydown is not counted as applied.
-        var appliedPairs = sent / 2;
-        var appliedBackspaces = Math.Min(appliedPairs, backspaceCount);
-        var appliedChars = Math.Max(0, appliedPairs - backspaceCount);
-        var appliedText = replacementText[..Math.Min(appliedChars, replacementText.Length)];
+        // Each applied step is accounted for by its own effect on the document, not by halving the
+        // event count: a Backspace keydown already deletes a character and a Unicode keydown
+        // already inserts one, so an odd trailing event has mutated the text even though its
+        // keyup never ran. Assuming otherwise leaves compensation working from the wrong state.
+        var appliedBackspaces = 0;
+        var appliedText = new StringBuilder();
+        for (var i = 0; i < sent; i++)
+        {
+            switch (steps[i].Kind)
+            {
+                case InjectionStepKind.KeyDown when steps[i].VirtualKey == VkBack:
+                    appliedBackspaces++;
+                    break;
 
-        return InjectionResult.PartialFailure(message, sent, appliedBackspaces, appliedText);
+                case InjectionStepKind.UnicodeDown when steps[i].UnicodeChar is { } ch:
+                    appliedText.Append(ch);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        return InjectionResult.PartialFailure(message, sent, appliedBackspaces, appliedText.ToString());
     }
 
     /// <summary>
@@ -186,7 +211,10 @@ public sealed class InputInjectionAccessor : IInputInjectionAccessor
             : original[^backspaceCount..];
     }
 
-    private static int SendSteps(IReadOnlyList<InjectionStep> steps, out int win32Error)
+    private static int SendSteps(
+        IReadOnlyList<InjectionStep> steps,
+        out int win32Error,
+        Func<INPUT[], int>? sender = null)
     {
         win32Error = 0;
         if (steps.Count == 0)
@@ -200,10 +228,13 @@ public sealed class InputInjectionAccessor : IInputInjectionAccessor
             inputs[i] = steps[i].ToInput();
         }
 
-        var sent = (int)SendInput((uint)inputs.Length, inputs, Marshal.SizeOf<INPUT>());
+        var sent = sender is null
+            ? (int)SendInput((uint)inputs.Length, inputs, Marshal.SizeOf<INPUT>())
+            : sender(inputs);
+
         if (sent != inputs.Length)
         {
-            win32Error = Marshal.GetLastWin32Error();
+            win32Error = sender is null ? Marshal.GetLastWin32Error() : 0;
         }
 
         return sent;

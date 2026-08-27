@@ -78,6 +78,11 @@ public sealed class CorrectionManagerFailClosedTests
     {
         public event Action<KeyEvent>? KeyObserved;
 
+        public event Action? SequenceGapDetected;
+
+
+        public void PublishSequenceGap() => SequenceGapDetected?.Invoke();
+
         public void Publish(KeyEvent key) => KeyObserved?.Invoke(key);
 
         public void Arm(SuppressionToken token) { }

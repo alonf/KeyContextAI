@@ -14,6 +14,13 @@ public interface IKeystrokeAccessor
     /// <summary>Published for every non-self-injected keystroke.</summary>
     event Action<KeyEvent> KeyObserved;
 
+    /// <summary>
+    /// Published when the observed keystroke sequence is no longer contiguous, because capture
+    /// overflowed or events were dropped. The word in progress no longer describes the text that
+    /// reached the application, so the consumer must invalidate rather than continue from it.
+    /// </summary>
+    event Action SequenceGapDetected;
+
     /// <summary>Arms the hook to suppress the next committing keystroke.</summary>
     void Arm(SuppressionToken token);
 

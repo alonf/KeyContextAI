@@ -32,7 +32,25 @@ public sealed class CorrectionManager : IDisposable
         _wordAssembly = wordAssembly ?? throw new ArgumentNullException(nameof(wordAssembly));
 
         _keystrokes.KeyObserved += HandleKeyObserved;
+        _keystrokes.SequenceGapDetected += HandleSequenceGap;
         _focus.FocusChanged += HandleFocusChanged;
+    }
+
+    private void HandleSequenceGap()
+    {
+        lock (_stateGate)
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            // Keystrokes were dropped, so the word in progress no longer describes the text that
+            // reached the application. Continuing from a truncated sequence would let a later
+            // correction backspace over the wrong span, so the epoch is invalidated instead.
+            _epochId++;
+            WipeTranscript();
+        }
     }
 
     /// <summary>True when input capture is paused or the password state is not known safe.</summary>
@@ -151,6 +169,18 @@ public sealed class CorrectionManager : IDisposable
                 return;
             }
 
+            // The key carries the window that had focus when it was typed. Keystroke capture and
+            // focus changes arrive on separate OS callback streams, so a key queued while another
+            // window — possibly a password field — had focus can arrive after the focus context
+            // has already moved on. Gating on the carried origin rather than on arrival order is
+            // what keeps that key from being retained against the wrong context (FR-003).
+            if (_currentFocus is not { } focus
+                || (key.SourceWindowHandle != 0 && key.SourceWindowHandle != focus.WindowHandle))
+            {
+                WipeTranscript();
+                return;
+            }
+
             var result = _wordAssembly.Append(key);
             if (result.Outcome != WordAssemblyOutcome.WordCompleted)
             {
@@ -199,6 +229,7 @@ public sealed class CorrectionManager : IDisposable
         }
 
         _keystrokes.KeyObserved -= HandleKeyObserved;
+        _keystrokes.SequenceGapDetected -= HandleSequenceGap;
         _focus.FocusChanged -= HandleFocusChanged;
         _keystrokes.Disarm();
         _ = _keystrokes.UninstallAsync();

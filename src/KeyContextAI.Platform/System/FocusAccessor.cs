@@ -14,7 +14,6 @@ public sealed class FocusAccessor : IFocusAccessor, IDisposable
     private const uint EventSystemForeground = 0x0003;
     private const uint EventObjectFocus = 0x8005;
     private const uint WinEventOutOfContext = 0x0000;
-    private const uint WinEventSkipOwnProcess = 0x0002;
 
     private readonly WinEventDelegate _callback;
     private readonly nint _foregroundHook;
@@ -27,6 +26,10 @@ public sealed class FocusAccessor : IFocusAccessor, IDisposable
     {
         _callback = HandleWinEvent;
 
+        // Own-process focus changes are observed too. Skipping them would mean that focus moving
+        // from another application into a KeyContextAI window published no boundary at all, so the
+        // transcript would survive a focus change that FR-003 requires to wipe it — and that gap
+        // widens as soon as this application owns a settings or credential field of its own.
         _foregroundHook = SetWinEventHook(
             EventSystemForeground,
             EventSystemForeground,
@@ -34,7 +37,7 @@ public sealed class FocusAccessor : IFocusAccessor, IDisposable
             _callback,
             0,
             0,
-            WinEventOutOfContext | WinEventSkipOwnProcess);
+            WinEventOutOfContext);
 
         _focusHook = SetWinEventHook(
             EventObjectFocus,
@@ -43,7 +46,7 @@ public sealed class FocusAccessor : IFocusAccessor, IDisposable
             _callback,
             0,
             0,
-            WinEventOutOfContext | WinEventSkipOwnProcess);
+            WinEventOutOfContext);
 
         if (_foregroundHook == nint.Zero || _focusHook == nint.Zero)
         {

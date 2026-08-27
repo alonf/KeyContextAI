@@ -50,4 +50,36 @@ public sealed class KeystrokeClassificationTests
     [Fact]
     public void LetterKeys_RemainCharacters() =>
         Assert.Equal(KeyEventKind.Character, KeystrokeAccessor.ClassifyKeyForTest(0x41));
+
+    [Theory]
+    [InlineData(0x31, '!')]
+    [InlineData(0x32, '@')]
+    [InlineData(0x33, '#')]
+    [InlineData(0x34, '$')]
+    [InlineData(0x35, '%')]
+    [InlineData(0x36, '^')]
+    [InlineData(0x37, '&')]
+    [InlineData(0x38, '*')]
+    [InlineData(0x39, '(')]
+    [InlineData(0x30, ')')]
+    public void ShiftedDigitPunctuation_EndsTheWord(uint virtualKey, char produced)
+    {
+        // These keep VK_0..VK_9, so a virtual-key-only classifier reads them as word content and
+        // never completes the word at the punctuation boundary.
+        Assert.Equal(KeyEventKind.Separator, KeystrokeAccessor.ClassifyKeyForTest(virtualKey, produced));
+    }
+
+    [Theory]
+    [InlineData(0x31, '1')]
+    [InlineData(0x39, '9')]
+    public void UnshiftedDigits_RemainWordContent(uint virtualKey, char produced) =>
+        Assert.Equal(KeyEventKind.Character, KeystrokeAccessor.ClassifyKeyForTest(virtualKey, produced));
+
+    [Fact]
+    public void LetterProducingACharacter_RemainsWordContent() =>
+        Assert.Equal(KeyEventKind.Character, KeystrokeAccessor.ClassifyKeyForTest(0x41, 'a'));
+
+    [Fact]
+    public void NonLatinLetter_RemainsWordContent() =>
+        Assert.Equal(KeyEventKind.Character, KeystrokeAccessor.ClassifyKeyForTest(0x41, 'ש'));
 }

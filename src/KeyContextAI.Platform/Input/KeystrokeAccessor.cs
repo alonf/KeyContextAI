@@ -62,6 +62,9 @@ public sealed class KeystrokeAccessor : IKeystrokeAccessor, IDisposable
     private readonly TaskCompletionSource<bool> _uninstallTcs = new(TaskCreationOptions.RunContinuationsAsynchronously);
     private Thread? _thread;
     private Thread? _consumerThread;
+    private long _sequence;
+    private long _lastSequence;
+    private int _droppedSinceLastGap;
     private nint _hookHandle;
     private uint _threadId;
     private int _armed;
@@ -77,6 +80,9 @@ public sealed class KeystrokeAccessor : IKeystrokeAccessor, IDisposable
 
     /// <inheritdoc />
     public event Action<KeyEvent>? KeyObserved;
+
+    /// <inheritdoc />
+    public event Action? SequenceGapDetected;
 
     /// <inheritdoc />
     public void Arm(SuppressionToken token)
@@ -214,23 +220,51 @@ public sealed class KeystrokeAccessor : IKeystrokeAccessor, IDisposable
             return CallNextHookEx(_hookHandle, code, wParam, lParam);
         }
 
-        // Nothing managed beyond a bounded-capacity enqueue happens on this callback. Windows
-        // removes a hook whose callback exceeds LowLevelHooksTimeout, and this callback sits on
-        // the user's typing path, so translation, word assembly and every subscriber run on the
-        // dedicated consumer thread instead.
-        _pending.Writer.TryWrite(new PendingKey(data.VkCode, data.ScanCode, data.Time));
+        // The origin is captured HERE, on the callback, because this is the only moment at which
+        // the foreground window and layout are known to be the ones the key was typed into. The
+        // consumer runs later and on a different thread; sampling there would attribute the key to
+        // whatever window happens to be focused by then, which is how a password-field keystroke
+        // could be evaluated against an ordinary field's context (FR-003).
+        var sourceWindow = GetForegroundWindow();
+        var sourceThread = sourceWindow == nint.Zero ? 0 : GetWindowThreadProcessId(sourceWindow, out _);
+        var layout = GetKeyboardLayout(sourceThread);
 
         // Suppression consumes the armed state only for the key it was armed for, and only once.
         // Anything else is passed through, so ordinary characters are never swallowed while armed.
+        SuppressionToken? consumedToken = null;
+        var suppress = false;
         if (Volatile.Read(ref _armed) != 0
             && IsSuppressionEligible(data.VkCode)
             && Interlocked.CompareExchange(ref _armed, 0, 1) == 1)
         {
+            consumedToken = _token;
             _token = default;
-            return (nint)1;
+            suppress = true;
         }
 
-        return CallNextHookEx(_hookHandle, code, wParam, lParam);
+        // Nothing managed beyond a bounded-capacity enqueue happens on this callback. Windows
+        // removes a hook whose callback exceeds LowLevelHooksTimeout, and this callback sits on
+        // the user's typing path, so translation, word assembly and every subscriber run on the
+        // dedicated consumer thread instead.
+        var pending = new PendingKey(
+            data.VkCode,
+            data.ScanCode,
+            data.Time,
+            sourceWindow,
+            sourceThread,
+            layout,
+            Interlocked.Increment(ref _sequence),
+            consumedToken);
+
+        if (!_pending.Writer.TryWrite(pending))
+        {
+            // A dropped keystroke means word assembly no longer describes the text that reached
+            // the application, so a later correction could replace the wrong span. Losing the
+            // sequence is recorded and surfaced rather than silently absorbed.
+            Interlocked.Increment(ref _droppedSinceLastGap);
+        }
+
+        return suppress ? (nint)1 : CallNextHookEx(_hookHandle, code, wParam, lParam);
     }
 
     private static bool IsSuppressionEligible(uint virtualKey) =>
@@ -241,7 +275,6 @@ public sealed class KeystrokeAccessor : IKeystrokeAccessor, IDisposable
         var reader = _pending.Reader;
         while (true)
         {
-            PendingKey pending;
             try
             {
                 if (!reader.WaitToReadAsync().AsTask().GetAwaiter().GetResult())
@@ -254,8 +287,16 @@ public sealed class KeystrokeAccessor : IKeystrokeAccessor, IDisposable
                 return;
             }
 
-            while (reader.TryRead(out pending))
+            while (reader.TryRead(out var pending))
             {
+                var dropped = Interlocked.Exchange(ref _droppedSinceLastGap, 0);
+                if (dropped > 0 || (_lastSequence != 0 && pending.Sequence != _lastSequence + 1))
+                {
+                    SequenceGapDetected?.Invoke();
+                }
+
+                _lastSequence = pending.Sequence;
+
                 var observed = KeyObserved;
                 if (observed is null)
                 {
@@ -269,10 +310,11 @@ public sealed class KeystrokeAccessor : IKeystrokeAccessor, IDisposable
 
     private static KeyEvent CreateKeyEvent(PendingKey data)
     {
-        var foregroundThreadId = GetForegroundThreadId();
-        var layout = LayoutIdFromKeyboardLayout(GetKeyboardLayout(foregroundThreadId));
-        var kind = ClassifyKey(data.VirtualKeyCode);
-        char? character = TryTranslateCharacter(data, foregroundThreadId) is char translated ? translated : null;
+        // Every field is derived from the snapshot taken on the callback. Nothing here samples
+        // current OS state, so the event describes the moment it was typed.
+        var layout = LayoutIdFromKeyboardLayout(data.KeyboardLayout);
+        char? character = TryTranslateCharacter(data) is char translated ? translated : null;
+        var kind = ClassifyKey(data.VirtualKeyCode, character);
 
         return new KeyEvent(
             (int)data.ScanCode,
@@ -281,7 +323,9 @@ public sealed class KeystrokeAccessor : IKeystrokeAccessor, IDisposable
             layout,
             kind,
             false,
-            data.Time);
+            data.Time,
+            data.SourceWindow,
+            data.SuppressedToken);
     }
 
     private static LayoutId LayoutIdFromKeyboardLayout(nint hkl)
@@ -297,7 +341,7 @@ public sealed class KeystrokeAccessor : IKeystrokeAccessor, IDisposable
         }
     }
 
-    private static char? TryTranslateCharacter(PendingKey data, uint threadId)
+    private static char? TryTranslateCharacter(PendingKey data)
     {
         Span<byte> keyboardState = stackalloc byte[256];
         if (!GetKeyboardState(keyboardState))
@@ -306,7 +350,6 @@ public sealed class KeystrokeAccessor : IKeystrokeAccessor, IDisposable
         }
 
         Span<char> buffer = stackalloc char[8];
-        var layoutHandle = GetKeyboardLayout(threadId);
         var translated = ToUnicodeEx(
             data.VirtualKeyCode,
             data.ScanCode,
@@ -314,14 +357,35 @@ public sealed class KeystrokeAccessor : IKeystrokeAccessor, IDisposable
             buffer,
             buffer.Length,
             0,
-            layoutHandle);
+            data.KeyboardLayout);
 
         return translated > 0 ? buffer[0] : null;
     }
 
-    internal static KeyEventKind ClassifyKeyForTest(uint virtualKey) => ClassifyKey(virtualKey);
+    internal static KeyEventKind ClassifyKeyForTest(uint virtualKey, char? character = null) =>
+        ClassifyKey(virtualKey, character);
 
-    private static KeyEventKind ClassifyKey(uint virtualKey)
+    private static KeyEventKind ClassifyKey(uint virtualKey, char? character = null)
+    {
+        var byVirtualKey = ClassifyVirtualKey(virtualKey);
+        if (byVirtualKey != KeyEventKind.Character)
+        {
+            return byVirtualKey;
+        }
+
+        // Virtual-key ranges cannot see shifted punctuation: !@#$%^&*() keep VK_0..VK_9, so they
+        // would fall through as word content and never complete the word at the punctuation
+        // boundary. The translated character is what the user actually typed, so boundaries are
+        // decided from it. Digits stay word content.
+        if (character is { } ch && !char.IsLetterOrDigit(ch) && !char.IsControl(ch))
+        {
+            return KeyEventKind.Separator;
+        }
+
+        return KeyEventKind.Character;
+    }
+
+    private static KeyEventKind ClassifyVirtualKey(uint virtualKey)
     {
         return virtualKey switch
         {
@@ -443,10 +507,19 @@ public sealed class KeystrokeAccessor : IKeystrokeAccessor, IDisposable
     }
 
     /// <summary>
-    /// The minimal native payload copied off the hook callback. Only blittable values cross the
-    /// channel, so the callback never touches the managed pipeline.
+    /// The minimal native payload copied off the hook callback, together with the origin captured
+    /// at that same instant. Only blittable values and an immutable snapshot cross the channel, so
+    /// the callback never touches the managed pipeline and the consumer never samples stale state.
     /// </summary>
-    private readonly record struct PendingKey(uint VirtualKeyCode, uint ScanCode, uint Time);
+    private readonly record struct PendingKey(
+        uint VirtualKeyCode,
+        uint ScanCode,
+        uint Time,
+        nint SourceWindow,
+        uint SourceThread,
+        nint KeyboardLayout,
+        long Sequence,
+        SuppressionToken? SuppressedToken);
 
     private delegate nint HookProc(int code, nint wParam, nint lParam);
 }

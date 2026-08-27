@@ -7,6 +7,13 @@ namespace KeyContextAI.Core.Engines;
 /// <inheritdoc cref="IWordAssemblyEngine" />
 public sealed class WordAssemblyEngine : IWordAssemblyEngine
 {
+    /// <summary>
+    /// The hardening gate's explicit maximum of 256 characters per active focus session. Without
+    /// it a long boundary-free input retains arbitrary typed text in memory and copies both
+    /// collections on every keystroke, which is quadratic.
+    /// </summary>
+    internal const int MaxWordLength = 256;
+
     private readonly StringBuilder _text = new();
     private readonly List<int> _scanCodes = [];
 
@@ -25,6 +32,15 @@ public sealed class WordAssemblyEngine : IWordAssemblyEngine
         switch (key.Kind)
         {
             case KeyEventKind.Character when key.Character is { } ch:
+                if (_text.Length >= MaxWordLength)
+                {
+                    // Overflow fails closed: the word is discarded rather than truncated, because
+                    // a truncated word no longer matches the text on screen and a correction
+                    // computed from it would replace the wrong span.
+                    Reset();
+                    return NoChange();
+                }
+
                 _text.Append(ch);
                 _scanCodes.Add(key.ScanCode);
                 return InProgress();

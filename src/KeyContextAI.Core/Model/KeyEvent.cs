@@ -13,6 +13,13 @@ namespace KeyContextAI.Core.Model;
 /// re-enter the pipeline (FR-013).</param>
 /// <param name="TimestampTicks">A monotonic timestamp used for ordering and typing-speed
 /// measurement.</param>
+/// <param name="SourceWindowHandle">The foreground window that had focus when the key was pressed,
+/// captured at the moment of capture rather than sampled later. Keystroke capture and focus changes
+/// arrive on separate OS callback streams with no shared sequence, so a key must carry its own
+/// origin or it can be evaluated against a focus context that was not current when it was typed
+/// (FR-003).</param>
+/// <param name="SuppressedToken">Set when this key was suppressed by an armed transaction, so the
+/// correction path can correlate the suppression with the transaction that armed it.</param>
 /// <remarks>
 /// Transient by requirement: a key event exists only in memory and is never written to disk or
 /// transmitted (FR-004).
@@ -24,4 +31,6 @@ public sealed record KeyEvent(
     LayoutId LayoutId,
     KeyEventKind Kind,
     bool IsSelfInjected,
-    long TimestampTicks);
+    long TimestampTicks,
+    nint SourceWindowHandle = 0,
+    SuppressionToken? SuppressedToken = null);
