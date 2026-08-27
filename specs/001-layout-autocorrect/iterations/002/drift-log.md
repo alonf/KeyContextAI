@@ -22,11 +22,38 @@
 
 ## Summary
 
-**Total drift events**: 6 (1 in this project, 5 Specrew-side findings)
-**Resolution rate**: 1/1 in-project (DRIFT-013 resolved by human decision: design pass in iteration 003); all five tooling findings are open upstream
+**Total drift events**: 7 (1 in this project, 6 Specrew-side findings)
+**Resolution rate**: 1/1 in-project (DRIFT-013 resolved by human decision: design pass in iteration 003); all six tooling findings are open upstream
 **Specification drift**: None detected
 
 ## Events
+
+### DRIFT-014: the review landing and the boundary sync judge sign-off coverage independently, and the sync's own preflight moves the tree its gate then refuses
+
+**Detected**: 2026-08-27, while recording the review-signoff boundary arrival for iteration 002.
+**Class**: defect (partial-coverage acceptance not carried between two authorities over the same
+sign-off) in Specrew's continuous-co-review gate wiring, surfaced by this project. Same family as
+DRIFT-008 and DRIFT-012. Not spec, plan, or implementation drift in KeyContextAI.
+**Requirement**: none. No FR or SC of this feature is affected.
+**Status**: open upstream.
+
+**What fired**: the review landing (pause decision "stop the review here") captured the human's
+typed `approved for partial review signoff` acceptance for the one-commit source delta, completed
+sign-off, and saved the findings as follow-ups. The boundary sync for review-signoff then
+re-evaluated coverage independently and refused `latest-result-not-current` — after its own
+preflight had just moved the tree it was judging: markdownlint auto-fix commits, the owed
+`review.md` evidence, and per-turn handover rewrites, all records. A second typed acceptance was
+required for a tree whose source delta was unchanged from the first.
+
+**Consequence if unfixed**: every partial-coverage sign-off costs the human two typed acceptances —
+one at the landing, one at the sync — and the second is demanded for movement the machinery itself
+created. An acceptance spent at one authority is invisible to the other, which is the DRIFT-008
+shape again: two checks over the same evidence, disagreeing.
+
+- **Class closure**: NONE — the fix belongs in the Specrew repository: one sign-off authority (the
+  landing's captured acceptance carried into the boundary sync, or the sync delegating coverage to
+  the landing's recorded acceptance), and preflight-created records commits classified as
+  records-only movement rather than coverage-staling movement. Handed to the maintainer.
 
 ### DRIFT-013: the plan assumed the identity, suppression and injection models were directly implementable; three review rounds disproved it
 
