@@ -22,11 +22,35 @@
 
 ## Summary
 
-**Total drift events**: 7 (1 in this project, 6 Specrew-side findings)
-**Resolution rate**: 1/1 in-project (DRIFT-013 resolved by human decision: design pass in iteration 003); all six tooling findings are open upstream
+**Total drift events**: 8 (1 in this project, 7 Specrew-side findings)
+**Resolution rate**: 1/1 in-project (DRIFT-013 resolved by human decision: design pass in iteration 003); all seven tooling findings are open upstream
 **Specification drift**: None detected
 
 ## Events
+
+### DRIFT-015: the partial-signoff capture silently ignores a near-miss phrase
+
+**Detected**: 2026-08-27, at the review-signoff sign-off for iteration 002. Recorded during retro per
+the recommendation accepted at the review-signoff stop.
+**Class**: defect (capture feedback) in Specrew's typed-phrase authority surface, surfaced by this
+project. Same family as DRIFT-012. Not spec, plan, or implementation drift in KeyContextAI.
+**Requirement**: none. No FR or SC of this feature is affected.
+**Status**: open upstream.
+
+**What fired**: the maintainer typed `approved for partial review signoff` without the dash-and-reason
+the capture requires (`approved for partial review signoff - <why accepting partial coverage is
+safe>`). The bare phrase produced no authorization record, and nothing said so at capture time — the
+non-capture surfaced only as a downstream gate refusal, one full round-trip later, indistinguishable
+at first sight from every other `latest-result-not-current` refusal of the day.
+
+**Consequence if unfixed**: every near-miss of an authorization phrase costs a silent failed attempt
+plus a diagnosis pass, on the one surface whose whole design premise is that the typed phrase is the
+authority. A human who typed an unambiguous approval learns it did not count from a refusal that
+does not mention the phrase at all.
+
+- **Class closure**: NONE — the fix belongs in the Specrew repository: a reply matching an
+  authorization phrase prefix but failing shape validation should be acknowledged at capture time
+  with what was missing, not silently dropped. Handed to the maintainer.
 
 ### DRIFT-014: the review landing and the boundary sync judge sign-off coverage independently, and the sync's own preflight moves the tree its gate then refuses
 
