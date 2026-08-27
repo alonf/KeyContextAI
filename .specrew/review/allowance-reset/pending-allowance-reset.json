@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "fact_type": "allowance-reset-approval",
+  "authority_kind": "human",
+  "authorized_by": "unattributed-human",
+  "verdict_text": "approved for allowance reset\n\nThen re-carry my choice 1 and run the round with --host codex against a980312, with the exit criteria from my previous message standing: new territory means fix blocking and major and proceed to T021; the same nine incompletely fixed a third time means stop patching and tell me.\n\nIf the phrase does not capture, tell me rather than reaching for the flag — that would itself be the finding.",
+  "response_hash": "30f3382ed686f5c298c137fd00b5957e98dc4df226daf316aae5f932e11837bd",
+  "evidence_source": "hook-captured-from-transcript",
+  "source_event": "Stop",
+  "host_kind": "claude",
+  "observed_at": "2026-08-27T14:02:04.2497528Z",
+  "spent_at": null
+}
