@@ -1,7 +1,7 @@
 schema: "v1"
 feature: "001-layout-autocorrect"
 iteration: "002"
-updated_at: "2026-08-22T20:58:27.2555054Z"
+updated_at: "2026-08-27T11:10:55.2240945Z"
 tasks:
   T033:
     title: "FocusAccessor — foreground/control change events, UI Automation password detection (`Yes`/`No`/`Unknown`), caret coordinates"
@@ -17,15 +17,15 @@ tasks:
     blocked_reason: ""
   T018:
     title: "InputInjectionAccessor — `SendInput` backspaces plus replacement text as one burst, self-injected event tagging"
-    status: "pending"
-    started_at: ""
-    completed_at: ""
+    status: "done"
+    started_at: "2026-08-27T11:15:00Z"
+    completed_at: "2026-08-27T11:20:00Z"
     blocked_reason: ""
   T019:
     title: "LayoutAccessor — read active layout, enumerate installed layouts, switch"
-    status: "pending"
-    started_at: ""
-    completed_at: ""
+    status: "done"
+    started_at: "2026-08-27T11:20:00Z"
+    completed_at: "2026-08-27T11:27:00Z"
     blocked_reason: ""
   T034:
     title: "Privacy lifecycle in CorrectionManager — fail-closed on `Unknown`, transcript wipe on every focus change, wipe on pause and exit"

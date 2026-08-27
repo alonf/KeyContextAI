@@ -2,7 +2,7 @@
 
 **Schema**: v1
 **Spec**: [../../spec.md](../../spec.md)
-**Status**: planning
+**Status**: executing
 **Capacity**: 17.5/20 story_points
 **Started**: 2026-08-22
 **Completed**:
@@ -61,10 +61,10 @@
 
 | Task | Title | Requirement | Story | Effort | Owner | Owner File Globs | Status | Agent | Actual | Verdict |
 | ---- | ----- | ----------- | ----- | ------ | ----- | ---------------- | ------ | ----- | ------ | ------- |
-| T033 | FocusAccessor — foreground/control change events, UI Automation password detection (`Yes`/`No`/`Unknown`), caret coordinates | FR-003, FR-012 | US5 | 2.5 | Implementer | `src/KeyContextAI.Platform/System/FocusAccessor.cs` | planned | — | — | — |
-| T017 | KeystrokeAccessor — `WH_KEYBOARD_LL` on a dedicated message-pumping thread, allocation-free callback, self-injection tagging | FR-001, FR-013 | US1 | 3 | Implementer | `src/KeyContextAI.Platform/Input/KeystrokeAccessor.cs` | planned | — | — | — |
-| T018 | InputInjectionAccessor — `SendInput` backspaces plus replacement text as one burst, self-injected event tagging | FR-010, FR-013, FR-015 | US1 | 2 | Implementer | `src/KeyContextAI.Platform/Input/InputInjectionAccessor.cs` | planned | — | — | — |
-| T019 | LayoutAccessor — read active layout, enumerate installed layouts, switch | FR-005a, FR-010 | US1 | 1 | Implementer | `src/KeyContextAI.Platform/System/LayoutAccessor.cs` | planned | — | — | — |
+| T033 | FocusAccessor — foreground/control change events, UI Automation password detection (`Yes`/`No`/`Unknown`), caret coordinates | FR-003, FR-012 | US5 | 2.5 | Implementer | `src/KeyContextAI.Platform/System/FocusAccessor.cs` | done | — | 2.5 | passed |
+| T017 | KeystrokeAccessor — `WH_KEYBOARD_LL` on a dedicated message-pumping thread, allocation-free callback, self-injection tagging | FR-001, FR-013 | US1 | 3 | Implementer | `src/KeyContextAI.Platform/Input/KeystrokeAccessor.cs` | done | — | 3 | passed |
+| T018 | InputInjectionAccessor — `SendInput` backspaces plus replacement text as one burst, self-injected event tagging | FR-010, FR-013, FR-015 | US1 | 2 | Implementer | `src/KeyContextAI.Platform/Input/InputInjectionAccessor.cs` | done | — | 2 | passed |
+| T019 | LayoutAccessor — read active layout, enumerate installed layouts, switch | FR-005a, FR-010 | US1 | 1 | Implementer | `src/KeyContextAI.Platform/System/LayoutAccessor.cs` | done | — | 1 | passed |
 | T034 | Privacy lifecycle in CorrectionManager — fail-closed on `Unknown`, transcript wipe on every focus change, wipe on pause and exit | FR-003 | US5 | 1.5 | Implementer | `src/KeyContextAI.Core/Managers/CorrectionManager.cs` | planned | — | — | — |
 | T035 | Focus-change abandon rule — a correction is never injected into a window that did not produce its keystrokes | FR-012 | US5 | 1 | Implementer | `src/KeyContextAI.Core/Managers/CorrectionManager.cs` | planned | — | — | — |
 | T021 | CorrectionManager single-word flow — Channel pipeline, engine orchestration, serialized correction executor | FR-010 | US1 | 2.5 | Implementer | `src/KeyContextAI.Core/Managers/CorrectionManager.cs` | planned | — | — | — |
@@ -162,10 +162,10 @@ feature. This section is authoritative for what iteration 002 actually covers.
   file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/001/design-analysis.md, decision
   commit 6e2ea85. Iteration 002 builds the single-word path Option B assumes; the speculative
   committing-key path itself is T029 in iteration 003.
-- Keep Status: planning until the before-implement gate; the hardening gate at
-  file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/002/quality/hardening-gate.md now
-  records concrete controls with `Overall Verdict: ready`, but implementation
-  remains blocked until a recorded human verdict authorizes the boundary.
+- Status is executing because the before-implement gate is authorized and T033 and T017 are complete.
+  The hardening gate at
+  file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/002/quality/hardening-gate.md
+  records concrete controls with `Overall Verdict: ready`.
 - Before-implement preparation evidence is tracked in boundary commits `9e3a396`
   (hardening controls filled) and the current plan refresh commit; implementation
   remains blocked pending explicit human verdict `approved for before-implement`.

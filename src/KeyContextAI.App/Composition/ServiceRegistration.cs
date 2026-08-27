@@ -35,7 +35,9 @@ public static class ServiceRegistration
         // Accessors: the only components that touch the outside world.
         services.AddSingleton<IDictionaryAccessor>(_ => new DictionaryAccessor(dataRoot));
         services.AddSingleton<IKeystrokeAccessor, KeystrokeAccessor>();
+        services.AddSingleton<IInputInjectionAccessor, InputInjectionAccessor>();
         services.AddSingleton<IFocusAccessor, FocusAccessor>();
+        services.AddSingleton<ILayoutAccessor, LayoutAccessor>();
 
         // Engines: pure algorithms. The mapping engine is constructed from loaded data rather than
         // loading it itself, because engines make no accessor calls.
