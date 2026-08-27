@@ -1,7 +1,7 @@
 schema: "v1"
 feature: "001-layout-autocorrect"
 iteration: "002"
-updated_at: "2026-08-27T11:10:55.2240945Z"
+updated_at: "2026-08-27T13:34:16.6262746Z"
 tasks:
   T033:
     title: "FocusAccessor — foreground/control change events, UI Automation password detection (`Yes`/`No`/`Unknown`), caret coordinates"

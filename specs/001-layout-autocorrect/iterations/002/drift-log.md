@@ -22,11 +22,47 @@
 
 ## Summary
 
-**Total drift events**: 3 (0 in this project, 3 Specrew-side findings)
-**Resolution rate**: no in-project drift detected yet (0/0); all three tooling findings are open upstream
+**Total drift events**: 4 (0 in this project, 4 Specrew-side findings)
+**Resolution rate**: no in-project drift detected yet (0/0); all four tooling findings are open upstream
 **Specification drift**: None detected
 
 ## Events
+
+### DRIFT-011: the preflight digest-mismatch failure names neither the paths that moved nor how to see them
+
+**Detected**: 2026-08-27, on review round run-20260827-140159347-64828b6d of iteration 002 and the
+two relaunch attempts that followed it.
+**Class**: defect (diagnostic completeness) in Specrew's review preflight, surfaced by this project.
+Not spec, plan, or implementation drift in KeyContextAI.
+**Requirement**: none. No FR or SC of this feature is affected.
+**Status**: open upstream.
+
+**What fired**: the round authorized after the allowance reset failed at preflight with
+`verification-target-digest-mismatch-before-execution` — the target digest pinned at request time no
+longer matched the tree at execution time. The message states that a mismatch exists and stops there:
+it names neither the paths whose content moved nor a way to list them.
+
+**The mover, identified by the maintainer**: two uncommitted iteration records inside the reviewed
+surface — file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/002/state.md and
+file:///C:/Dev/KeyContextAI/specs/001-layout-autocorrect/iterations/002/tasks-progress.yml —
+rewritten each turn as task-progress updates. `.specrew/` is excluded from the reviewed-state digest;
+`specs/` is not, so the per-turn record rewrites moved the pinned target before every execution.
+
+**How the gap compounded**: with no paths in the message, the agent's diagnosis named the host's
+turn-end hook writes — plausible, untested, and wrong; the actual mover was visible in `git status`
+the whole time. Three attempts were spent (the failed run and two relaunches built on a settle-delay
+theory), none of which could have succeeded while the records stayed uncommitted, because each retry
+was cheaper than checking. A failure message naming the changed paths would have ended this at the
+first attempt instead of the fourth.
+
+**Consequence if unfixed**: any process that rewrites a file under the reviewed surface between
+request and execution makes the preflight fail opaquely and repeatedly, and the message gives the
+agent nothing to converge on — the cost is paid in spent attempts and human interrupts on what is a
+one-line `git status` diagnosis.
+
+- **Class closure**: NONE — the fix belongs in the Specrew repository: have the preflight failure
+  carry the paths that differ between the pinned and live reviewed-state digests (facts the
+  controller already owns) beside the unchanged reason token. Handed to the maintainer.
 
 ### DRIFT-010: the demotion rule understates invariant-inversion findings, and the summary line reports the demoted grade as if it were the reviewer's
 
