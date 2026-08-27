@@ -225,3 +225,12 @@ No decisions recorded yet.
 - **Launch Mode**: (none)
 - **Agent Response Snippet**: (none)
 - **Reason**: Persisted authorization matched the requested boundary.
+
+## 2026-08-27T21:01:43Z — Boundary sync: review-signoff
+
+- **Boundary Type**: review-signoff
+- **Feature Ref**: 001-layout-autocorrect
+- **Iteration Number**: 002
+- **Task ID**: (none)
+- **Auth Commit Hash**: 5929606fdfbc84393824cc77a471cf8a0d236215
+- **Recorded At**: 2026-08-27T21:01:36Z
