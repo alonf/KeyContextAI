@@ -1,5 +1,6 @@
 using KeyContextAI.Core.Contracts;
 using KeyContextAI.Core.Engines;
+using KeyContextAI.Core.Managers;
 using KeyContextAI.Core.Model;
 using KeyContextAI.Platform.Input;
 using KeyContextAI.Platform.System;
@@ -52,6 +53,7 @@ public static class ServiceRegistration
         // Word assembly holds the word in progress, so each consumer gets its own instance rather
         // than sharing one across surfaces.
         services.AddTransient<IWordAssemblyEngine, WordAssemblyEngine>();
+        services.AddSingleton<CorrectionManager>();
 
         return services;
     }

@@ -29,15 +29,15 @@ tasks:
     blocked_reason: ""
   T034:
     title: "Privacy lifecycle in CorrectionManager — fail-closed on `Unknown`, transcript wipe on every focus change, wipe on pause and exit"
-    status: "pending"
-    started_at: ""
-    completed_at: ""
+    status: "done"
+    started_at: "2026-08-27T11:30:00Z"
+    completed_at: "2026-08-27T11:38:00Z"
     blocked_reason: ""
   T035:
     title: "Focus-change abandon rule — a correction is never injected into a window that did not produce its keystrokes"
-    status: "pending"
-    started_at: ""
-    completed_at: ""
+    status: "done"
+    started_at: "2026-08-27T11:38:00Z"
+    completed_at: "2026-08-27T11:42:00Z"
     blocked_reason: ""
   T021:
     title: "CorrectionManager single-word flow — Channel pipeline, engine orchestration, serialized correction executor"
