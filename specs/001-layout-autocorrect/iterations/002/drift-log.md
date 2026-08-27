@@ -22,11 +22,61 @@
 
 ## Summary
 
-**Total drift events**: 5 (0 in this project, 5 Specrew-side findings)
-**Resolution rate**: no in-project drift detected yet (0/0); all five tooling findings are open upstream
+**Total drift events**: 6 (1 in this project, 5 Specrew-side findings)
+**Resolution rate**: 1/1 in-project (DRIFT-013 resolved by human decision: design pass in iteration 003); all five tooling findings are open upstream
 **Specification drift**: None detected
 
 ## Events
+
+### DRIFT-013: the plan assumed the identity, suppression and injection models were directly implementable; three review rounds disproved it
+
+**Detected**: 2026-08-27, on review run-20260827-143505800-a30101b4 of iteration 002, when six of its
+nine findings mapped to defect classes already fixed in earlier rounds.
+**Class**: plan drift in KeyContextAI — iteration 002's plan budgeted direct implementation for three
+models that each turned out to need a design step. Not a series of coding mistakes: three consecutive
+independent review rounds found the same classes surviving their fixes.
+**Requirement**: the affected guarantees are FR-003 (context-gated capture), FR-005a (layout
+comparison), FR-012 (injection safety) and FR-013 (self-injection); no requirement itself drifted —
+the plan's effort model did.
+**Status**: resolved by human decision (2026-08-27): stop patching; design the three models in
+iteration 003.
+
+**The three models, and their patch-and-relocate history**:
+
+- **Typing-context identity** — what identifies the context a keystroke belongs to. Round-1 fixes
+  (d730ce0) published Unknown before the UIA probe; round-2 fixes (7e1427c) carried the window
+  origin on each key and observed own-process focus; round-3 fixes (a980312) added focused-control
+  identity, GA_ROOT normalization on both streams and a startup snapshot. run-20260827-143505800
+  then found: UIA fields sharing one host HWND remain indistinguishable ahead of the provisional
+  Unknown publish, keyboard state is still sampled on a thread that is not the typing thread, and
+  layout identity collapses distinct HKLs to one LANGID (Dvorak/QWERTY). Each fix narrowed the hole;
+  the class survived every round.
+- **Suppression lifecycle** — arm, consume, disarm and abandon are concurrent events. Round-1 made
+  consumption an atomic compare-exchange for eligible keys; round-2 carried the consumed token on
+  the queued event; round-3 disarmed on every transcript-invalidating event. run-20260827-143505800
+  then found: Disarm runs after the manager's lock is released so a stale token can still eat a
+  boundary key, a DropOldest overflow can discard the token unrecoverably without firing the drop
+  counter, and the original keyup passes through unsuppressed as an orphan.
+- **Injection terminal states** — a burst can partially apply and compensation can itself fail.
+  Round-1 added partial-prefix compensation; round-2 made per-step accounting walk each applied
+  step's own effect; round-3 moved target revalidation to immediately before SendInput on every
+  path. run-20260827-143505800 then found: the burst, compensation and suppressed-key replay still
+  combine as best-effort steps whose failed terminal states can pair mutated text with a lost key,
+  including replaying the committing key after compensation itself reported failure.
+
+**Conclusion**: the remaining work needs a design step the plan did not budget. The correction flow
+(T021 onward) was not reached; the nine findings of run-20260827-143505800 are carried as recorded
+follow-ups (the one new-territory blocking finding — UIA IsPassword defaulting to safe — was fixed
+and committed separately as the security exception, a6fab9b).
+
+- **Class closure**: iteration 003 enters through the design workshop's architecture and component
+  lenses on three questions before any further repair in this area: what identifies a typing context
+  when HWNDs are shared, UIA providers are inconsistent, and the answer must fail closed when
+  unknown; what is the lifecycle of a suppressed key when arm, consume, disarm and abandon are
+  concurrent and a stale token can eat a user's keystroke; and what are injection's terminal states
+  when a burst can partially apply and compensation can fail — a transaction with defined outcomes,
+  not a sequence of best-effort steps. The two remaining review rounds are reserved for the
+  redesign rather than the code it replaces.
 
 ### DRIFT-012: refusals that report a failed comparison name neither side of it
 
