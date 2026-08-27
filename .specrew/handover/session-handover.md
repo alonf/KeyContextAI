@@ -2,8 +2,8 @@
 schema: v1
 source: PostToolUse
 from_host: claude
-recorded_at: 2026-08-27T11:38:49.7260045Z
-from_commit: 9695fe2
+recorded_at: 2026-08-27T11:39:17.0607107Z
+from_commit: e57acda
 active_feature: 001-layout-autocorrect
 active_boundary: before-implement
 last_authorized_boundary: before-implement
@@ -14,12 +14,12 @@ workshop_done: architecture-core, component-design, requirements-nfr, ui-ux, dat
 
 ## What I just did (last 3-5 turns or last boundary work)
 
+- [2026-08-27T11:39:01Z] (PostToolUse) 0 changed user file(s) [(none)] (+1 Specrew-managed); HEAD e57acda (chore(lint): auto-fix markdownlint violations); 1 new commit(s): e57acda chore(lint): auto-fix markdownlint violations
 - [2026-08-27T11:38:33Z] (PostToolUse) 0 changed user file(s) [(none)] (+41 Specrew-managed); HEAD 9695fe2 (chore(lint): auto-fix markdownlint violations); 1 new commit(s): 9695fe2 chore(lint): auto-fix markdownlint violations
 - [2026-08-27T11:21:25Z] (PostToolUse) 0 changed user file(s) [(none)] (+33 Specrew-managed); HEAD fb3055d (fix: keep password probe off keystroke callback); 1 new commit(s): fb3055d fix: keep password probe off keystroke callback
 - [2026-08-27T11:21:10Z] (PostToolUse) 1 changed user file(s) [src/KeyContextAI.Core/Managers/CorrectionManager.cs] (+33 Specrew-managed); HEAD b0871a7 (boundary(implement): T034 privacy lifecycle and T035 focus guard)
 - [2026-08-27T11:20:27Z] (PostToolUse) 0 changed user file(s) [(none)] (+33 Specrew-managed); HEAD b0871a7 (boundary(implement): T034 privacy lifecycle and T035 focus guard); 1 new commit(s): b0871a7 boundary(implement): T034 privacy lifecycle and T035 focus guard
 - [2026-08-27T11:20:16Z] (PostToolUse) 8 changed user file(s) [specs/001-layout-autocorrect/iterations/002/plan.md, specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml, src/KeyContextAI.App/Composition/ServiceRegistration.cs, src/KeyContextAI.Core/Managers/CorrectionManager.cs, src/KeyContextAI.Core/Properties/AssemblyInfo.cs, tests/KeyContextAI.Core.Tests/CorrectionManagerFocusTests.cs, tests/KeyContextAI.Core.Tests/CorrectionManagerPrivacyTests.cs] (+33 Specrew-managed); HEAD 06cba96 (boundary(implement): T018 injection and T019 layouts)
-- [2026-08-27T11:20:04Z] (PostToolUse) 5 changed user file(s) [src/KeyContextAI.App/Composition/ServiceRegistration.cs, src/KeyContextAI.Core/Managers/CorrectionManager.cs, src/KeyContextAI.Core/Properties/AssemblyInfo.cs, tests/KeyContextAI.Core.Tests/CorrectionManagerFocusTests.cs, tests/KeyContextAI.Core.Tests/CorrectionManagerPrivacyTests.cs] (+33 Specrew-managed); HEAD 06cba96 (boundary(implement): T018 injection and T019 layouts)
 
 ## Why I'm stopping (the switch trigger)
 
@@ -35,11 +35,11 @@ Hook-captured at trigger 'PostToolUse' (the agent did not author a handover this
 
 ## Recommended next-immediate-step
 
-Resume feature 001-layout-autocorrect at boundary before-implement. Only Specrew-managed scaffolding is uncommitted (44 file(s)) - that is the init baseline; commit it at a boundary.
+Resume feature 001-layout-autocorrect at boundary before-implement. Only Specrew-managed scaffolding is uncommitted (4 file(s)) - that is the init baseline; commit it at a boundary.
 
 ## Context the receiving host needs that artifacts don't carry
 
-branch 001-layout-autocorrect, HEAD 9695fe2 (chore(lint): auto-fix markdownlint violations). Active feature 001-layout-autocorrect, boundary before-implement. No user files changed; 44 Specrew-managed scaffolding file(s) uncommitted.
+branch 001-layout-autocorrect, HEAD e57acda (chore(lint): auto-fix markdownlint violations). Active feature 001-layout-autocorrect, boundary before-implement. No user files changed; 4 Specrew-managed scaffolding file(s) uncommitted.
 
 ## Recent conversation (last few exchanges, hook-captured)
 
