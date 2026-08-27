@@ -265,11 +265,20 @@ public sealed class FocusAccessor : IFocusAccessor, IDisposable
             }
 
             var current = focusedElement.Current;
+
+            // IsPassword is read with ignoreDefaultValue because UI Automation silently supplies
+            // the property's default false for a provider that does not implement it. Reading the
+            // plain accessor turns that silence into PasswordState.No — every such control is
+            // classified as explicitly safe and its keystrokes are retained. A provider that says
+            // nothing must read as Unknown, which fails closed.
+            var isPassword = focusedElement.GetCurrentPropertyValue(
+                AutomationElement.IsPasswordProperty, ignoreDefaultValue: true);
+
             metadata = new FocusedAutomationMetadata(
                 string.IsNullOrWhiteSpace(current.AutomationId) ? null : current.AutomationId,
                 current.ControlType?.ProgrammaticName,
                 string.IsNullOrWhiteSpace(current.Name) ? null : current.Name,
-                current.IsPassword ? PasswordState.Yes : PasswordState.No);
+                MapPasswordProperty(isPassword));
             return true;
         }
         catch (ElementNotAvailableException)
@@ -285,6 +294,21 @@ public sealed class FocusAccessor : IFocusAccessor, IDisposable
             return false;
         }
     }
+
+    internal static PasswordState MapPasswordPropertyForTest(object? value) =>
+        MapPasswordProperty(value);
+
+    /// <summary>
+    /// Maps the raw IsPassword property value to a password state. Only an explicit boolean from
+    /// the provider can classify the control; anything else — including
+    /// <see cref="AutomationElement.NotSupported"/> from a provider without the property — is
+    /// <see cref="PasswordState.Unknown"/>, which the consumer treats as fail-closed.
+    /// </summary>
+    private static PasswordState MapPasswordProperty(object? value) => value switch
+    {
+        bool isPassword => isPassword ? PasswordState.Yes : PasswordState.No,
+        _ => PasswordState.Unknown,
+    };
 
     private static string? GetWindowText(nint windowHandle)
     {
