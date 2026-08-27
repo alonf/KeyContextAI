@@ -145,11 +145,6 @@ public sealed class CorrectionManager : IDisposable
                 return;
             }
 
-            if (_passwordState == PasswordState.Unknown)
-            {
-                _passwordState = _focus.IsPasswordContext();
-            }
-
             if (_passwordState != PasswordState.No || key.IsSelfInjected)
             {
                 WipeTranscript();
