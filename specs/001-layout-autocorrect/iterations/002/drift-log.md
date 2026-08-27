@@ -67,11 +67,11 @@ can leave the user's document partially deleted. The failure was caught only bec
 not trust the summary and re-read the findings; an agent that honoured the "nothing that needs your
 attention" line would have carried all four into dependent work.
 
-**Class closure**: the summary line must report the reviewer's own grades alongside any demoted
-grade, so `Recommendation: Nothing was reported as blocking` cannot be emitted when the reviewer
-reported blocking findings. Separately, the demotion rule needs a conditional-invariant exemption:
-a finding that names an invariant, the condition under which it inverts, and the code path that
-permits the condition is a concrete failure scenario, whether or not it narrates an incident.
+- **Class closure**: the summary line must report the reviewer's own grades alongside any demoted
+  grade, so `Recommendation: Nothing was reported as blocking` cannot be emitted when the reviewer
+  reported blocking findings. Separately, the demotion rule needs a conditional-invariant exemption:
+  a finding that names an invariant, the condition under which it inverts, and the code path that
+  permits the condition is a concrete failure scenario, whether or not it narrates an incident.
 
 **Resolution in this project**: all four substantive findings were fixed under the maintainer's
 instruction to treat the five demotions as majors, and a further round was approved. The finding
