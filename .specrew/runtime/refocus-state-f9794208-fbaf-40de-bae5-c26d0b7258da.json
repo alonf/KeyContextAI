@@ -1,0 +1,24 @@
+{
+  "session_id": "f9794208-fbaf-40de-bae5-c26d0b7258da",
+  "last_seen_boundary": "before-implement",
+  "context_mtime": "2026-08-22T23:36:53.4699871Z",
+  "breaker": null,
+  "journal": [
+    {
+      "at": "2026-08-27T11:10:42.8887678Z",
+      "trigger": "b2",
+      "scope": "general",
+      "channel": "hook",
+      "tokens": 566,
+      "outcome": "injected"
+    },
+    {
+      "at": "2026-08-27T11:10:52.6030831Z",
+      "trigger": "b2",
+      "scope": "general",
+      "channel": "hook",
+      "tokens": 566,
+      "outcome": "injected"
+    }
+  ]
+}

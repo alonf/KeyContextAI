@@ -1,0 +1,8 @@
+{
+  "schema_version": "1.0",
+  "fact_type": "question-ui-phrase-observation",
+  "phrase_kind": "review-round-approval",
+  "host_kind": "claude",
+  "source_event": "stop-transcript",
+  "observed_at": "2026-08-27T11:31:43.8427479Z"
+}
