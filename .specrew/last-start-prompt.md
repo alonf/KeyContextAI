@@ -29,19 +29,20 @@ User feature request: (not provided yet; gather or confirm during intake)
 
 Last captured stop: 2026-08-27T13:32:16.8399330Z (boundary before-implement). Files changed since (re-computed NOW - may post-date the last stop): specs/001-layout-autocorrect/iterations/002/state.md, specs/001-layout-autocorrect/iterations/002/tasks-progress.yml, src/KeyContextAI.Core/Contracts/IFocusAccessor.cs, src/KeyContextAI.Core/Managers/CorrectionManager.cs, src/KeyContextAI.Core/Model/FocusContext.cs, src/KeyContextAI.Core/Model/InjectionFailureKind.cs, src/KeyContextAI.Core/Model/InjectionResult.cs, src/KeyContextAI.Core/Model/KeyEvent.cs, src/KeyContextAI.Platform/Input/InputInjectionAccessor.cs, src/KeyContextAI.Platform/Input/KeystrokeAccessor.cs, src/KeyContextAI.Platform/System/FocusAccessor.cs, src/KeyContextAI.Core/Model/KeyModifiers.cs. READ those files to recover the true current state (the handover snapshot may predate your latest work), THEN continue.
 
-
 Operational Specrew roster snapshot:
+
 - Mode: none
 - No Specrew-managed roster snapshot was detected.
 
 Project state snapshot:
+
 - State: active
 - Existing feature directories: (none)
 - Non-bootstrap top-level entries: (none)
 
-
 Effective delegated agent routing plan:
-- Enabled agents: 
+
+- Enabled agents:
 - No start-time fallback events detected.
 
 ## Resolved Feature-Closeout Delivery
@@ -90,7 +91,7 @@ This is the authoritative map of Specrew's lifecycle and governance machinery as
 | `.specify/extensions/specrew-speckit/scripts/scaffold-reviewer-artifacts.ps1 -IterationDirectory <dir>` | Scaffolds code-map / coverage-evidence / reviewer-index / review-diagrams / dependency-report. **Param is `-IterationDirectory`, NOT `-SpecDirectory`.** | After implement, before /specrew-review |
 | `.specify/extensions/specrew-speckit/scripts/scaffold-feature-closeout-dashboard.ps1 -ProjectPath . -FeatureId <NNN>` | Scaffolds the closeout-dashboard.md at feature-closeout boundary. **Note: auto-render at feature-closeout is now wired into sync-boundary-state.ps1 (F-040 dogfooding Fix B), so you don't normally invoke this directly.** | Rarely; only for manual re-render |
 | `.specify/extensions/specrew-speckit/scripts/validate-governance.ps1 -ProjectPath .` | Runs the full validator; emits PASS/WARN/FAIL findings | Before each boundary commit and at iteration close |
-| `.specify/extensions/specrew-speckit/scripts/sync-boundary-state.ps1` | Advances the boundary cursor in `.specrew/start-context.json`; writes `.specrew/runtime/pending-verdict-stop.md` with the exact pending boundary, approval phrase, and last-line verdict marker whenever the cursor is ahead of human authorization; auto-renders dashboard.md at iteration-closeout + closeout-dashboard.md at feature-closeout. Use this WRAPPER path from downstream projects — it discovers the installed Specrew module and loads the actual implementation from there. | Called by sync-* agents; invoke directly via `pwsh -File` after each boundary commit when the sync-* agents aren't available. After a human-judgment sync, read/render the pending-verdict stop artifact; do not infer the marker from the next phase. |
+| `.specify/extensions/specrew-speckit/scripts/sync-boundary-state.ps1` | Advances the boundary cursor in `.specrew/start-context.json`; writes `.specrew/runtime/pending-verdict-stop.md` with the exact pending boundary, approval phrase, and last-line verdict marker whenever the cursor is ahead of human authorization; auto-renders dashboard.md at iteration-closeout + closeout-dashboard.md at feature-closeout. Use this WRAPPER path from downstream projects — it discovers the installed Specrew module and loads the actual implementation from there. | Called by sync-*agents; invoke directly via `pwsh -File` after each boundary commit when the sync-* agents aren't available. After a human-judgment sync, read/render the pending-verdict stop artifact; do not infer the marker from the next phase. |
 
 **Any other .ps1 file in the deployment is a utility / deploy / library helper invoked automatically by the system. Do NOT explore them during normal lifecycle execution.** Specifically: `shared-governance.ps1`, `common.ps1`, `Test-CopilotInstructionsChangeType.ps1` are libraries (not invokable); `deploy-speckit-extension.ps1`, `deploy-squad-runtime.ps1`, `scaffold-governance.ps1`, `validate-versions.ps1`, `collision-detect.ps1`, `brownfield-merge.ps1` are init/update helpers; `manage-escalation-state.ps1`, `manage-reviewer-regression.ps1`, `sync-squad-model-overrides.ps1`, `drift-diff.ps1`, `resume-iteration.ps1` are internal helpers called by other scripts. If a script isn't in the table above, you do NOT need to invoke or understand it during normal lifecycle execution.
 
@@ -117,6 +118,7 @@ The `crew_runtime_status` field tells you whether the downstream sync-* agents a
 - **Web-feature acceptance evidence:** for browser features, the review-time evidence must include a screenshot or recorded interaction showing the golden-path AND Enter-key behavior — running `Invoke-WebRequest` against the static HTML proves the file deployed, NOT that the feature works. Lighthouse / DOM-inspection MCPs (or manual browser steps documented in quickstart.md) are the canonical evidence layer.
 
 Follow this conversational sequence before implementation work:
+
 1. Preserve the roster snapshot first. Treat the operational roster above as active project state, do not recast it, and defer specialist additions until the spec and clarify outcome are grounded.
 2. Classify the repository using the project-state snapshot above before asking for spec details:
    - "greenfield-new": freshly bootstrapped project with no meaningful app code or active specs yet
