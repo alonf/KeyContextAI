@@ -101,11 +101,18 @@ means it did not stick — see lesson 2, which now has an owner and a gate it ca
    independent rounds by moving is a model problem, not a code problem. *Owner: maintainer +
    coordinator. Action: adopted as a standing exit criterion — applied here to stop round 3, and
    carried into iteration 003's review posture.*
-2. **Review and repair get a budget line.** Second consecutive iteration where the 0-point review
-   phase dominated. *Owner: capacity planning at the iteration-003 plan boundary. Action: the 003
-   plan carries an explicit review/repair estimate calibrated from 002's actuals (2 delivered
-   rounds, 4 fix commits, ~6 days elapsed) — the speckit-capacity-planning step must refuse a plan
-   without it.*
+2. **Review and repair get a budget line — binding on what is ours to bind.** Second consecutive
+   iteration where the 0-point review phase dominated; the soft version of this lesson has already
+   failed twice, so discipline is not the answer. The project rule, binding from the iteration-003
+   plan boundary onward: **every iteration plan in this project carries a review-and-repair budget
+   line, and planning does not close without one**, calibrated from 002's actuals (2 delivered
+   rounds, 4 fix commits, ~6 days elapsed). What this retro cannot do is make Specrew's
+   capacity-planning step refuse a plan — that is the tool's behaviour, not this project's to
+   legislate, and a downstream retro binding the tool is how a project accumulates private rules
+   nobody else inherits. The mechanism is therefore separately recorded as a **Specrew feature
+   candidate for the beta4 backlog**: a capacity-planning refusal that names the missing budget
+   line and the fix, rather than merely refusing. *Owner: maintainer — the project rule at the 003
+   plan boundary; the feature candidate in the Specrew backlog.*
 3. **Enumerate observable state before theorizing.** Three doomed retries were built on an untested
    hook-writes theory while `git status` named the real mover (DRIFT-011). *Owner: coordinator
    agents. Action: recorded in session memory and proposed as a reviewer/coordinator instruction —
@@ -126,10 +133,14 @@ means it did not stick — see lesson 2, which now has an owner and a gate it ca
   T033's first review.
 - **PROMOTE — reviewer grade governs over engine demotion** (maintainer ruling, applied four rounds
   running) — already standing in this project; belongs upstream with DRIFT-010.
-- **DEFER — hook-latency measurement harness** (LowLevelHooksTimeout headroom under load): real, but
-  it measures a path iteration 003 is about to redesign. Revisit inside the design pass.
-- **DROP — nothing.** Every candidate this iteration surfaced is either promoted or deferred with
-  reason.
+- **PROMOTE — hook-latency measurement harness, built before the design pass consumes it.** Round 3
+  found the round-1 latency cleanup undone by the round-3 fixes — six synchronous queries and an
+  allocation back on the low-level callback. The identity/suppression/injection redesign will touch
+  that callback again, and a design that cannot measure its own latency will reintroduce the defect
+  it was written to avoid and discover it in round 5. Latency is a constraint on all three models,
+  so the instrument comes before the design: a standing follow-up built early in iteration 003, an
+  input to the design pass rather than a check behind it.
+- **DROP — nothing.** Every candidate this iteration surfaced is promoted.
 
 ## Signals for Next Iteration
 
@@ -138,8 +149,12 @@ means it did not stick — see lesson 2, which now has an owner and a gate it ca
   HWNDs are shared and providers inconsistent; the suppressed-key lifecycle as one atomic protocol;
   injection as a transaction with defined terminal states. **Two review rounds are reserved for the
   redesign** — not for the code it replaces.
-- **The 6.5 unreached points (T021–T024, T036, T037) do not auto-carry.** T021's shape depends on
-  the design pass outcome; re-task after it, with the review budget from lesson 2.
+- **The hook-latency harness is built early in 003, before the design pass** — the design's
+  measuring instrument, per the triage promotion above.
+- **The 6.5 unreached points (T021–T024, T036, T037) do not auto-carry.** They were scoped against
+  three models that turned out to be wrong; re-estimating them after the design pass is not the
+  same work as carrying them forward. Re-task after the design outcome, with the review budget
+  from lesson 2.
 - **Eight follow-ups stand recorded** from the final round (six relocations folded into the design
   questions; layout-identity and orphan-keyup explicitly among them), plus seven upstream Specrew
   findings awaiting the next engine build — today's build already closed the flag-instead-of-phrase

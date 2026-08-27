@@ -17,13 +17,19 @@
 - Latest completed task: T035
 <!-- specrew:task-progress-summary:end -->
 
-- Execution started after the before-implement boundary was authorized on 2026-08-22. T033, T017,
-  T018, T019, T034, and T035 are complete. T021 is next.
-- Scope: live single-word correction plus the privacy lifecycle — 12 tasks, 17.5 story points against
-  a capacity of 20, per the human-approved slicing at the tasks boundary.
-- This artifact was scaffolded before task execution so resume state can be updated after each task.
-- Record an `Actual` for each task in plan.md as it completes (retro action 1) — iteration 001
-  recorded none, which is why its variance was uncomputable.
+- Execution started after the before-implement boundary was authorized on 2026-08-22 and closed on
+  2026-08-28 by the maintainer's decision. Delivered: T033, T017, T018, T019, T034, T035 — 11 of
+  17.5 planned points (63%), hardened across three independent review rounds and signed off with
+  the `a6fab9b` security exception under a recorded partial-coverage acceptance.
+- **Not delivered, by decision rather than by drift-by-default**: T021, T022, T023, T036, T037,
+  T024 (6.5 points — the correction flow and its evidence). They were scoped against three models
+  the review rounds disproved (DRIFT-013), so they do **not** auto-carry: re-estimating them after
+  the iteration-003 design pass is not the same work as carrying them forward. They are re-tasked
+  after that pass, under the review-and-repair budget rule from the 002 retro.
+- The nine findings of run-20260827-143505800-a30101b4 stand as recorded follow-ups; the drift log
+  closes at 8 entries (1 in-project, resolved by the design-pass decision; 7 upstream).
+- Original scope for reference: 12 tasks, 17.5 story points against a capacity of 20, per the
+  human-approved slicing at the tasks boundary.
 
 ## Notes
 
