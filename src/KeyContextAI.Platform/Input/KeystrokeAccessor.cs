@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Channels;
 using KeyContextAI.Core.Contracts;
 using KeyContextAI.Core.Model;
 
@@ -30,12 +31,37 @@ public sealed class KeystrokeAccessor : IKeystrokeAccessor, IDisposable
     private const uint VkLwin = 0x5B;
     private const uint VkRwin = 0x5C;
     private const uint VkCapital = 0x14;
+    private const int PendingKeyCapacity = 256;
+    private const uint VkEscape = 0x1B;
+    private const uint VkPrior = 0x21;
+    private const uint VkDown = 0x28;
+    private const uint VkInsert = 0x2D;
+    private const uint VkF1 = 0x70;
+    private const uint VkF24 = 0x87;
+    private const uint VkOem1 = 0xBA;
+    private const uint VkOemPlus = 0xBB;
+    private const uint VkOemComma = 0xBC;
+    private const uint VkOemMinus = 0xBD;
+    private const uint VkOemPeriod = 0xBE;
+    private const uint VkOem3 = 0xC0;
+    private const uint VkOem4 = 0xDB;
+    private const uint VkOem8 = 0xDF;
+    private const uint VkOem102 = 0xE2;
 
     private readonly object _gate = new();
     private readonly HookProc _hookProc;
+    private readonly Channel<PendingKey> _pending = Channel.CreateBounded<PendingKey>(
+        new BoundedChannelOptions(PendingKeyCapacity)
+        {
+            SingleReader = true,
+            SingleWriter = true,
+            FullMode = BoundedChannelFullMode.DropOldest,
+        });
+
     private readonly TaskCompletionSource<bool> _installTcs = new(TaskCreationOptions.RunContinuationsAsynchronously);
     private readonly TaskCompletionSource<bool> _uninstallTcs = new(TaskCreationOptions.RunContinuationsAsynchronously);
     private Thread? _thread;
+    private Thread? _consumerThread;
     private nint _hookHandle;
     private uint _threadId;
     private int _armed;
@@ -82,6 +108,14 @@ public sealed class KeystrokeAccessor : IKeystrokeAccessor, IDisposable
                 Name = "KeyContextAI.KeyboardHook",
             };
             _thread.Start();
+
+            _consumerThread = new Thread(ConsumePendingKeys)
+            {
+                IsBackground = true,
+                Name = "KeyContextAI.KeyboardHook.Consumer",
+            };
+            _consumerThread.Start();
+
             _installed = true;
             return _installTcs.Task;
         }
@@ -102,6 +136,7 @@ public sealed class KeystrokeAccessor : IKeystrokeAccessor, IDisposable
                 PostThreadMessage(_threadId, WmQuit, nint.Zero, nint.Zero);
             }
 
+            _pending.Writer.TryComplete();
             _installed = false;
             return _uninstallTcs.Task;
         }
@@ -179,18 +214,60 @@ public sealed class KeystrokeAccessor : IKeystrokeAccessor, IDisposable
             return CallNextHookEx(_hookHandle, code, wParam, lParam);
         }
 
-        var observed = KeyObserved;
-        if (observed is not null)
+        // Nothing managed beyond a bounded-capacity enqueue happens on this callback. Windows
+        // removes a hook whose callback exceeds LowLevelHooksTimeout, and this callback sits on
+        // the user's typing path, so translation, word assembly and every subscriber run on the
+        // dedicated consumer thread instead.
+        _pending.Writer.TryWrite(new PendingKey(data.VkCode, data.ScanCode, data.Time));
+
+        // Suppression consumes the armed state only for the key it was armed for, and only once.
+        // Anything else is passed through, so ordinary characters are never swallowed while armed.
+        if (Volatile.Read(ref _armed) != 0
+            && IsSuppressionEligible(data.VkCode)
+            && Interlocked.CompareExchange(ref _armed, 0, 1) == 1)
         {
-            observed.Invoke(CreateKeyEvent(data));
+            _token = default;
+            return (nint)1;
         }
 
-        return Volatile.Read(ref _armed) != 0
-            ? (nint)1
-            : CallNextHookEx(_hookHandle, code, wParam, lParam);
+        return CallNextHookEx(_hookHandle, code, wParam, lParam);
     }
 
-    private static KeyEvent CreateKeyEvent(KbdLlHookStruct data)
+    private static bool IsSuppressionEligible(uint virtualKey) =>
+        ClassifyKey(virtualKey) is KeyEventKind.Committing or KeyEventKind.Separator;
+
+    private void ConsumePendingKeys()
+    {
+        var reader = _pending.Reader;
+        while (true)
+        {
+            PendingKey pending;
+            try
+            {
+                if (!reader.WaitToReadAsync().AsTask().GetAwaiter().GetResult())
+                {
+                    return;
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                return;
+            }
+
+            while (reader.TryRead(out pending))
+            {
+                var observed = KeyObserved;
+                if (observed is null)
+                {
+                    continue;
+                }
+
+                observed.Invoke(CreateKeyEvent(pending));
+            }
+        }
+    }
+
+    private static KeyEvent CreateKeyEvent(PendingKey data)
     {
         var foregroundThreadId = GetForegroundThreadId();
         var layout = LayoutIdFromKeyboardLayout(GetKeyboardLayout(foregroundThreadId));
@@ -220,7 +297,7 @@ public sealed class KeystrokeAccessor : IKeystrokeAccessor, IDisposable
         }
     }
 
-    private static char? TryTranslateCharacter(KbdLlHookStruct data, uint threadId)
+    private static char? TryTranslateCharacter(PendingKey data, uint threadId)
     {
         Span<byte> keyboardState = stackalloc byte[256];
         if (!GetKeyboardState(keyboardState))
@@ -242,14 +319,34 @@ public sealed class KeystrokeAccessor : IKeystrokeAccessor, IDisposable
         return translated > 0 ? buffer[0] : null;
     }
 
+    internal static KeyEventKind ClassifyKeyForTest(uint virtualKey) => ClassifyKey(virtualKey);
+
     private static KeyEventKind ClassifyKey(uint virtualKey)
     {
         return virtualKey switch
         {
-            VkSpace or VkTab => KeyEventKind.Separator,
-            VkReturn => KeyEventKind.Committing,
-            VkBack or VkDelete => KeyEventKind.Editing,
+            // FR-005b: Tab and Enter both end the word and may submit input to the application.
+            VkReturn or VkTab => KeyEventKind.Committing,
+
+            // Space and punctuation end the current word without submitting it. Punctuation
+            // previously fell through as Character and was appended into the word in progress.
+            VkSpace => KeyEventKind.Separator,
+            >= VkOem1 and <= VkOem3 => KeyEventKind.Separator,
+            >= VkOem4 and <= VkOem8 => KeyEventKind.Separator,
+            VkOem102 => KeyEventKind.Separator,
+
+            // Backspace shortens the word behind the caret. Forward Delete removes text ahead of
+            // it, so it does not shorten the assembled word and must not be treated as Editing.
+            VkBack => KeyEventKind.Editing,
+
             VkShift or VkControl or VkMenu or VkLwin or VkRwin or VkCapital => KeyEventKind.Modifier,
+
+            // Navigation, editing-position and function keys move or invalidate the caret, so the
+            // word in progress is no longer contiguous with what is on screen and must be reset.
+            VkDelete or VkEscape or VkInsert => KeyEventKind.Other,
+            >= VkPrior and <= VkDown => KeyEventKind.Other,
+            >= VkF1 and <= VkF24 => KeyEventKind.Other,
+
             _ => KeyEventKind.Character,
         };
     }
@@ -344,6 +441,12 @@ public sealed class KeystrokeAccessor : IKeystrokeAccessor, IDisposable
 
         public uint VirtualKeyCode => VkCode;
     }
+
+    /// <summary>
+    /// The minimal native payload copied off the hook callback. Only blittable values cross the
+    /// channel, so the callback never touches the managed pipeline.
+    /// </summary>
+    private readonly record struct PendingKey(uint VirtualKeyCode, uint ScanCode, uint Time);
 
     private delegate nint HookProc(int code, nint wParam, nint lParam);
 }

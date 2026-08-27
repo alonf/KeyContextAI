@@ -32,9 +32,17 @@ public sealed class InputInjectionAccessor : IInputInjectionAccessor
             return InjectionResult.Failure("ReplacementText must be non-empty.");
         }
 
-        var correction = SendBurst(BuildCorrectionSteps(tx.BackspaceCount, tx.ReplacementText));
+        var correction = SendCorrectionBurst(tx.BackspaceCount, tx.ReplacementText);
         if (!correction.Succeeded)
         {
+            // A partial burst has already mutated the user's document. Restoring the original span
+            // takes priority over re-delivering the suppressed key: the documented control is that
+            // an injection failure leaves the text as it was.
+            if (correction.FailureKind == InjectionFailureKind.PartiallyApplied)
+            {
+                correction = CompensatePartialBurst(correction, tx);
+            }
+
             if (tx.SuppressedKey is null)
             {
                 return correction;
@@ -107,11 +115,83 @@ public sealed class InputInjectionAccessor : IInputInjectionAccessor
         return await Task.FromResult(result).ConfigureAwait(false);
     }
 
-    private static InjectionResult SendBurst(IReadOnlyList<InjectionStep> steps)
+    private static InjectionResult SendCorrectionBurst(int backspaceCount, string replacementText)
     {
-        if (steps.Count == 0)
+        var steps = BuildCorrectionSteps(backspaceCount, replacementText);
+        var sent = SendSteps(steps, out var error);
+        if (sent == steps.Count)
         {
             return InjectionResult.Success();
+        }
+
+        var message = $"SendInput inserted {sent} of {steps.Count} input event(s); Win32 error {error}.";
+        if (sent == 0)
+        {
+            return InjectionResult.Failure(message);
+        }
+
+        // Steps are emitted as down/up pairs: backspaceCount pairs first, then one pair per
+        // replacement character. Halving the applied count gives the completed pairs, which is
+        // what actually changed the document. A trailing lone keydown is not counted as applied.
+        var appliedPairs = sent / 2;
+        var appliedBackspaces = Math.Min(appliedPairs, backspaceCount);
+        var appliedChars = Math.Max(0, appliedPairs - backspaceCount);
+        var appliedText = replacementText[..Math.Min(appliedChars, replacementText.Length)];
+
+        return InjectionResult.PartialFailure(message, sent, appliedBackspaces, appliedText);
+    }
+
+    /// <summary>
+    /// Undoes the applied prefix of a failed burst so the caller's document is left as it was:
+    /// remove the characters that were inserted, then retype the characters the backspaces ate.
+    /// </summary>
+    private static InjectionResult CompensatePartialBurst(InjectionResult partial, CorrectionTransaction tx)
+    {
+        var originalPrefix = OriginalTextPrefix(tx, partial.AppliedBackspaceCount);
+        var steps = BuildCorrectionSteps(partial.AppliedReplacementText.Length, originalPrefix);
+        if (steps.Count == 0)
+        {
+            return partial;
+        }
+
+        var sent = SendSteps(steps, out var error);
+        return sent == steps.Count
+            ? partial with
+            {
+                ErrorMessage = $"{partial.ErrorMessage} The applied prefix was compensated and the original text restored.",
+            }
+            : partial with
+            {
+                ErrorMessage = $"{partial.ErrorMessage} Compensation also failed after {sent} of {steps.Count} event(s); Win32 error {error}. The target text is left modified.",
+            };
+    }
+
+    internal static string OriginalTextPrefixForTest(CorrectionTransaction tx, int backspaceCount) =>
+        OriginalTextPrefix(tx, backspaceCount);
+
+    /// <summary>
+    /// Reconstructs the trailing characters of the original span that the applied backspaces
+    /// removed, reading the span entries back to front.
+    /// </summary>
+    private static string OriginalTextPrefix(CorrectionTransaction tx, int backspaceCount)
+    {
+        if (backspaceCount <= 0 || tx.SpanEntries.Count == 0)
+        {
+            return string.Empty;
+        }
+
+        var original = string.Concat(tx.SpanEntries.Select(entry => entry.Text));
+        return backspaceCount >= original.Length
+            ? original
+            : original[^backspaceCount..];
+    }
+
+    private static int SendSteps(IReadOnlyList<InjectionStep> steps, out int win32Error)
+    {
+        win32Error = 0;
+        if (steps.Count == 0)
+        {
+            return 0;
         }
 
         var inputs = new INPUT[steps.Count];
@@ -120,14 +200,27 @@ public sealed class InputInjectionAccessor : IInputInjectionAccessor
             inputs[i] = steps[i].ToInput();
         }
 
-        var sent = SendInput((uint)inputs.Length, inputs, Marshal.SizeOf<INPUT>());
+        var sent = (int)SendInput((uint)inputs.Length, inputs, Marshal.SizeOf<INPUT>());
         if (sent != inputs.Length)
         {
-            return InjectionResult.Failure(
-                $"SendInput inserted {sent} of {inputs.Length} input event(s); Win32 error {Marshal.GetLastWin32Error()}.");
+            win32Error = Marshal.GetLastWin32Error();
         }
 
-        return InjectionResult.Success();
+        return sent;
+    }
+
+    private static InjectionResult SendBurst(IReadOnlyList<InjectionStep> steps)
+    {
+        if (steps.Count == 0)
+        {
+            return InjectionResult.Success();
+        }
+
+        var sent = SendSteps(steps, out var error);
+        return sent == steps.Count
+            ? InjectionResult.Success()
+            : InjectionResult.Failure(
+                $"SendInput inserted {sent} of {steps.Count} input event(s); Win32 error {error}.");
     }
 
     private static void AddKeyPress(List<InjectionStep> steps, KeyEvent key)

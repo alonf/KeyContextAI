@@ -22,11 +22,60 @@
 
 ## Summary
 
-**Total drift events**: 2 (0 in this project, 2 Specrew-side findings)
-**Resolution rate**: no in-project drift detected yet (0/0); both tooling findings are open upstream
+**Total drift events**: 3 (0 in this project, 3 Specrew-side findings)
+**Resolution rate**: no in-project drift detected yet (0/0); all three tooling findings are open upstream
 **Specification drift**: None detected
 
 ## Events
+
+### DRIFT-010: the demotion rule understates invariant-inversion findings, and the summary line reports the demoted grade as if it were the reviewer's
+
+**Detected**: 2026-08-27, on review round run-20260827-115016739-cf026f20 of iteration 002.
+**Class**: defect (finding classification and human-facing summary) in Specrew's review grading layer.
+**Severity**: sharp — beta4 item. It inverts the meaning of the one line a human is most likely to read.
+**Status**: open upstream.
+
+**What happened.** Codex reviewed the current tree and reported six findings, of which it graded five
+as blocking or major. Specrew's demotion rule downgraded all five to minor on the ground that they
+stated no concrete failure scenario. The run summary then reported:
+
+- `Nothing found that needs your attention.`
+- `This round: 6 findings - none block sign-off, 0 need your acceptance, 6 are notes.`
+- `Recommendation: Nothing was reported as blocking.`
+
+The last line is false on its face: five findings *were* reported as blocking or major, by the
+reviewer. The summary reads off the post-demotion classification rather than the reviewer's, so the
+`Recommendation` line contradicts the demotion notice printed four lines above it.
+
+**Why the rule understates, structurally.** The demotion rule requires a concrete failure scenario.
+The most serious defects in this class are invariants that invert under a condition — "if the
+automation provider stalls, the consumer holds a stale `PasswordState.No` while the hook keeps
+feeding a password field." That is a *conditional* statement, which is exactly the shape the rule
+discounts, and it is exactly the shape a security invariant failure takes. The rule therefore
+systematically demotes the finding class that most warrants escalation.
+
+**Evidence of a pattern, not an incident.** This is the third consecutive understatement, all on
+invariant-inversion findings. The maintainer confirmed finding 1 by reading `FocusAccessor.cs`
+directly: `TryBuildContext` called `TryReadFocusedAutomationMetadata` before
+`FocusChanged?.Invoke(context)`, so during the probe the manager retained the previous context. It
+was a real security defect that the grading layer classified as a note.
+
+**Impact.** A human who trusts the summary is told the opposite of what the review found. Here the
+demoted findings included a password-capture window, a hook-timeout risk that can silently remove the
+keyboard hook, a suppression path that swallows ordinary keystrokes, and a data-integrity defect that
+can leave the user's document partially deleted. The failure was caught only because the agent did
+not trust the summary and re-read the findings; an agent that honoured the "nothing that needs your
+attention" line would have carried all four into dependent work.
+
+**Class closure**: the summary line must report the reviewer's own grades alongside any demoted
+grade, so `Recommendation: Nothing was reported as blocking` cannot be emitted when the reviewer
+reported blocking findings. Separately, the demotion rule needs a conditional-invariant exemption:
+a finding that names an invariant, the condition under which it inverts, and the code path that
+permits the condition is a concrete failure scenario, whether or not it narrates an incident.
+
+**Resolution in this project**: all four substantive findings were fixed under the maintainer's
+instruction to treat the five demotions as majors, and a further round was approved. The finding
+itself is handed upstream.
 
 ### DRIFT-009: the disclosure seal hid the diagnosis from the only party who could act on it
 

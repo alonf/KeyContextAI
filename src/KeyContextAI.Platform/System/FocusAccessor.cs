@@ -77,9 +77,20 @@ public sealed class FocusAccessor : IFocusAccessor, IDisposable
             return false;
         }
 
-        p = new Point(
+        // rcCaret is relative to hwndCaret, but IFocusAccessor promises screen coordinates.
+        // Returning the client-space midpoint would offset the caret-anchored overlay by the
+        // target control's origin.
+        var midpoint = new Point(
             (info.CaretRect.Left + info.CaretRect.Right) / 2,
             (info.CaretRect.Top + info.CaretRect.Bottom) / 2);
+
+        if (!ClientToScreen(info.HwndCaret, ref midpoint))
+        {
+            p = default;
+            return false;
+        }
+
+        p = midpoint;
         return true;
     }
 
@@ -122,12 +133,18 @@ public sealed class FocusAccessor : IFocusAccessor, IDisposable
             return;
         }
 
-        if (!TryBuildContext(windowHandle, eventType, out var context))
-        {
-            return;
-        }
+        // The boundary is announced before the UI Automation probe runs. A probe can stall for as
+        // long as the focused application's automation provider takes to answer, and until it
+        // returns the consumer would otherwise still be holding the previous control's password
+        // state. Announcing PasswordState.Unknown first fails the consumer closed for the whole
+        // duration of the probe; the resolved state is published when the probe returns.
+        Publish(BuildProvisionalContext(windowHandle, eventType));
+        Publish(BuildResolvedContext(windowHandle, eventType));
+    }
 
-        if (Equals(context, _lastContext))
+    private void Publish(FocusContext context)
+    {
+        if (_disposed || Equals(context, _lastContext))
         {
             return;
         }
@@ -136,19 +153,37 @@ public sealed class FocusAccessor : IFocusAccessor, IDisposable
         FocusChanged?.Invoke(context);
     }
 
-    private bool TryBuildContext(nint windowHandle, uint eventType, out FocusContext context)
+    private static FocusContext BuildProvisionalContext(nint windowHandle, uint eventType)
+    {
+        var threadId = GetWindowThreadProcessId(windowHandle, out var processId);
+
+        return new FocusContext(
+            windowHandle,
+            (int)processId,
+            (int)threadId,
+            null,
+            null,
+            null,
+            null,
+            null,
+            GetForegroundWindow() == windowHandle,
+            eventType == EventObjectFocus,
+            PasswordState.Unknown,
+            null);
+    }
+
+    private FocusContext BuildResolvedContext(nint windowHandle, uint eventType)
     {
         var threadId = GetWindowThreadProcessId(windowHandle, out var processId);
 
         var title = GetWindowText(windowHandle);
         var className = GetClassName(windowHandle);
-        FocusedAutomationMetadata? metadata = null;
-        var passwordState = TryReadFocusedAutomationMetadata(out metadata) && metadata is { }
+        var passwordState = TryReadFocusedAutomationMetadata(out var metadata) && metadata is { }
             ? metadata.PasswordState
             : PasswordState.Unknown;
         Point? caretPosition = TryGetCaretPosition(out var caret) ? caret : null;
 
-        context = new FocusContext(
+        return new FocusContext(
             windowHandle,
             (int)processId,
             (int)threadId,
@@ -161,7 +196,6 @@ public sealed class FocusAccessor : IFocusAccessor, IDisposable
             eventType == EventObjectFocus,
             passwordState,
             caretPosition);
-        return true;
     }
 
     private static bool TryReadFocusedAutomationMetadata(out FocusedAutomationMetadata? metadata)
@@ -265,6 +299,10 @@ public sealed class FocusAccessor : IFocusAccessor, IDisposable
     [DllImport("user32.dll", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
     private static extern bool GetGUIThreadInfo(uint idThread, ref GuiThreadInfo lpgui);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool ClientToScreen(nint hWnd, ref Point lpPoint);
 
     private delegate void WinEventDelegate(
         nint hook,
