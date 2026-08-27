@@ -155,7 +155,12 @@ means it did not stick — see lesson 2, which now has an owner and a gate it ca
   three models that turned out to be wrong; re-estimating them after the design pass is not the
   same work as carrying them forward. Re-task after the design outcome, with the review budget
   from lesson 2.
-- **Eight follow-ups stand recorded** from the final round (six relocations folded into the design
-  questions; layout-identity and orphan-keyup explicitly among them), plus seven upstream Specrew
-  findings awaiting the next engine build — today's build already closed the flag-instead-of-phrase
-  gap this session surfaced.
+- **The follow-ups carry grouped, not flat** (closeout verdict instruction): each design question
+  owns its symptoms — identity (shared-HWND gap, keyboard-state thread, layout LANGID collapse),
+  suppression lifecycle (disarm race, orphan keyup), injection terminal states (overflow
+  accounting, non-transactionality) — with hook latency as the binding constraint, measured first.
+  Nothing carries as an independent ticket; the fixed IsPassword finding carries nothing.
+- **Iteration 003 opens in a fresh session on a settled engine build** (closeout verdict): today's
+  seven upstream findings go to the maintainer's crew as a single brief and will land as engine
+  changes, and a design pass should not update mid-flight. Nothing is lost by waiting — the
+  questions are recorded, the harness is scoped, the two rounds are reserved.

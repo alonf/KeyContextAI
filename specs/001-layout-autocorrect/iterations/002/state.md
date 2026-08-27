@@ -26,8 +26,20 @@
   the review rounds disproved (DRIFT-013), so they do **not** auto-carry: re-estimating them after
   the iteration-003 design pass is not the same work as carrying them forward. They are re-tasked
   after that pass, under the review-and-repair budget rule from the 002 retro.
-- The nine findings of run-20260827-143505800-a30101b4 stand as recorded follow-ups; the drift log
-  closes at 8 entries (1 in-project, resolved by the design-pass decision; 7 upstream).
+- **The carry into iteration 003 is three design questions with symptoms attached, plus the
+  instrument that binds them** — grouped so 003 designs them together rather than fixing them
+  separately, which is the pattern the design pass exists to stop:
+  - **Typing-context identity**: the shared-HWND identity gap, keyboard state sampled off the
+    typing thread, and the layout LANGID collapse (Dvorak/QWERTY indistinguishable).
+  - **Suppressed-key lifecycle**: the disarm-after-lock suppression race and the orphan keyup.
+  - **Injection terminal states**: overflow accounting that can drop a suppressed token uncounted,
+    and burst/compensation/replay non-transactionality.
+  - **Hook latency**: the constraint on all three models — the measurement harness is built first,
+    as the design pass's input.
+  The ninth finding of run-20260827-143505800-a30101b4 (IsPassword defaulting to safe) was fixed in
+  `a6fab9b` and carries nothing. The drift log closes at 8 entries: 1 in-project, resolved by the
+  design-pass decision; 7 upstream, going to the maintainer's crew as a single brief — recorded
+  there and carried no further by this project.
 - Original scope for reference: 12 tasks, 17.5 story points against a capacity of 20, per the
   human-approved slicing at the tasks boundary.
 
