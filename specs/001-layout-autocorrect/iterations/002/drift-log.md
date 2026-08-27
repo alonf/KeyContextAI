@@ -60,6 +60,19 @@ directly: `TryBuildContext` called `TryReadFocusedAutomationMetadata` before
 `FocusChanged?.Invoke(context)`, so during the probe the manager retained the previous context. It
 was a real security defect that the grading layer classified as a note.
 
+**Round 2 repeated it, at full strength.** Round `run-20260827-122146212-0e6d630d` reviewed the
+corrected tree and returned seven findings. The reviewer graded *all seven* blocking or major;
+Specrew demoted all seven, and the summary again opened with `That round found nothing that needs
+your attention.` The ratio moved from 5-of-6 to 7-of-7, so the rule is not merely noisy at the
+margin — on this finding class it does not survive a single case.
+
+Round 2's first finding is the sharpest evidence available that the demoted class is the dangerous
+one: it was a *regression introduced by the round-1 fix*. Moving the pipeline off the hook thread
+resolved the original inversion and recreated it one layer down, because the consumer sampled the
+then-current foreground window while the focus context arrived on an unrelated WinEvent stream. A
+grading layer that demotes invariant inversions cannot catch a fix that relocates one, since the
+relocated defect is described in exactly the conditional form the rule discounts.
+
 **Impact.** A human who trusts the summary is told the opposite of what the review found. Here the
 demoted findings included a password-capture window, a hook-timeout risk that can silently remove the
 keyboard hook, a suppression path that swallows ordinary keystrokes, and a data-integrity defect that
@@ -73,8 +86,9 @@ attention" line would have carried all four into dependent work.
   a finding that names an invariant, the condition under which it inverts, and the code path that
   permits the condition is a concrete failure scenario, whether or not it narrates an incident.
 
-**Resolution in this project**: all four substantive findings were fixed under the maintainer's
-instruction to treat the five demotions as majors, and a further round was approved. The finding
+**Resolution in this project**: round 1's four substantive findings were fixed under the maintainer's
+instruction to treat the demotions as majors, and round 2's seven were fixed on the same standing
+ruling. In this project the demoted grade is not used; the reviewer's own grade governs. The finding
 itself is handed upstream.
 
 ### DRIFT-009: the disclosure seal hid the diagnosis from the only party who could act on it
